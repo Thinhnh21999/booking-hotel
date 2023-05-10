@@ -1,23 +1,39 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import Home from "./pages/home/home.jsx";
+import Contact from "./pages/about/about.jsx";
+import About from "./pages/contact/contact.jsx";
+import {
+  Link,
+  Redirect,
+  Route,
+  Switch,
+} from "react-router-dom/cjs/react-router-dom.min";
+import { useSelector } from "react-redux";
+
+import AuthRouter from "./router/authRouter.jsx";
 
 function App() {
+  const auth = useSelector((state) => state.Auth);
+  console.log(auth);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <AuthRouter auth></AuthRouter>
+      <ul className="">
+        <li>
+          <Link to="/home">Home</Link>
+        </li>
+        <li>
+          <Link to="/about">About</Link>
+        </li>
+        <li>
+          <Link to="/contact">Contact</Link>
+        </li>
+      </ul>
+      <Switch>
+        <Route exact path="/home" render={Home} />
+        <Route exact path="/about" render={About} />
+        <Route exact path="/contact" render={Contact} />
+      </Switch>
     </div>
   );
 }

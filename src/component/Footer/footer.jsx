@@ -1,7 +1,7 @@
-import fb from "../Svg/facebook.svg";
-import ins from "../Svg/instagram.svg";
-import yt from "../Svg/youtube.svg";
-import swt from "../Svg/twitter.svg";
+import facebookimg from "../../assets/svgs/facebook.svg";
+import instagramimg from "../../assets/svgs/instagram.svg";
+import youtubeimg from "../../assets/svgs/youtube.svg";
+import twitter from "../../assets/svgs/twitter.svg";
 
 export default function Header() {
   return (
@@ -40,10 +40,10 @@ export default function Header() {
         <div className="footer">
           <h2 className="text-lg font-semibold pb-4">Support</h2>
           <div className="flex">
-            <img className="w-12 mr-1" src={fb} alt="" />
-            <img className="w-12 mr-1" src={swt} alt="" />
-            <img className="w-12 mr-1" src={ins} alt="" />
-            <img className="w-12 " src={yt} alt="" />
+            <img className="w-12 mr-1" src={facebookimg} alt="" />
+            <img className="w-12 mr-1" src={twitter} alt="" />
+            <img className="w-12 mr-1" src={instagramimg} alt="" />
+            <img className="w-12 " src={youtubeimg} alt="" />
           </div>
         </div>
       </div>

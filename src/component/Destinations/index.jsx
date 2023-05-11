@@ -1,5 +1,5 @@
-import left from "../Svg/left-arrow.svg";
-import right from "../Svg/right-arrow.svg";
+import left from "../../assets/svgs/left-arrow.svg";
+import right from "../../assets/svgs/right-arrow.svg";
 export default function Destinations() {
   return (
     <div>
@@ -20,7 +20,7 @@ export default function Destinations() {
               </div>
             </div>
             <h2 className="font-bold text-lg hover-text">California</h2>
-            <p className="text-[#727272] hover-text">14 Hotels</p>
+            <p className="text-gray hover-text">14 Hotels</p>
           </div>
           <div className="item text-center mr-10">
             <div className="w-full rounded-full p-2">
@@ -31,7 +31,7 @@ export default function Destinations() {
               />
             </div>
             <h2 className="font-bold text-lg hover-text">New-York-City</h2>
-            <p className="text-[#727272] hover-text">7 Hotels</p>
+            <p className="text-gray hover-text">7 Hotels</p>
           </div>
           <div className="item text-center mr-10">
             <div className="w-full rounded-full p-2">
@@ -42,7 +42,7 @@ export default function Destinations() {
               />
             </div>
             <h2 className="font-bold text-lg hover-text">New-Jersey</h2>
-            <p className="text-[#727272] hover-text">7 Hotels</p>
+            <p className="text-gray hover-text">7 Hotels</p>
           </div>
           <div className="item text-center mr-10">
             <div className="w-full rounded-full p-2">
@@ -53,7 +53,7 @@ export default function Destinations() {
               />
             </div>
             <h2 className="font-bold text-lg hover-text">Los-Angeles</h2>
-            <p className="text-[#727272] hover-text">13 Hotels</p>
+            <p className="text-gray hover-text">13 Hotels</p>
           </div>
           <div className="item text-center mr-10">
             <div className="w-full rounded-full p-2">
@@ -64,7 +64,7 @@ export default function Destinations() {
               />
             </div>
             <h2 className="font-bold text-lg hover-text">San-Francisco</h2>
-            <p className="text-[#727272] hover-text">5 Hotels</p>
+            <p className="text-gray hover-text">5 Hotels</p>
           </div>
           <div className="item text-center mr-10">
             <div className="w-full rounded-full p-2">
@@ -75,7 +75,7 @@ export default function Destinations() {
               />
             </div>
             <h2 className="font-bold text-lg hover-text">Virginia</h2>
-            <p className="text-[#727272] hover-text">3 Hotels</p>
+            <p className="text-gray hover-text">3 Hotels</p>
           </div>
           <div className="item text-center">
             <div className="relative w-full rounded-full p-2">
@@ -89,7 +89,7 @@ export default function Destinations() {
               </div>
             </div>
             <h2 className="font-bold text-lg hover-text">Nevada</h2>
-            <p className="text-[#727272] hover-text">11 Hotels</p>
+            <p className="text-gray hover-text">11 Hotels</p>
           </div>
         </div>
       </div>

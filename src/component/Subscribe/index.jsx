@@ -1,5 +1,4 @@
 export default function Subscribe() {
-  // const submit = "Subscribe"
   return (
     <div className="rounded-3xl flex bg-[#FCFCFC] border-[1px] border-slate-500 border-solid mb-[100px]">
       <img

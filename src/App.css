@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 .App {
   text-align: center;
 }
@@ -32,7 +36,30 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
+}
+
+/* .item{
+  width: calc( 100% / 6);
+  object-fit: cover;
+} */
+.hover-zoom-out {
+  transition: all 0.3s ease-in-out;
+}
+
+.hover-zoom-out:hover {
+  transform: scale(1.1, 1.1);
+  cursor: pointer;
+}
+
+.hover-text:hover {
+  color: #3B71FE;
+  cursor: pointer;
+}
+
+.footer {
+  width: calc(100%/4);
 }

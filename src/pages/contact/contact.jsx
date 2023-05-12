@@ -1,5 +1,5 @@
-import Header from "../../component/Header/header";
-import Footer from "../../component/Footer/footer";
+import Header from "../../component/header";
+import Footer from "../../component/footer";
 
 export default function contact() {
   return (

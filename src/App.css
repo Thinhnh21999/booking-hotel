@@ -2,34 +2,25 @@
 @tailwind components;
 @tailwind utilities;
 
-.App {
-  text-align: center;
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  color: #232323;
+  font-size: 16px;
+  font-family: sans-serif;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.center {
+  @apply flex items-center justify-center
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.icon {
+  @apply w-11 h-11 border border-solid border-[#dedede] rounded-[50%] center bg-white shadow-custom
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
+.title {
+  @apply font-bold text-center text-4xl leading-[46px] mb-[50px];
 }
 
 @keyframes App-logo-spin {
@@ -58,4 +49,28 @@
 
 .footer {
   width: calc(100%/4);
+}
+
+.mySwiper .swiper-button-next {
+  @apply  bg-white w-10 h-10 rounded-[50%] shadow-custom top-[40%] right-[-15px] ;
+}
+
+.mySwiper .swiper-button-prev {
+  @apply   bg-white w-10 h-10 rounded-[50%] shadow-custom top-[40%] left-[-15px];
+}
+
+.mySwiper .swiper-button-prev::after {
+  @apply text-[14px] text-black
+}
+
+.mySwiper .swiper-button-next::after {
+  @apply text-[14px] text-black
+}
+
+.text-p {
+  @apply text-[14px] font-normal text-gray leading-[22px];
+}
+
+.text-footer {
+  @apply text-base text-gray leading-8;
 }

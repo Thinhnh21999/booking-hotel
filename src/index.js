@@ -4,10 +4,14 @@ import "./index.css";
 import App from "./App";
 import { BrowserRouter } from "react-router-dom/cjs/react-router-dom.min";
 import { Provider } from "react-redux";
-import { createStore } from "redux";
+import { applyMiddleware, createStore } from "redux";
 import { reducers } from "./redux/reducer";
+import createSagaMiddleware from "@redux-saga/core";
+import mySaga from "./redux/saga/saga.jsx";
 
-const store = createStore(reducers);
+const sagaMiddleware = createSagaMiddleware();
+const store = createStore(reducers, applyMiddleware(sagaMiddleware));
+sagaMiddleware.run(mySaga);
 
 ReactDOM.render(
   <React.StrictMode>

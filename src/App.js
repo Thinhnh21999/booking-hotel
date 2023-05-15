@@ -18,17 +18,7 @@ function App() {
   return (
     <div>
       <AuthRouter auth></AuthRouter>
-      <ul className="">
-        <li>
-          <Link to="/home">Home</Link>
-        </li>
-        <li>
-          <Link to="/about">About</Link>
-        </li>
-        <li>
-          <Link to="/contact">Contact</Link>
-        </li>
-      </ul>
+
       <Switch>
         <Route exact path="/home" render={Home} />
         <Route exact path="/about" render={About} />

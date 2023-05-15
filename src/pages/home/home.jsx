@@ -1,22 +1,25 @@
 import Footer from "../../component/footer";
-import Destinations from "../../component/destinations";
+import Destinations from "../../component/Destinations";
 import Header from "../../component/header";
 import Card from "../../component/card/index.jsx";
 import Search from "../../component/search/index.jsx";
+import ScrollUp from "../../component/scrollUp";
+import Anchor from "../../component/anchor";
 import { Form, Input, Button } from "antd";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Navigation, Autoplay, Pagination } from "swiper";
+import * as styled from "./style.js";
 
 export default function home() {
   return (
     <div className="">
       <Header />
-      <div className="bg-home_tour bg-no-repeat bg-cover">
+      <div className="bg-home_tour h-[460px] lg:h-full  bg-no-repeat bg-cover">
         <div className="py-[130px] text-center">
-          <h2 className="text-[64px] font-bold text-white leading-74px">
+          <h2 className="lg:text-[64px] lg:leading-74px text-[42px] leading-[52px] mb-3.5 font-bold text-white">
             Find your next stay
           </h2>
           <p className="text-lg font-normal text-white leading-[30px]">
@@ -24,21 +27,19 @@ export default function home() {
           </p>
         </div>
       </div>
-
-      <div className="container mx-auto relative top-[-40px]">
+      <div className="lg:container lg:mx-auto px-5 relative top-[-150px] lg:top-[-40px]">
         <Search />
       </div>
-
       <div>
-        <div className="container mt-[70px] mx-auto ">
+        <div className="lg:container lg:mt-[70px] lg:mx-auto px-2.5">
           <div className="flex flex-wrap ">
-            <div className="md:w-[50%] p-2.5 rounded-[20px]">
+            <div className="w-1/2 p-2.5 rounded-[20px]">
               <img
                 src="https://modtel.travelerwp.com/wp-content/uploads/2022/04/Frame-3151-min.png"
                 alt="..."
               />
             </div>
-            <div className="md:w-[50%] p-2.5 rounded-[20px]">
+            <div className="w-1/2 p-2.5 rounded-[20px]">
               <img
                 src="https://modtel.travelerwp.com/wp-content/uploads/2022/04/Frame-3150-min.png"
                 alt="..."
@@ -46,7 +47,7 @@ export default function home() {
             </div>
           </div>
         </div>
-        <div className="container mx-auto mt-[80px] px-2.5 pb-[45px]">
+        <div className="lg:container lg:mx-auto mt-[80px] lg:px-2.5 px-5 pb-[45px]">
           <h2 className="title">Top destinations</h2>
           <div className="">
             <div className="center">
@@ -55,8 +56,29 @@ export default function home() {
                 navigation={true}
                 modules={[Navigation]}
                 slidesPerView={6}
-                spaceBetween={40}
                 className="mySwiper"
+                breakpoints={{
+                  430: {
+                    slidesPerView: 2,
+                    spaceBetween: 20,
+                  },
+                  640: {
+                    slidesPerView: 2,
+                    spaceBetween: 20,
+                  },
+                  768: {
+                    slidesPerView: 4,
+                    spaceBetween: 20,
+                  },
+                  992: {
+                    slidesPerView: 4,
+                    spaceBetween: 20,
+                  },
+                  1366: {
+                    slidesPerView: 6,
+                    spaceBetween: 40,
+                  },
+                }}
               >
                 <SwiperSlide>
                   <Destinations />
@@ -100,9 +122,9 @@ export default function home() {
         </div>
 
         <div className=" bg-grey py-[45px]">
-          <div className="container mx-auto">
+          <div className="lg:container lg:mx-auto px-5 xl:px-0">
             <h2 className="title">Plan your next staycation</h2>
-            <div className="grid gap grid-cols-4">
+            <div className="grid gap-6 grid-cols-1 md:grid-cols-2 xl:grid-cols-4">
               <Card />
               <Card />
               <Card />
@@ -111,7 +133,7 @@ export default function home() {
           </div>
         </div>
 
-        <div className="container mx-auto pt-[65px] pb-[30px]">
+        <div className="lg:container lg:mx-auto px-5 pt-[65px] pb-[30px]">
           <h2 className="title text-left">Recommended for you</h2>
           <div>
             <Swiper
@@ -126,6 +148,28 @@ export default function home() {
               navigation={true}
               modules={[Autoplay, Pagination, Navigation]}
               className="mySwiper"
+              breakpoints={{
+                430: {
+                  slidesPerView: 1,
+                  spaceBetween: 24,
+                },
+                640: {
+                  slidesPerView: 1,
+                  spaceBetween: 24,
+                },
+                768: {
+                  slidesPerView: 2,
+                  spaceBetween: 24,
+                },
+                992: {
+                  slidesPerView: 2,
+                  spaceBetween: 24,
+                },
+                1366: {
+                  slidesPerView: 4,
+                  spaceBetween: 24,
+                },
+              }}
             >
               <SwiperSlide>
                 <Card></Card>
@@ -149,16 +193,16 @@ export default function home() {
           </div>
         </div>
 
-        <div className="container mx-auto pt-[70px] px-2.5 pb-[90px]">
+        <div className="lg:container lg:mx-auto pt-[70px] px-5 pb-[90px]">
           <div className="flex flex-wrap">
-            <div className="md:w-1/2 sm:w-full">
+            <div className="md:w-1/2 w-full">
               <img
-                className="w-full rounded-tl-[20px] rounded-bl-[20px]"
+                className="w-full h-full rounded-t-[20px] md:rounded-tr-[0px] md:rounded-bl-[20px] sm:rounded-b-[0] rounded-bl-[20px]"
                 src="https://icdn.dantri.com.vn/thumb_w/1280/2021/04/13/gioi-sieu-giau-va-nhung-thu-vui-nghi-duong-it-ai-bietdocx-1618273214390.jpeg"
                 alt="..."
               />
             </div>
-            <div className="md:w-1/2 sm:w-full rounded-tr-[20px] rounded-br-[20px] bg-[#fcfcfc] py-[80px] 2xl:px-[120px] md:px-[50px] sm:px-[10px] border-solid border-b border-t border-r text-center">
+            <div className="md:w-1/2 w-full rounded-t-[20px] md:rounded-tr-[20px] rounded-b-[20px] md:rounded-bl-[0px] sm:rounded-t-[0] bg-[#fcfcfc] md:px-4 md:py-[50px] 2xl:py-[80px] 2xl:px-[120px] lg:p-[50px] sm:px-[10px] sm:py-[50px] border-solid border-b border-t border-r text-center">
               <h2 className="font-bold text-center text-4xl leading-[46px] mb-0">
                 Get special offers, and more from Traveler
               </h2>
@@ -167,7 +211,7 @@ export default function home() {
                 up!
               </p>
               <Form>
-                <Form.Item
+                <styled.FormItem
                   name="name"
                   rules={[{ required: true, message: "Please Email Address" }]}
                 >
@@ -180,13 +224,15 @@ export default function home() {
                       Subscribe
                     </Button>
                   </div>
-                </Form.Item>
+                </styled.FormItem>
               </Form>
             </div>
           </div>
         </div>
       </div>
       <Footer />
+      <ScrollUp />
+      <Anchor />
     </div>
   );
 }

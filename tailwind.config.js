@@ -2,12 +2,14 @@
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
+    screens: {
+      "2xl": "1366px",
+      xl: "1200px",
+      lg: "992px",
+      md: "768px",
+      sm: "640px",
+    },
     extend: {
-      screens: {
-        "2xl": "1366px",
-        xl: "1140px",
-        lg: "1024px",
-      },
       textColor: {
         primary: "#3B71FE",
         gray: "#727272",

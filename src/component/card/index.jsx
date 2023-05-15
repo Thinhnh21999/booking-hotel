@@ -4,12 +4,12 @@ import { Link } from "react-router-dom/cjs/react-router-dom";
 
 export default function card() {
   return (
-    <div className="px-3 mb-[30px]">
+    <div className="mb-2">
       <div className="bg-white rounded-2xl shadow-custom">
         <div>
           <img
-            className="w-full"
-            src="https://lh3.googleusercontent.com/5uQVrjGeqadgIczcehZ9b46n0PB7LHP0GZr8q0FGNi0D7ognfsmwMVYGulYNNseAreIrQ00piO0QaIhSJLtIol_-ecF_8tr1GsWMnQMORg"
+            className="w-full rounded-t-2xl"
+            src="https://lh3.googleusercontent.com/0-LXC1KQjJimWWfPpsz4KVQUcwlMfofsmZmFnKWTPjg-SiOgQvS0nKf8kekx75opBFElcHo0V31xozshoj-mC4PlnRy6UsNOHgyXQgkS"
             alt="..."
           />
         </div>

@@ -3,10 +3,10 @@ import instagramimg from "../../assets/svgs/instagram.svg";
 import youtubeimg from "../../assets/svgs/youtube.svg";
 import twitter from "../../assets/svgs/twitter.svg";
 
-export default function Header() {
+export default function Footer() {
   return (
     <div className=" bg-[#F7F8FA]">
-      <div className="pt-[100px] container mx-auto">
+      <div className="pt-[100px] lg:container px-5 lg:mx-auto">
         <div className="flex flex-wrap pb-10">
           <div className="footer">
             <h2 className="text-lg font-semibold pb-4">Support</h2>

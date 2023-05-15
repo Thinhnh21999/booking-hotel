@@ -9,7 +9,13 @@
   color: #232323;
   font-size: 16px;
   font-family: sans-serif;
+  behavior: smooth;
 }
+
+body {
+  overflow-x: hidden;
+}
+
 
 .center {
   @apply flex items-center justify-center
@@ -73,4 +79,40 @@
 
 .text-footer {
   @apply text-base text-gray leading-8;
+}
+
+.hover {
+  @apply hover:text-[#0d6efd] cursor-pointer;
+}
+
+.border-line {
+  @apply border border-solid border-[#dedede];
+}
+
+.dropdown {
+  @apply py-2.5 min-w-[230px] top-[120%] opacity-0 z-[-1] bg-white border absolute rounded-[12px] shadow-custom;
+}
+
+.link-dropdown {
+  @apply py-4 w-full border-b border-solid border-gray-200 inline-flex font-bold ;
+}
+
+.link-dropdown-item {
+  @apply py-3 font-medium border-b border-solid border-gray-200 block;
+}
+
+.search-sm {
+  @apply sm:border sm:border-solid sm:z-40 sm:border-[#dedede] sm:rounded-[70px];
+}
+
+.search-lg {
+  @apply lg:border lg:border-solid lg:z-40 lg:border-[#dedede] lg:rounded-[24px]
+}
+
+.search-item {
+  @apply px-5 py-5 w-full lg:py-0 flex border-b border-solid border-[#dedede];
+}
+
+.scroll-top-up {
+  @apply bottom-[60px] transition-all ease-in duration-500 opacity-100;
 }

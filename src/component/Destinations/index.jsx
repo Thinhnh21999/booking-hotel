@@ -1,5 +1,3 @@
-// import left from "../../assets/svgs/left-arrow.svg";
-// import right from "../../assets/svgs/right-arrow.svg";
 export default function Destinations() {
   return (
     <div className="">

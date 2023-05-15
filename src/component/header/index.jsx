@@ -1,9 +1,4 @@
-import {
-  faChevronDown,
-  faEnvelope,
-  faFaceMehBlank,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import User from "../../component/user";
 import { Link } from "react-router-dom/cjs/react-router-dom.min";
 import PhoneSvg from "../../assets/svgs/phone.svg";
 import EmailSvg from "../../assets/svgs/email.svg";
@@ -386,9 +381,10 @@ export default function Header() {
               </div>
             </li>
             <li className="ml-5">
-              <div className="lg:icon">
+              <User />
+              {/* <div className="lg:icon">
                 <img className="w-5" src={UserSvg} alt=".." />
-              </div>
+              </div> */}
             </li>
           </ul>
         </div>

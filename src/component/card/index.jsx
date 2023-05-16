@@ -9,7 +9,7 @@ export default function card() {
         <div>
           <img
             className="w-full rounded-t-2xl"
-            src="https://lh3.googleusercontent.com/0-LXC1KQjJimWWfPpsz4KVQUcwlMfofsmZmFnKWTPjg-SiOgQvS0nKf8kekx75opBFElcHo0V31xozshoj-mC4PlnRy6UsNOHgyXQgkS"
+            src="https://www.officesaigon.vn/saigon-centre-tower-2-van-phong-tron-goi-quan-1.html"
             alt="..."
           />
         </div>

@@ -1,16 +1,14 @@
-import Card from "../card/index.jsx";
-import arrow_down from "../../assets/svgs/arrow_down.svg";
-import list_category from "../../assets/svgs/list_category.svg";
-import list_menu from "../../assets/svgs/list_menu.svg";
-import filter from "../../assets/svgs/filter.svg";
-
-import Sort from "../sort/index";
-
 import { Pagination } from "antd";
 import { Col, Row } from "antd";
 import { ArrowDownOutlined } from "@ant-design/icons";
 import { Button, Menu, Dropdown, Space, Tooltip } from "antd";
 
+import list_category from "../../assets/svgs/list_category.svg";
+import list_menu from "../../assets/svgs/list_menu.svg";
+import filter from "../../assets/svgs/filter.svg";
+
+import Card from "../card/index.jsx";
+import Sort from "../sort/index";
 import { ContainerStyled, Para,} from "./style.jsx";
 import { FilterButton } from "../container/style.jsx";
 
@@ -26,13 +24,6 @@ export default function Container() {
           </div>
       </FilterButton>
         <div className="flex justify-end">
-          {/* <div className="relative">
-            <div className="flex border-b-[1px] border-current border-solid mx-2 cursor-pointer h-7 justify-end">
-              <div className="mr-2 text-sm pt-[1px] ">Sort</div>
-              <img className="inline-block w-5 h-7" src={arrow_down} alt="" />
-            </div>
-            <Sort></Sort>
-          </div> */}
           <div>
         <Space.Compact block>
           <Dropdown

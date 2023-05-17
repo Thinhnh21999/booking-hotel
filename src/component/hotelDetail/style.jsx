@@ -9,14 +9,3 @@ export const NavBar = styled.div`
         display: none;
     }
 `
-// export const ImgStyle = styled.div`
-//   @media (max-width:768px) {
-//     display: none;
-    
-//   }
-// `
-// export const Slider = styled.img`
-//   @media (max-width:768px) {
-//     border-radius: 16px;
-//   }
-// `

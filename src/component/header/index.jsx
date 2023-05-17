@@ -3,10 +3,10 @@ import { Link } from "react-router-dom/cjs/react-router-dom.min";
 import PhoneSvg from "../../assets/svgs/phone.svg";
 import EmailSvg from "../../assets/svgs/email.svg";
 import CartSvg from "../../assets/svgs/cart.svg";
-import UserSvg from "../../assets/svgs/user.svg";
 import DropdownSvg from "../../assets/svgs/dropdown.svg";
 import MenuSvg from "../../assets/svgs/menu.svg";
 import ArrowLeftSvg from "../../assets/svgs/arrowLeft.svg";
+
 import * as styled from "./style.js";
 import { useState } from "react";
 

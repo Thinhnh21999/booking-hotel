@@ -4,11 +4,10 @@ import size from "../../assets/svgs/size.svg";
 import bed from "../../assets/svgs/bed.svg";
 import adults from "../../assets/svgs/adults.svg";
 import child from "../../assets/svgs/child.svg";
-import { AboutStyle } from "./style";
 
 export default function About() {
   return (
-    <div className="">
+    <div>
       <Row>
         <Col lg={24} md={11} xs={24} className="border-[1px] border-solid border-slate-300 rounded-xl my-6 mx-auto">
           <Row>

@@ -1,5 +1,3 @@
-import arrow_down from "../../assets/svgs/arrow_down.svg";
-
 export default function Filter() {
   return (
     <div>

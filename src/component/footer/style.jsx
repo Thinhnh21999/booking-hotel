@@ -13,3 +13,4 @@ export const FooterAbout = styled.div`
         display: block;
     }
 `
+

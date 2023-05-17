@@ -1,5 +1,3 @@
-
-
 export default function Sort() {
   return (
     <div>
@@ -32,3 +30,4 @@ export default function Sort() {
     </div>
   );
 }
+

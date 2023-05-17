@@ -1,10 +1,8 @@
-import { icons } from "antd/es/image/PreviewGroup";
-import Filter from "../filter/index";
-import Review from "../review";
-
 import { ArrowDownOutlined, StepForwardOutlined } from "@ant-design/icons";
 import { Button, Menu, Dropdown, Space, Tooltip } from "antd";
 
+import Filter from "../filter/index";
+import Review from "../review";
 import { AsideStyled, } from "./style";
 
 export default function Aside() {
@@ -31,7 +29,7 @@ export default function Aside() {
           >
             <div className="w-full px-5 py-7 bg-filter my-5 rounded-xl flex justify-between cursor-pointer">
               <div className="border-none font-bold text-lg ">
-                Filter Price{" "}
+                Filter Price
               </div>
               <ArrowDownOutlined className=""></ArrowDownOutlined>
             </div>

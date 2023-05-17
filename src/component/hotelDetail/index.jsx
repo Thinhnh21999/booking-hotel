@@ -2,7 +2,6 @@ import star from "../../assets/svgs/star.svg";
 import share from "../../assets/svgs/share.svg";
 import heart from "../../assets/svgs/heart.svg";
 import arrow_down_white from "../../assets/svgs/arrowDownWhite.svg"
-
 import airport from "../../assets/svgs/airport.svg";
 import fitness from "../../assets/svgs/fitness.svg";
 import heater from "../../assets/svgs/heater.svg";
@@ -39,8 +38,6 @@ export default function Redac_Gateway_Hotel() {
             alt=""
           />
         </Col>
-
-  
         <Col className="w-1/3" md={8} xs={0}>
           <Row className="m-2">
             <img
@@ -57,7 +54,6 @@ export default function Redac_Gateway_Hotel() {
             />
           </Row>
         </Col>
-
         <Col className="w-1/3" md={8} xs={0}>
           <Row className="m-2">
             <img

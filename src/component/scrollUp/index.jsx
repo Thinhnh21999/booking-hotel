@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+
 import ScrollUpSvg from "../../assets/svgs/scrollUp.svg";
 
 export default function ScrollUpButton() {
@@ -23,7 +24,6 @@ export default function ScrollUpButton() {
       headerElement.scrollIntoView({ behavior: "smooth" });
     }
   };
-
   return (
     <a
       href="#header"

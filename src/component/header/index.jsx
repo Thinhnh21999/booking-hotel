@@ -1,4 +1,4 @@
-import User from "../../component/user";
+import SignInOut from "../../component/signInOut";
 import { Link } from "react-router-dom/cjs/react-router-dom.min";
 import PhoneSvg from "../../assets/svgs/phone.svg";
 import EmailSvg from "../../assets/svgs/email.svg";
@@ -125,39 +125,14 @@ export default function Header() {
                 </styled.DropdownMenuItem>
               </li>
               <li>
-                <span
+                <Link
+                  to="#"
                   onClick={() => handleDropdownMenuItem2()}
                   className="link-dropdown hover"
-                  to="#"
                 >
                   HOTEL
                   <img className="w-4 ml-auto" src={DropdownSvg} alt="" />
-                </span>
-                <styled.DropdownMenuItem
-                  isDropdownMenuItem={isDropdownMenuItem.isHotel}
-                  className="px-2.5 hidden"
-                >
-                  <li className="py-3 font-medium">
-                    <Link className="link-dropdown-item hover" to="#">
-                      Detail Hotel 1
-                    </Link>
-                  </li>
-                  <li className="py-3 font-medium">
-                    <Link className="link-dropdown-item hover" to="#">
-                      Detail Hotel 2
-                    </Link>
-                  </li>
-                  <li className="py-3 font-medium">
-                    <Link className="link-dropdown-item hover" to="#">
-                      Detail Hotel 3
-                    </Link>
-                  </li>
-                  <li className="py-3 font-medium">
-                    <Link className="link-dropdown-item hover" to="#">
-                      Detail Hotel 4
-                    </Link>
-                  </li>
-                </styled.DropdownMenuItem>
+                </Link>
               </li>
               <li>
                 <span
@@ -268,37 +243,10 @@ export default function Header() {
             </styled.Dropdown>
 
             <styled.Dropdown className="relative">
-              <span className="flex hover py-[35px] ps-2.5 pe-6" to="#">
+              <Link className="flex hover py-[35px] ps-2.5 pe-6" to="#">
                 Hotel
                 <img className="w-4" src={DropdownSvg} alt="" />
-              </span>
-              <ul className="dropdown">
-                <li className="px-[30px]">
-                  <Link className="py-[15px] font-medium block hover" to="#">
-                    Detail Hotel 1
-                  </Link>
-                </li>
-                <li className="px-[30px]">
-                  <Link className="py-[15px] font-medium block hover" to="#">
-                    Detail Hotel 2
-                  </Link>
-                </li>
-                <li className="px-[30px]">
-                  <Link className="py-[15px] font-medium block hover" to="#">
-                    Detail Hotel 3
-                  </Link>
-                </li>
-                <li className="px-[30px]">
-                  <Link className="py-[15px] font-medium block hover" to="#">
-                    Detail Hotel 4
-                  </Link>
-                </li>
-                <li className="px-[30px]">
-                  <Link className="py-[15px] font-medium block hover" to="#">
-                    Detail Hotel 5
-                  </Link>
-                </li>
-              </ul>
+              </Link>
             </styled.Dropdown>
             <styled.Dropdown className="relative">
               <span className="flex hover py-[35px] ps-2.5 pe-6" to="#">
@@ -381,10 +329,7 @@ export default function Header() {
               </div>
             </li>
             <li className="ml-5">
-              <User />
-              {/* <div className="lg:icon">
-                <img className="w-5" src={UserSvg} alt=".." />
-              </div> */}
+              <SignInOut />
             </li>
           </ul>
         </div>

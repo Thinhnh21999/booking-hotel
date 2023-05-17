@@ -6,10 +6,10 @@ export default function card() {
   return (
     <div className="mb-2">
       <div className="bg-white rounded-2xl shadow-custom">
-        <div>
+        <div className="overflow-hidden rounded-t-2xl">
           <img
-            className="w-full rounded-t-2xl"
-            src="https://www.officesaigon.vn/saigon-centre-tower-2-van-phong-tron-goi-quan-1.html"
+            className="w-full rounded-t-2xl hover:scale-110 transition-all duration-300 ease-in-out transform"
+            src="https://lh3.googleusercontent.com/oEXb2unS-0hBUhkLlUn8r7CVsiOIsKQFuKNqrd7eiEHsO3stN0oaEH5E97nDgKorD3O9Lb3xs8YNZRA4jTQSVFScmQqFPO7a3Bj-8jZ5"
             alt="..."
           />
         </div>

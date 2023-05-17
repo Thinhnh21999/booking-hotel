@@ -1,11 +1,11 @@
 export default function Destinations() {
   return (
     <div className="">
-      <div className="flex w-full justify-around overflow-hidden">
+      <div className="flex w-full">
         <div className="text-center">
-          <div className="relative w-full rounded-full">
+          <div className="relative w-full mb-4 rounded-full overflow-hidden">
             <img
-              className="img block rounded-full mb-4 hover-zoom-out"
+              className="rounded-full w-full hover:scale-125 transition-all duration-300 ease-in-out transform"
               src="https://modtel.travelerwp.com/wp-content/uploads/2022/04/California-400x400.jpg"
               alt=""
             />

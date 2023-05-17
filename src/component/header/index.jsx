@@ -1,4 +1,4 @@
-import User from "../../component/user";
+import SignInOut from "../../component/signInOut";
 import { Link } from "react-router-dom/cjs/react-router-dom.min";
 import PhoneSvg from "../../assets/svgs/phone.svg";
 import EmailSvg from "../../assets/svgs/email.svg";
@@ -329,7 +329,7 @@ export default function Header() {
               </div>
             </li>
             <li className="ml-5">
-              <User />
+              <SignInOut />
             </li>
           </ul>
         </div>

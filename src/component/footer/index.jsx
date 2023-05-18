@@ -8,14 +8,14 @@ export default function Footer() {
     <div className=" bg-[#F7F8FA]">
       <div className="pt-[100px] lg:container px-5 lg:mx-auto">
         <div className="flex flex-wrap pb-10">
-          <div className="footer">
+          <div className="w-full md:w-1/4">
             <h2 className="text-lg font-semibold pb-4">Support</h2>
             <p className="text-footer">Help Center</p>
             <p className="text-footer">Our COVID-19 Response</p>
             <p className="text-footer">Cancellation options</p>
             <p className="text-footer">Safety information</p>
           </div>
-          <div className="footer">
+          <div className="w-full md:w-1/4">
             <h2 className="text-lg font-semibold pb-4">Company</h2>
             <p className="text-footer">About us</p>
             <p className="text-footer">Community Blog</p>
@@ -23,14 +23,14 @@ export default function Footer() {
             <p className="text-footer">Privacy policy</p>
             <p className="text-footer">Terms of service</p>
           </div>
-          <div className="footer">
+          <div className="w-full md:w-1/4">
             <h2 className="text-lg font-semibold pb-4">Contact</h2>
             <p className="text-footer">Partnerships</p>
             <p className="text-footer">FAQ</p>
             <p className="text-footer">Cancellation options</p>
             <p className="text-footer">Get in touch</p>
           </div>
-          <div className="footer">
+          <div className="w-full md:w-1/4">
             <h2 className="text-lg font-semibold pb-4">Support</h2>
             <div className="flex">
               <img className="w-12 mr-1" src={facebookimg} alt="" />

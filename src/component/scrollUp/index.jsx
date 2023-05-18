@@ -29,7 +29,7 @@ export default function ScrollUpButton() {
       href="#header"
       onClick={(e) => handleClick(e)}
       ref={myRef}
-      className="bg-primary w-[42px] cursor-pointer bottom-[-40px] right-10 opacity-0 rounded-lg h-[42px] fixed z-[99] p-4 center "
+      className="bg-primary w-[42px] h-[42px] cursor-pointer bottom-[-40px] right-10 opacity-0 rounded-lg fixed z-[99] p-4 center "
     >
       <img className="w-6" src={ScrollUpSvg} alt="..." />
     </a>

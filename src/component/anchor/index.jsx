@@ -1,6 +1,6 @@
 export default function Anchor() {
   return (
-    <div className="flex h-[74px] bg-white fixed bottom-5 z-0 hover:right-0 hover:transition-all hover:duration-300 hover:ease-in right-[-268px] shadow-custom">
+    <div className="flex h-[74px] bg-white fixed bottom-4 z-0 hover:right-0 hover:transition-all hover:duration-300 hover:ease-in right-[-268px] shadow-custom">
       <div className="w-[80px] text-[6px] px-2 py-3">
         <img
           className="w-full px-2"

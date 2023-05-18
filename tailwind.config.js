@@ -4,7 +4,7 @@ export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     screens: {
-      "2xl": "1366px",
+      "2xl": "1400px",
       xl: "1200px",
       lg: "992px",
       md: "768px",
@@ -27,8 +27,8 @@ export default {
           "url(https://modtel.travelerwp.com/wp-content/uploads/2022/04/banner-search-form-min.png)",
       },
       backgroundColor: {
-        "filter":"#f7f8fa"
-      }
+        filter: "#f7f8fa",
+      },
     },
   },
   plugins: [],

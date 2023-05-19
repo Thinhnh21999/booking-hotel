@@ -19,5 +19,4 @@ export const Title = styled.div`
   @media (max-width: 570px) {
     display: none;
   }
-
 `

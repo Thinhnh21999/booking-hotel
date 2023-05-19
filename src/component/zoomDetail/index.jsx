@@ -3,7 +3,6 @@ import size from "../../assets/svgs/size.svg";
 import bed from "../../assets/svgs/bed.svg";
 import adults from "../../assets/svgs/adults.svg";
 import child from "../../assets/svgs/child.svg";
-import share from "../../assets/svgs/share.svg";
 import airport from "../../assets/svgs/airport.svg";
 import fitness from "../../assets/svgs/fitness.svg";
 import heater from "../../assets/svgs/heater.svg";
@@ -13,12 +12,15 @@ import spa from "../../assets/svgs/spa.svg";
 import washer from "../../assets/svgs/Washer&Dryer.svg";
 import location from "../../assets/svgs/location.svg";
 
-import { Contact, Heading, NavBar, Content } from "./style";
-import { Col, DatePicker, Row } from "antd";
 import "antd/dist/antd";
-import { Title } from "../hotelDetail/style";
+import { Col, DatePicker, Row } from "antd";
+
 import ButtonShare from "../buttonShare";
+import { Contact, Heading, NavBar, Content } from "./style";
+import { Title } from "../hotelDetail/style";
+
 const { RangePicker } = DatePicker;
+
 export default function Zoom_Detail() {
   return (
     <div>
@@ -44,7 +46,6 @@ export default function Zoom_Detail() {
           </div>
         </div>
         <ButtonShare />
-        
       </Heading>
       <div className="flex">
         <Col className="w-1/3 my-2" md={8} xs={24}>
@@ -188,7 +189,6 @@ export default function Zoom_Detail() {
             <div>
               <RangePicker className="w-full" size="large"></RangePicker>
             </div>
-            
           </div>
           <hr className="my-10 text-slate-200"></hr>
           <Contact className="mb-10">

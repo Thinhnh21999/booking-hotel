@@ -1,5 +1,4 @@
 import star from "../../assets/svgs/star.svg";
-import share from "../../assets/svgs/share.svg";
 import heart from "../../assets/svgs/heart.svg";
 import arrow_down_white from "../../assets/svgs/arrowDownWhite.svg";
 import airport from "../../assets/svgs/airport.svg";
@@ -16,7 +15,7 @@ import About from "../cardAbout";
 import Feedback from "../feedback";
 import { Content } from "antd/es/layout/layout";
 import { NavBar, Title } from "./style";
-
+import Button from "../buttonShare/index";
 export default function Redac_Gateway_Hotel() {
   return (
     <div>
@@ -91,9 +90,7 @@ export default function Redac_Gateway_Hotel() {
               </div>
             </div>
             <div className="flex items-center">
-              <div className="w-10 h-10 border-[1px] border-solid  border-slate-200 rounded-full shadow-lg shadow-slate-100 text-center">
-                <img className="w-6 inline-block pt-2" src={share} alt="" />
-              </div>
+              <Button />
               <div className="w-10 h-10 ml-3 border-[1px] border-solid  border-slate-200 rounded-full shadow-lg shadow-slate-100 text-center">
                 <img className="w-6 inline-block pt-2" src={heart} alt="" />
               </div>

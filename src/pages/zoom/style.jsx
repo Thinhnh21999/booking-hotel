@@ -31,5 +31,4 @@ export const Price = styled.div`
     .zoomDetail {
       width: 50%;
     }
-
 `;

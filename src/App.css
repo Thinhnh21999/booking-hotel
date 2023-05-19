@@ -29,6 +29,10 @@ body {
   @apply font-bold text-center text-4xl leading-[46px] mb-[50px];
 }
 
+.title-checkout {
+  @apply text-[26px] font-bold leading-[36px];
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
@@ -51,10 +55,6 @@ body {
 .hover-text:hover {
   color: #3B71FE;
   cursor: pointer;
-}
-
-.footer {
-  width: calc(100%/4);
 }
 
 .mySwiper .swiper-button-next {
@@ -89,6 +89,10 @@ body {
   @apply border border-solid border-[#dedede];
 }
 
+.border-bottom {
+  @apply border-b border-solid border-[#dedede]
+}
+
 .dropdown {
   @apply py-2.5 min-w-[230px] top-[120%] opacity-0 z-[-1] bg-white border absolute rounded-[12px] shadow-custom;
 }
@@ -114,5 +118,7 @@ body {
 }
 
 .scroll-top-up {
-  @apply bottom-[60px] transition-all ease-in duration-500 opacity-100;
+  @apply bottom-[55px] transition-all ease-in duration-500 opacity-100;
 }
+
+

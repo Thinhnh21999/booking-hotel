@@ -2,9 +2,10 @@ import "./App.css";
 import Home from "./pages/home/home.jsx";
 import Contact from "./pages/about/index.jsx";
 import About from "./pages/contact/index.jsx";
-import Listing from "./pages/listing/Search_Popup_Map/index.jsx"
+import Listing from "./pages/listing/Search_Popup_Map/index.jsx";
 import Hotel from "./pages/hotel/index.jsx";
 import Zoom from "./pages/zoom/index.jsx";
+import Checkout from "./pages/checkout";
 
 import {
   Link,
@@ -21,7 +22,8 @@ function App() {
   console.log(auth);
   return (
     <div className="box-border m-0 p-0">
-      <AuthRouter auth></AuthRouter>
+      {/* <AuthRouter auth></AuthRouter> */}
+      <Checkout />
       <Switch>
         <Route exact path="/home" render={Home} />
         <Route exact path="/about" render={About} />

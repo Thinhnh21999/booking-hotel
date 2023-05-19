@@ -113,7 +113,7 @@ export default function Header() {
                   className="px-2.5 hidden"
                 >
                   <li className="py-3 font-medium">
-                    <Link className="link-dropdown-item hover" to="#">
+                    <Link className="link-dropdown-item hover" to="/listing">
                       Search Popup Map
                     </Link>
                   </li>
@@ -226,11 +226,14 @@ export default function Header() {
             <styled.Dropdown className="relative">
               <span className="flex hover py-[35px] ps-2.5 pe-6" to="#">
                 Listing
-                <img className="w-4" src={DropdownSvg} alt="" />
+                <img className="w-4" src={DropdownSvg} alt="..." />
               </span>
               <ul className="dropdown z-[-1]">
                 <li className="px-[30px]">
-                  <Link className="py-[15px] font-medium block hover" to="#">
+                  <Link
+                    className="py-[15px] font-medium block hover"
+                    to="/listing"
+                  >
                     Search Popup Map
                   </Link>
                 </li>

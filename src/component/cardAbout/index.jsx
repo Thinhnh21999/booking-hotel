@@ -1,15 +1,22 @@
 import { Col, Row } from "antd";
+import { Link } from "react-router-dom/cjs/react-router-dom.min";
 
 import size from "../../assets/svgs/size.svg";
 import bed from "../../assets/svgs/bed.svg";
 import adults from "../../assets/svgs/adults.svg";
 import child from "../../assets/svgs/child.svg";
+import { Price } from "./style";
 
 export default function About() {
   return (
     <div>
       <Row>
-        <Col lg={24} md={11} xs={24} className="border-[1px] border-solid border-slate-300 rounded-xl my-6 mx-auto">
+        <Col
+          lg={24}
+          md={11}
+          xs={24}
+          className="border-[1px] border-solid border-slate-300 rounded-xl my-6 mx-auto"
+        >
           <Row>
             <Col lg={7} xs={24}>
               <img
@@ -48,15 +55,28 @@ export default function About() {
               </div>
             </Col>
             <Col lg={7} xs={24}>
-              <div className="w-full h-full flex items-center  mb-20">
-                <div className="bg-primary text-white px-5 py-3 rounded-[30px] text-center font-bold w-full ">
-                  Show price
+              <Price>
+                <div className="w-full box">
+                  <p className="text-gray py-4">
+                    <span className="font-bold text-black">$136.00</span> /
+                    night
+                  </p>
+                  <div className="zoomDetail ">
+                    <div className="bg-primary text-white px-5 py-3 rounded-[30px] text-center font-bold ">
+                      <Link to="/zoom-detail">Zoom Detail</Link>
+                    </div>
+                  </div>
                 </div>
-              </div>
+              </Price>
             </Col>
           </Row>
         </Col>
-        <Col lg={24} md={11} xs={24} className="border-[1px] border-solid border-slate-300 rounded-xl my-6 mx-auto">
+        <Col
+          lg={24}
+          md={11}
+          xs={24}
+          className="border-[1px] border-solid border-slate-300 rounded-xl my-6 mx-auto"
+        >
           <Row>
             <Col lg={7} xs={24}>
               <img
@@ -95,15 +115,28 @@ export default function About() {
               </div>
             </Col>
             <Col className="" lg={7} xs={24}>
-              <div className="w-full h-full flex items-center  mb-20">
-                <div className="bg-primary text-white px-5 py-3 rounded-[30px] text-center font-bold w-full ">
-                  Show price
+              <Price>
+                <div className="w-full box">
+                  <p className="text-gray py-4">
+                    <span className="font-bold text-black">$136.00</span> /
+                    night
+                  </p>
+                  <div className="zoomDetail ">
+                    <div className="bg-primary text-white px-5 py-3 rounded-[30px] text-center font-bold ">
+                      <Link to="/zoom-detail">Zoom Detail</Link>
+                    </div>
+                  </div>
                 </div>
-              </div>
+              </Price>
             </Col>
           </Row>
         </Col>
-        <Col lg={24} md={12} xs={24} className="border-[1px] border-solid border-slate-300 rounded-xl my-6 mx-auto">
+        <Col
+          lg={24}
+          md={12}
+          xs={24}
+          className="border-[1px] border-solid border-slate-300 rounded-xl my-6 mx-auto"
+        >
           <Row>
             <Col lg={7} xs={24}>
               <img
@@ -142,11 +175,19 @@ export default function About() {
               </div>
             </Col>
             <Col className="" lg={7} xs={24}>
-              <div className="w-full h-full flex items-center mb-20">
-                <div className="bg-primary text-white px-5 py-3 rounded-[30px] text-center font-bold w-full ">
-                  Show price
+              <Price>
+                <div className="w-full box">
+                  <p className="text-gray py-4">
+                    <span className="font-bold text-black">$136.00</span> /
+                    night
+                  </p>
+                  <div className="zoomDetail ">
+                    <div className="bg-primary text-white px-5 py-3 rounded-[30px] text-center font-bold ">
+                      <Link to="/zoom-detail">Zoom Detail</Link>
+                    </div>
+                  </div>
                 </div>
-              </div>
+              </Price>
             </Col>
           </Row>
         </Col>

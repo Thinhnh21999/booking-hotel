@@ -16,7 +16,7 @@ import * as styled from "./style.js";
 
 export default function home() {
   return (
-    <div className="">
+    <div>
       <Header />
       <div className="bg-home_tour h-[460px] lg:h-full  bg-no-repeat bg-cover">
         <div className="py-[130px] text-center">

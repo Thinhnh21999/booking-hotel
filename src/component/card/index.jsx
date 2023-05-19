@@ -7,11 +7,13 @@ export default function card() {
     <div className="mb-2">
       <div className="bg-white rounded-2xl shadow-custom">
         <div className="overflow-hidden rounded-t-2xl">
-          <img
-            className="w-full rounded-t-2xl hover:scale-110 transition-all duration-300 ease-in-out transform"
-            src="https://lh3.googleusercontent.com/oEXb2unS-0hBUhkLlUn8r7CVsiOIsKQFuKNqrd7eiEHsO3stN0oaEH5E97nDgKorD3O9Lb3xs8YNZRA4jTQSVFScmQqFPO7a3Bj-8jZ5"
-            alt="..."
-          />
+          <Link to="/hotel-detail">
+            <img
+              className="w-full rounded-t-2xl hover:scale-110 transition-all duration-300 ease-in-out transform"
+              src="https://lh3.googleusercontent.com/oEXb2unS-0hBUhkLlUn8r7CVsiOIsKQFuKNqrd7eiEHsO3stN0oaEH5E97nDgKorD3O9Lb3xs8YNZRA4jTQSVFScmQqFPO7a3Bj-8jZ5"
+              alt="..."
+            />
+          </Link>
         </div>
         <div className="p-5">
           <div>
@@ -19,7 +21,7 @@ export default function card() {
               <FontAwesomeIcon className="decoration-slate-200" icon={faStar} />
               <FontAwesomeIcon className="decoration-slate-200" icon={faStar} />
             </div>
-            <Link to="#">Redac Gateway Hotel</Link>
+            <Link to="/hotel-detail">Redac Gateway Hotel</Link>
             <p className="text-p">Los Angeles</p>
           </div>
           <div className="mt-[15px] pt-[15px] border-t border-solid border-[#dedede]">

@@ -4,7 +4,7 @@ import Contact from "./pages/about/index.jsx";
 import About from "./pages/contact/index.jsx";
 import Listing from "./pages/listing/Search_Popup_Map/index.jsx"
 import Hotel from "./pages/hotel/index.jsx";
-import Zoom from "./pages/zoom/index.jsx";
+import Zoom from "./pages/zoom/index.jsx"
 
 import {
   Link,
@@ -25,9 +25,9 @@ function App() {
       <Switch>
         <Route exact path="/home" render={Home} />
         <Route exact path="/about" render={About} />
-        <Route exact path="/listing" render={Listing} />
-        <Route exact path="/hotel" render={Hotel} />
-        <Route exact path="/zoom" render={Zoom} />
+        <Route exact path="/hotel-search-popup-map" render={Listing} />
+        <Route exact path="/hotel-detail" render={Hotel} />
+        <Route exact path="/zoom-detail" render={Zoom} />
         <Route exact path="/contact" render={Contact} />
       </Switch>
     </div>

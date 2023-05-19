@@ -1,7 +1,7 @@
 import star from "../../assets/svgs/star.svg";
 import share from "../../assets/svgs/share.svg";
 import heart from "../../assets/svgs/heart.svg";
-import arrow_down_white from "../../assets/svgs/arrowDownWhite.svg"
+import arrow_down_white from "../../assets/svgs/arrowDownWhite.svg";
 import airport from "../../assets/svgs/airport.svg";
 import fitness from "../../assets/svgs/fitness.svg";
 import heater from "../../assets/svgs/heater.svg";
@@ -14,13 +14,13 @@ import { Col, Row } from "antd";
 
 import About from "../cardAbout";
 import Feedback from "../feedback";
-import { NavBar } from "./style";
 import { Content } from "antd/es/layout/layout";
+import { NavBar, Title } from "./style";
 
 export default function Redac_Gateway_Hotel() {
   return (
     <div>
-      <div className="border-y-[1px] border-gray border-slate-100">
+      <Title className="border-y-[1px] border-gray border-slate-100 ">
         <ul className="list-none flex py-5">
           <li className="text-primary cursor-pointer font-semibold">Home</li>
           <li className="px-10 text-primary cursor-pointer font-semibold">
@@ -28,9 +28,9 @@ export default function Redac_Gateway_Hotel() {
           </li>
           <li className="text-gray">Redac Gateway Hotel</li>
         </ul>
-      </div>
+      </Title>
 
-      <div className="flex">
+      <div className="flex mx-2">
         <Col className="w-1/3 my-2" md={8} xs={24}>
           <img
             className="w-full h-full rounded-2xl"
@@ -71,7 +71,7 @@ export default function Redac_Gateway_Hotel() {
           </Row>
         </Col>
       </div>
-      <div className="flex pt-14">
+      <Title className="flex mt-14">
         <Content className="w-2/3 px-3">
           <div className="flex justify-between flex-wrap">
             <div>
@@ -295,13 +295,12 @@ export default function Redac_Gateway_Hotel() {
           <hr className="my-10 text-slate-200"></hr>
           <Feedback />
           <div className="bg-primary mt-5 text-white px-5 py-3 rounded-[30px] w-[25%] text-center font-bold flex justify-between">
-            Write a review 
+            Write a review
             <img className="w-4 ml-2" src={arrow_down_white} alt="" />
-            </div>
+          </div>
           <hr className="my-10 text-slate-200"></hr>
           <div>
             <h2 className="text-3xl font-bold mb-8">Explore other options</h2>
-
           </div>
         </Content>
         <NavBar className="w-1/3 px-3">
@@ -390,7 +389,7 @@ export default function Redac_Gateway_Hotel() {
             <p className="text-gray ">+123456789</p>
           </div>
         </NavBar>
-      </div>
+      </Title>
     </div>
   );
 }

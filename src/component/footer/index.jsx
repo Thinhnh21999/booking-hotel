@@ -2,12 +2,13 @@ import facebookimg from "../../assets/svgs/facebook.svg";
 import instagramimg from "../../assets/svgs/instagram.svg";
 import youtubeimg from "../../assets/svgs/youtube.svg";
 import twitter from "../../assets/svgs/twitter.svg";
+import { FooterAbout} from "./style";
 
 export default function Footer() {
   return (
     <div className=" bg-[#F7F8FA]">
       <div className="pt-[100px] lg:container px-5 lg:mx-auto">
-        <div className="flex flex-wrap pb-10">
+        <FooterAbout className="flex flex-wrap pb-10">
           <div className="footer">
             <h2 className="text-lg font-semibold pb-4">Support</h2>
             <p className="text-footer">Help Center</p>
@@ -39,7 +40,7 @@ export default function Footer() {
               <img className="w-12 " src={youtubeimg} alt="" />
             </div>
           </div>
-        </div>
+        </FooterAbout>
         <div className="border-b-[1px] border-slate-400 border-solid"></div>
         <div className="flex justify-between py-6">
           <p className="text-[#727272] ">© Copyright Traveler 2022</p>

@@ -214,7 +214,7 @@ export default function Header() {
         <div>
           <ul className=" lg:flex hidden justify-between font-bold">
             <li className="">
-              <Link className="block hover py-[35px] ps-2.5 pe-6" to="#">
+              <Link className="block hover py-[35px] ps-2.5 pe-6" to="/home">
                 Home
               </Link>
             </li>
@@ -230,7 +230,7 @@ export default function Header() {
               </span>
               <ul className="dropdown z-[-1]">
                 <li className="px-[30px]">
-                  <Link className="py-[15px] font-medium block hover" to="#">
+                  <Link className="py-[15px] font-medium block hover" to="/hotel-search-popup-map">
                     Search Popup Map
                   </Link>
                 </li>
@@ -241,13 +241,25 @@ export default function Header() {
                 </li>
               </ul>
             </styled.Dropdown>
-
             <styled.Dropdown className="relative">
-              <Link className="flex hover py-[35px] ps-2.5 pe-6" to="#">
+              <span className="flex hover py-[35px] ps-2.5 pe-6" to="#">
                 Hotel
                 <img className="w-4" src={DropdownSvg} alt="" />
-              </Link>
+              </span>
+              <ul className="dropdown z-[-1]">
+                <li className="px-[30px]">
+                  <Link className="py-[15px] font-medium block hover" to="/hotel-detail">
+                    Hotel Detail 1
+                  </Link>
+                </li>
+                <li className="px-[30px]">
+                  <Link className="py-[15px] font-medium block hover" to="/hotel-detail">
+                    Hotel Detail 2
+                  </Link>
+                </li>
+              </ul>
             </styled.Dropdown>
+
             <styled.Dropdown className="relative">
               <span className="flex hover py-[35px] ps-2.5 pe-6" to="#">
                 Pages
@@ -255,7 +267,7 @@ export default function Header() {
               </span>
               <ul className="dropdown">
                 <li className="px-[30px]">
-                  <Link className="py-[15px] font-medium block hover" to="#">
+                  <Link className="py-[15px] font-medium block hover" to="/zoom-detail">
                     Blog
                   </Link>
                 </li>

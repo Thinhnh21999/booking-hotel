@@ -9,3 +9,15 @@ export const NavBar = styled.div`
         display: none;
     }
 `
+export const Title = styled.div`
+  padding: 0 6%;
+  margin: 10px 0 20px;
+
+  @media (max-width: 1232px) {
+    padding: 0 1%;
+  }
+  @media (max-width: 570px) {
+    display: none;
+  }
+
+`

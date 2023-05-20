@@ -2,7 +2,7 @@ import MapSvg from "../../assets/svgs/map.svg";
 import ArrowSvg from "../../assets/svgs/arrowRight.svg";
 import SearchSvg from "../../assets/svgs/search.svg";
 
-export default function search() {
+export default function Search() {
   return (
     <div className="w-full">
       <div className="xl:px-[80px]">

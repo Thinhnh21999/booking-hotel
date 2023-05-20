@@ -1,6 +1,7 @@
 import star from "../../assets/svgs/star.svg";
 import heart from "../../assets/svgs/heart.svg";
 import arrow_down_white from "../../assets/svgs/arrowDownWhite.svg";
+
 import airport from "../../assets/svgs/airport.svg";
 import fitness from "../../assets/svgs/fitness.svg";
 import heater from "../../assets/svgs/heater.svg";
@@ -16,10 +17,12 @@ import Feedback from "../feedback";
 import { Content } from "antd/es/layout/layout";
 import { NavBar, Title } from "./style";
 import Button from "../buttonShare/index";
+
 export default function Redac_Gateway_Hotel() {
   return (
     <div>
       <Title className="border-y-[1px] border-gray border-slate-100 ">
+
         <ul className="list-none flex py-5">
           <li className="text-primary cursor-pointer font-semibold">Home</li>
           <li className="px-10 text-primary cursor-pointer font-semibold">
@@ -28,7 +31,6 @@ export default function Redac_Gateway_Hotel() {
           <li className="text-gray">Redac Gateway Hotel</li>
         </ul>
       </Title>
-
       <div className="flex mx-2">
         <Col className="w-1/3 my-2" md={8} xs={24}>
           <img
@@ -70,7 +72,6 @@ export default function Redac_Gateway_Hotel() {
           </Row>
         </Col>
       </div>
-      <Title className="flex mt-14">
         <Content className="w-2/3 px-3">
           <div className="flex justify-between flex-wrap">
             <div>
@@ -386,7 +387,6 @@ export default function Redac_Gateway_Hotel() {
             <p className="text-gray ">+123456789</p>
           </div>
         </NavBar>
-      </Title>
     </div>
   );
 }

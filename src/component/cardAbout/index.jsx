@@ -1,6 +1,5 @@
 import { Col, Row } from "antd";
 import { Link } from "react-router-dom/cjs/react-router-dom.min";
-
 import size from "../../assets/svgs/size.svg";
 import bed from "../../assets/svgs/bed.svg";
 import adults from "../../assets/svgs/adults.svg";
@@ -17,6 +16,7 @@ export default function About() {
           xs={24}
           className="border-[1px] border-solid border-slate-300 rounded-xl my-6 mx-auto"
         >
+
           <Row>
             <Col lg={7} xs={24}>
               <img

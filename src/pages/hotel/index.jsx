@@ -94,7 +94,6 @@ export default function Hotel() {
               <p className="text-gray">(3 reviews)</p>
             </div>
           </div>
-
           <div className="bg-primary text-white w-[8%] font-bold text-center rounded-3xl py-2">
             Check
           </div>

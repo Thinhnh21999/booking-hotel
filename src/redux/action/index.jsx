@@ -2,9 +2,9 @@ export const actionType = {
   SET_AUTH: "SET_AUTH",
 };
 
-export const setAuthAction = (isAuth) => {
+export const setAuthAction = (params) => {
   return {
     type: actionType.SET_AUTH,
-    payload: isAuth,
+    payload: params,
   };
 };

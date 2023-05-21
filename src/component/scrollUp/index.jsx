@@ -7,9 +7,9 @@ export default function ScrollUpButton() {
 
   const windowScrolled = () => {
     if (window.scrollY !== 0) {
-      myRef.current.classList.add("scroll-top-up");
+      myRef?.current?.classList.add("scroll-top-up");
     } else {
-      myRef.current.classList.remove("scroll-top-up");
+      myRef?.current?.classList.remove("scroll-top-up");
     }
   };
 

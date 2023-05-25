@@ -1,14 +1,5 @@
 import React, { useState } from "react";
-import {
-  Button,
-  Form,
-  Input,
-  Select,
-  Space,
-  TreeSelect,
-  Checkbox,
-  message,
-} from "antd";
+import { Form, Input, Checkbox, message } from "antd";
 import { Link } from "react-router-dom/cjs/react-router-dom";
 import Header from "../../component/header";
 import Footer from "../../component/footer";

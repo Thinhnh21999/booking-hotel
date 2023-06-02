@@ -28,7 +28,7 @@ export const Price = styled.div`
       width: 50%;
       text-align: center;
     }
-    .zoomDetail {
+    .roomDetail {
       width: 50%;
     }
 `;

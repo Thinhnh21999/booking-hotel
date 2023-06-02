@@ -1,7 +1,7 @@
 import { actionType } from "../action";
 
 const initialState = {
-  isAuth: true,
+  isAuth: false,
 };
 
 export default function authReducer(state = initialState, action) {
@@ -9,7 +9,7 @@ export default function authReducer(state = initialState, action) {
     case actionType.SET_AUTH:
       return {
         ...state,
-        isAuth: true,
+        isAuth: action.payload,
       };
 
     default:

@@ -1,7 +1,5 @@
 import Aside from "../../../component/aside/index";
 import Container from "../../../component/container/index";
-import Footer from "../../../component/footer/index";
-import Header from "../../../component/header";
 import Search from "antd/es/transfer/search";
 
 import { Wrapper } from "./style";
@@ -9,7 +7,6 @@ import { Wrapper } from "./style";
 export default function Listing() {
   return (
     <div className="overflow-hidden">
-      <Header />
       <div className="bg-home_tour h-[460px] lg:h-full  bg-no-repeat bg-cover">
         <div className="py-[130px] text-center">
           <h2 className="lg:text-[64px] lg:leading-74px text-[42px] leading-[52px] mb-3.5 font-bold text-white">
@@ -29,7 +26,6 @@ export default function Listing() {
           <Container />
         </div>
       </Wrapper>
-      <Footer />
     </div>
   );
 }

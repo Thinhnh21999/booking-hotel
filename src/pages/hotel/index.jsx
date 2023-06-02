@@ -6,17 +6,14 @@ import { Navigation, Autoplay, Pagination } from "swiper";
 
 import star from "../../assets/svgs/star.svg";
 
-import Header from "../../component/header/index";
 import Redac_Gateway_Hotel from "../../component/hotelDetail/index";
-import Card from "../../component/card/index.jsx";
-import Footer from "../../component/footer/index";
+import Card from "../../component/card/index3.jsx";
 import { Wrapper, Price } from "./style";
 
 export default function Hotel() {
   return (
     <div className="overflow-hidden relative">
       <div>
-        <Header />
         <Redac_Gateway_Hotel />
         <Wrapper>
           <div className="lg:container lg:mx-auto px-5 pt-[65px] pb-[30px]">
@@ -79,7 +76,6 @@ export default function Hotel() {
             </div>
           </div>
         </Wrapper>
-        <Footer />
       </div>
       <Price>
         <div className="flex justify-between w-full p-3">

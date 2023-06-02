@@ -1,17 +1,6 @@
 import React, { useState } from "react";
-import {
-  Button,
-  Form,
-  Input,
-  Select,
-  Space,
-  TreeSelect,
-  Checkbox,
-  message,
-} from "antd";
+import { Form, Input, Checkbox, message } from "antd";
 import { Link } from "react-router-dom/cjs/react-router-dom";
-import Header from "../../component/header";
-import Footer from "../../component/footer";
 import ScrollUp from "../../component/scrollUp";
 import Anchor from "../../component/anchor";
 import MapSvg from "../../assets/svgs/map.svg";
@@ -65,7 +54,6 @@ export default function Checkout() {
 
   return (
     <>
-      <Header />
       <div className="pb-[60px]">
         <div className="py-5 border-bottom">
           <div className="lg:container lg:mx-auto px-5">
@@ -491,7 +479,6 @@ export default function Checkout() {
           </div>
         </div>
       </div>
-      <Footer />
       <ScrollUp />
       <Anchor />
     </>

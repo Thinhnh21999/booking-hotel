@@ -203,18 +203,20 @@ export default function Header() {
           ></styled.Overlay>
 
           <a className="" href="#">
-            <img
+            <Link to="/"
+            ><img
               className="lg:w-full w-[94px] "
               src="https://modtel.wpengine.com/wp-content/uploads/2022/04/logohotel.png"
               alt="logo"
-            />
+            /></Link>
+            
           </a>
         </div>
 
         <div>
           <ul className=" lg:flex hidden justify-between font-bold">
             <li className="">
-              <Link className="block hover py-[35px] ps-2.5 pe-6" to="/home">
+              <Link className="block hover py-[35px] ps-2.5 pe-6" to="/">
                 Home
               </Link>
             </li>
@@ -230,7 +232,7 @@ export default function Header() {
               </span>
               <ul className="dropdown z-[-1]">
                 <li className="px-[30px]">
-                  <Link className="py-[15px] font-medium block hover" to="/hotel-search-popup-map">
+                  <Link className="py-[15px] font-medium block hover" to="/list">
                     Search Popup Map
                   </Link>
                 </li>
@@ -248,12 +250,12 @@ export default function Header() {
               </span>
               <ul className="dropdown z-[-1]">
                 <li className="px-[30px]">
-                  <Link className="py-[15px] font-medium block hover" to="/hotel-detail">
+                  <Link className="py-[15px] font-medium block hover" to="# ">
                     Hotel Detail 1
                   </Link>
                 </li>
                 <li className="px-[30px]">
-                  <Link className="py-[15px] font-medium block hover" to="/hotel-detail">
+                  <Link className="py-[15px] font-medium block hover" to="#">
                     Hotel Detail 2
                   </Link>
                 </li>
@@ -267,7 +269,7 @@ export default function Header() {
               </span>
               <ul className="dropdown">
                 <li className="px-[30px]">
-                  <Link className="py-[15px] font-medium block hover" to="/zoom-detail">
+                  <Link className="py-[15px] font-medium block hover" to="/room-detail">
                     Blog
                   </Link>
                 </li>

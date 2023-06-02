@@ -13,7 +13,7 @@ export const Price = styled.div`
       width: 100%;
       text-align: center;
     }
-    .zoomDetail {
+    .roomDetail {
       width: 100%;
       display: flex;
       justify-content: center;
@@ -28,7 +28,7 @@ export const Price = styled.div`
       width: 50%;
       text-align: center;
     }
-    .zoomDetail {
+    .roomDetail {
       width: 50%;
     }
   }

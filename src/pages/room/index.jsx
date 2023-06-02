@@ -10,19 +10,15 @@ import child from "../../assets/svgs/child.svg";
 
 import { Col, Row } from "antd";
 import { Link } from "react-router-dom/cjs/react-router-dom.min";
-
-import Header from "../../component/header/index";
-import Footer from "../../component/footer/index";
-import Zoom_Detail from "../../component/zoomDetail";
+import Room_Detail from "../../component/zoomDetail";
 import { Wrapper, Price, PriceFixed } from "./style";
 
-export default function Zoom() {
+export default function Room() {
   return (
     <div className="overflow-hidden relative">
       <div>
-        <Header />
         <Wrapper>
-          <Zoom_Detail />
+          <Room_Detail />
           <div>
             <h2 className="text-3xl font-bold mb-7">Explore other options</h2>
             <div >
@@ -90,9 +86,9 @@ export default function Zoom() {
                             </span>{" "}
                             / night
                           </p>
-                          <div className="zoomDetail ">
+                          <div className="roomDetail ">
                             <div className="bg-primary text-white px-5 py-3 rounded-[30px] text-center font-bold ">
-                              <Link to="/zoom-detail">Zoom Detail</Link>
+                              <Link to="/room-detail">Room Detail</Link>
                             </div>
                           </div>
                         </div>
@@ -163,9 +159,9 @@ export default function Zoom() {
                             </span>{" "}
                             / night
                           </p>
-                          <div className="zoomDetail ">
+                          <div className="roomDetail ">
                             <div className="bg-primary text-white px-5 py-3 rounded-[30px] text-center font-bold ">
-                              <Link to="/zoom-detail">Zoom Detail</Link>
+                              <Link to="/room-detail">Room Detail</Link>
                             </div>
                           </div>
                         </div>
@@ -236,9 +232,9 @@ export default function Zoom() {
                             </span>{" "}
                             / night
                           </p>
-                          <div className="zoomDetail ">
+                          <div className="roomDetail ">
                             <div className="bg-primary text-white px-5 py-3 rounded-[30px] text-center font-bold ">
-                              <Link to="/zoom-detail">Zoom Detail</Link>
+                              <Link to="/room-detail">Room Detail</Link>
                             </div>
                           </div>
                         </div>
@@ -250,7 +246,6 @@ export default function Zoom() {
             </div>
           </div>
         </Wrapper>
-        <Footer />
       </div>
       <PriceFixed>
         <div className="flex justify-between w-full p-3">

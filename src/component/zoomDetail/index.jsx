@@ -17,11 +17,11 @@ import { Col, DatePicker, Row } from "antd";
 
 import ButtonShare from "../buttonShare";
 import { Contact, Heading, NavBar, Content } from "./style";
-import { Title } from "../hotelDetail/style";
+import { Title } from "../hotelDetail/style.js";
 
 const { RangePicker } = DatePicker;
 
-export default function Zoom_Detail() {
+export default function Room_Detail() {
   return (
     <div>
       <Title className="border-y-[1px] border-gray border-slate-100">
@@ -118,7 +118,7 @@ export default function Zoom_Detail() {
           </div>
           <hr className="my-10 text-slate-200"></hr>
           <div>
-            <h2 className="text-3xl font-semibold mb-10">About this zoom</h2>
+            <h2 className="text-3xl font-semibold mb-10">About this room</h2>
             <p className="text-base text-[#5e6d77]">
               Standard Room comprises of 1 Double Bed or 2 Twin Beds, 2 Bedside
               Tables, a Desk & Chair. The room is furnished with wall to wall
@@ -137,7 +137,7 @@ export default function Zoom_Detail() {
           </div>
           <hr className="my-10 text-slate-200"></hr>
           <div>
-            <h2 className="text-2xl font-bold mb-10">Zoom Facilities</h2>
+            <h2 className="text-2xl font-bold mb-10">Room Facilities</h2>
             <Row>
               <Col className="text-gray pb-3 pl-3" md={8} sm={12} xs={24}>
                 <div className="flex items-center">

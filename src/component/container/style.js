@@ -1,4 +1,3 @@
-import Paragraph from "antd/es/skeleton/Paragraph";
 import styled from "styled-components";
 
 export const ContainerStyled = styled.div`
@@ -12,6 +11,7 @@ export const FilterButton = styled.div`
   display: none;
   @media (max-width: 990px) {
     display: block;
+    width: 25px;
   }
 `;
 export const Para = styled.p`

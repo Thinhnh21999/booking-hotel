@@ -1,11 +1,11 @@
-import Header from "../../component/header/index";
-import Footer from "../../component/footer/index";
+import Header from "../../component/header";
+import Footer from "../../component/footer";
 
-export default function contact() {
+export default function Contact() {
   return (
     <div className="">
       <Header />
-      day la trang contact
+      Contact
       <Footer />
     </div>
   );

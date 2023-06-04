@@ -13,16 +13,18 @@ import { Navigation, Autoplay, Pagination } from "swiper";
 import * as styled from "./style.js";
 
 import { useEffect, useState } from "react";
-import RestClient from "../../Service/restClient";
+import restClientData from "../../services/restClientData";
 
 export default function Home() {
   const [data, setData] = useState([]);
+  const [numberItem, setNumberItem] = useState(4);
+  const [numberItemTwo, setNumberItemTwo] = useState(6);
+
   useEffect(() => {
-    RestClient("get", "/location").then((res) => setData(res));
+    restClientData("get", "/location").then((res) => setData(res));
   }, []);
   console.log(data);
 
-  const [numberItem, setNumberItem] = useState(4);
   return (
     <>
       <div className="bg-home_tour h-[460px] lg:h-full  bg-no-repeat bg-cover">
@@ -178,13 +180,11 @@ export default function Home() {
                 },
               }}
             >
-              <SwiperSlide>
-                <div className=" grid xl:grid-cols-4 md:grid-cols-2 xs:grid-cols-1 gap-6">
-                  {data.slice(0, numberItem).map((item) => (
-                    <Card key={item.id} item={item} />
-                  ))}
-                </div>
-              </SwiperSlide>
+              {data.slice(0, numberItemTwo).map((item) => (
+                <SwiperSlide>
+                  <Card key={item.id} item={item} />
+                </SwiperSlide>
+              ))}
             </Swiper>
           </div>
         </div>

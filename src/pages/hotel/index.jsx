@@ -7,7 +7,7 @@ import { Navigation, Autoplay, Pagination } from "swiper";
 import star from "../../assets/svgs/star.svg";
 
 import Redac_Gateway_Hotel from "../../component/hotelDetail/index";
-import Card from "../../component/card/index3.jsx";
+import Card from "../../component/card/index.jsx";
 import { Wrapper, Price } from "./style";
 
 export default function Hotel() {

@@ -1,11 +1,11 @@
-import Header from "../../component/header/index";
-import Footer from "../../component/footer/index";
+import Header from "../../component/header";
+import Footer from "../../component/footer";
 
 export default function about() {
   return (
     <div className="">
       <Header />
-      day la trang about
+      About
       <Footer />
     </div>
   );

@@ -1,7 +1,7 @@
 import star from "../../assets/svgs/star.svg";
-import share from "../../assets/svgs/share.svg";
 import heart from "../../assets/svgs/heart.svg";
-import arrow_down_white from "../../assets/svgs/arrowDownWhite.svg"
+import arrow_down_white from "../../assets/svgs/arrowDownWhite.svg";
+
 import airport from "../../assets/svgs/airport.svg";
 import fitness from "../../assets/svgs/fitness.svg";
 import heater from "../../assets/svgs/heater.svg";
@@ -14,23 +14,36 @@ import { Col, Row } from "antd";
 
 import About from "../cardAbout";
 import Feedback from "../feedback";
-import { NavBar } from "./style";
 import { Content } from "antd/es/layout/layout";
+import { NavBar, Title } from "./style.js";
+import Button from "../buttonShare/index";
+
+import React from 'react';
+import { Rate } from 'antd';
+import { useEffect, useState } from "react";
+import RestClient from "../../Service/restClient";
+import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 
 export default function Redac_Gateway_Hotel() {
+
+  const params = useParams();
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    RestClient("get", `/hotel/${params.id}?`).then((res) => setData(res));
+  }, []);
   return (
     <div>
-      <div className="border-y-[1px] border-gray border-slate-100">
+      <Title className="border-y-[1px] border-gray border-slate-100 ">
         <ul className="list-none flex py-5">
           <li className="text-primary cursor-pointer font-semibold">Home</li>
           <li className="px-10 text-primary cursor-pointer font-semibold">
             United States
           </li>
-          <li className="text-gray">Redac Gateway Hotel</li>
+          <li className="text-gray">{data.nameHotel}</li>
         </ul>
-      </div>
-
-      <div className="flex">
+      </Title>
+      <div className="flex mx-2">
         <Col className="w-1/3 my-2" md={8} xs={24}>
           <img
             className="w-full h-full rounded-2xl"
@@ -71,29 +84,25 @@ export default function Redac_Gateway_Hotel() {
           </Row>
         </Col>
       </div>
-      <div className="flex pt-14">
+      <Title className="flex">
         <Content className="w-2/3 px-3">
           <div className="flex justify-between flex-wrap">
             <div>
-              <div className="flex">
-                <img className=" w-3" src={star} alt="" />
-                <img className="w-3 mx-2" src={star} alt="" />
-                <img className=" w-3" src={star} alt="" />
+              <div >
+                 <Rate disabled defaultValue={data.rate.star} />
               </div>
-              <h1 className="text-4xl font-bold">Redac Gateway Hotel</h1>
+              <h1 className="text-4xl font-bold">{data.nameHotel }</h1>
               <div className="flex my-2">
                 <div className="text-primary font-bold border-solid border-[1px] border-primary pg-[#F9FBFF] rounded-md px-2 py-[1px]">
                   5 <span>/</span> 5
                 </div>
-                <span className="font-bold px-4">Excellent</span>
+                <span className="font-bold px-4">{data.rate.text}</span>
                 <p className="text-primary">(3 Reviews)</p>
-                <span className="text-gray pl-5">Los Angeles</span>
+                <span className="text-gray pl-5">{data.location}</span>
               </div>
             </div>
             <div className="flex items-center">
-              <div className="w-10 h-10 border-[1px] border-solid  border-slate-200 rounded-full shadow-lg shadow-slate-100 text-center">
-                <img className="w-6 inline-block pt-2" src={share} alt="" />
-              </div>
+              <Button />
               <div className="w-10 h-10 ml-3 border-[1px] border-solid  border-slate-200 rounded-full shadow-lg shadow-slate-100 text-center">
                 <img className="w-6 inline-block pt-2" src={heart} alt="" />
               </div>
@@ -295,13 +304,12 @@ export default function Redac_Gateway_Hotel() {
           <hr className="my-10 text-slate-200"></hr>
           <Feedback />
           <div className="bg-primary mt-5 text-white px-5 py-3 rounded-[30px] w-[25%] text-center font-bold flex justify-between">
-            Write a review 
+            Write a review
             <img className="w-4 ml-2" src={arrow_down_white} alt="" />
-            </div>
+          </div>
           <hr className="my-10 text-slate-200"></hr>
           <div>
             <h2 className="text-3xl font-bold mb-8">Explore other options</h2>
-
           </div>
         </Content>
         <NavBar className="w-1/3 px-3">
@@ -316,7 +324,8 @@ export default function Redac_Gateway_Hotel() {
             </div>
             <div className="flex justify-between">
               <p className="text-gray py-4">
-                From: <span className="font-bold text-black">$136.00</span> /
+                From:{" "}
+                <span className="font-bold text-black">${data.price}</span> /
                 night
               </p>
               <div className="flex py-4">
@@ -390,7 +399,7 @@ export default function Redac_Gateway_Hotel() {
             <p className="text-gray ">+123456789</p>
           </div>
         </NavBar>
-      </div>
+      </Title>
     </div>
   );
 }

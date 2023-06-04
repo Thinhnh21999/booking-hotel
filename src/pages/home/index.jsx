@@ -1,6 +1,4 @@
-import Footer from "../../component/footer";
 import Destinations from "../../component/Destinations";
-import Header from "../../component/header";
 import Card from "../../component/card/index.jsx";
 import Search from "../../component/search/index.jsx";
 import ScrollUp from "../../component/scrollUp";
@@ -14,7 +12,17 @@ import "swiper/css/pagination";
 import { Navigation, Autoplay, Pagination } from "swiper";
 import * as styled from "./style.js";
 
-export default function home() {
+import { useEffect, useState } from "react";
+import RestClient from "../../Service/restClient";
+
+export default function Home() {
+  const [data, setData] = useState([]);
+  useEffect(() => {
+    RestClient("get", "/location").then((res) => setData(res));
+  }, []);
+  console.log(data);
+
+  const [numberItem, setNumberItem] = useState(4);
   return (
     <>
       <div className="bg-home_tour h-[460px] lg:h-full  bg-no-repeat bg-cover">
@@ -124,11 +132,10 @@ export default function home() {
         <div className=" bg-grey py-[45px]">
           <div className="lg:container lg:mx-auto px-5 xl:px-0">
             <h2 className="title">Plan your next staycation</h2>
-            <div className="grid gap-6 grid-cols-1 md:grid-cols-2 xl:grid-cols-4">
-              <Card />
-              <Card />
-              <Card />
-              <Card />
+            <div className=" grid xl:grid-cols-4 md:grid-cols-2 xs:grid-cols-1 gap-6">
+              {data.slice(0, numberItem).map((item) => (
+                <Card key={item.id} item={item} />
+              ))}
             </div>
           </div>
         </div>
@@ -137,7 +144,7 @@ export default function home() {
           <h2 className="title text-left">Recommended for you</h2>
           <div>
             <Swiper
-              slidesPerView={4}
+              slidesPerView={1}
               autoplay={{
                 delay: 3500,
                 disableOnInteraction: false,
@@ -172,22 +179,11 @@ export default function home() {
               }}
             >
               <SwiperSlide>
-                <Card></Card>
-              </SwiperSlide>
-              <SwiperSlide>
-                <Card></Card>
-              </SwiperSlide>
-              <SwiperSlide>
-                <Card></Card>
-              </SwiperSlide>
-              <SwiperSlide>
-                <Card></Card>
-              </SwiperSlide>
-              <SwiperSlide>
-                <Card></Card>
-              </SwiperSlide>
-              <SwiperSlide>
-                <Card></Card>
+                <div className=" grid xl:grid-cols-4 md:grid-cols-2 xs:grid-cols-1 gap-6">
+                  {data.slice(0, numberItem).map((item) => (
+                    <Card key={item.id} item={item} />
+                  ))}
+                </div>
               </SwiperSlide>
             </Swiper>
           </div>

@@ -222,13 +222,15 @@ export default function Header() {
             className="fixed h-screen w-full bg-[rgba(0,0,0,.5)] z-[998] top-0 left-0 hidden"
           ></styled.Overlay>
 
-          <Link className="ml-[60px] lg:ml-0 hidden md:block" to="/">
-            <img
-              className="lg:w-full w-[94px] "
-              src="https://modtel.wpengine.com/wp-content/uploads/2022/04/logohotel.png"
-              alt="logo"
-            />
-          </Link>
+          <a className="" href="#">
+            <Link to="/">
+              <img
+                className="lg:w-full w-[94px] "
+                src="https://modtel.wpengine.com/wp-content/uploads/2022/04/logohotel.png"
+                alt="logo"
+              />
+            </Link>
+          </a>
         </div>
 
         <div className="center">
@@ -240,8 +242,8 @@ export default function Header() {
             />
           </Link>
           <ul className=" lg:flex hidden justify-between font-bold">
-            <li>
-              <Link className="block hover py-[35px] ps-2.5 pe-6" to="#">
+            <li className="">
+              <Link className="block hover py-[35px] ps-2.5 pe-6" to="/">
                 Home
               </Link>
             </li>
@@ -259,7 +261,7 @@ export default function Header() {
                 <li className="px-[30px]">
                   <Link
                     className="py-[15px] font-medium block hover"
-                    to="/listing"
+                    to="/list"
                   >
                     Search Popup Map
                   </Link>
@@ -271,12 +273,23 @@ export default function Header() {
                 </li>
               </ul>
             </styled.Dropdown>
-
             <styled.Dropdown className="relative">
-              <Link className="flex hover py-[35px] ps-2.5 pe-6" to="#">
+              <span className="flex hover py-[35px] ps-2.5 pe-6" to="#">
                 Hotel
                 <img className="w-4" src={DropdownSvg} alt="" />
-              </Link>
+              </span>
+              <ul className="dropdown z-[-1]">
+                <li className="px-[30px]">
+                  <Link className="py-[15px] font-medium block hover" to="# ">
+                    Hotel Detail 1
+                  </Link>
+                </li>
+                <li className="px-[30px]">
+                  <Link className="py-[15px] font-medium block hover" to="#">
+                    Hotel Detail 2
+                  </Link>
+                </li>
+              </ul>
             </styled.Dropdown>
 
             <styled.Dropdown className="relative">
@@ -286,7 +299,10 @@ export default function Header() {
               </span>
               <ul className="dropdown">
                 <li className="px-[30px]">
-                  <Link className="py-[15px] font-medium block hover" to="#">
+                  <Link
+                    className="py-[15px] font-medium block hover"
+                    to="/room-detail"
+                  >
                     Blog
                   </Link>
                 </li>

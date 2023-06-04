@@ -1,4 +1,4 @@
-export default function Review() {
+export default function ReviewScore() {
   return (
     <div>
       <div className="px-5 py-7 bg-filter my-5 rounded-xl">

@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { Form, Input, Checkbox, message } from "antd";
 import { Link } from "react-router-dom/cjs/react-router-dom";
-import Header from "../../component/header";
-import Footer from "../../component/footer";
 import ScrollUp from "../../component/scrollUp";
 import Anchor from "../../component/anchor";
 import MapSvg from "../../assets/svgs/map.svg";

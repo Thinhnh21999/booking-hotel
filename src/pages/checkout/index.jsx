@@ -31,13 +31,11 @@ const MyFormItem = ({ name, ...props }) => {
   return <Form.Item name={concatName} {...props} />;
 };
 
-const handleChange = (value) => {
-  console.log(value); // { value: "lucy", key: "lucy", label: "Lucy (101)" }
-};
+const handleChange = (value) => {};
 
 export default function Checkout() {
   const [keyboard, setKeyboard] = useState(true);
-  const [keyboard2, setKeyboard2] = useState(true);
+  const [keyboardTwo, setKeyboardTwo] = useState(false);
   const [form] = Form.useForm();
 
   const onFinish = (value) => {
@@ -50,6 +48,10 @@ export default function Checkout() {
         console.log(error);
         message.error("Vui lòng điền đầy đủ thông tin");
       });
+  };
+
+  const onFinishFailed = (error) => {
+    message.error("Vui lòng điền đầy đủ thông tin");
   };
 
   return (
@@ -190,6 +192,7 @@ export default function Checkout() {
                 name="form_item_path"
                 layout="vertical"
                 onFinish={onFinish}
+                onFinishFailed={onFinishFailed}
                 form={form}
               >
                 <MyFormItemGroup prefix={["user"]}>
@@ -377,7 +380,8 @@ export default function Checkout() {
                 <styled.FormItemTextAreaCustom label="Special Requirements">
                   <TextArea rows={8} placeholder="Special Requirements" />
                 </styled.FormItemTextAreaCustom>
-                <div className="mt-5 !w-full">
+
+                <div className="mt-5 px-3 !w-full">
                   <h3 className="title-checkout mb-[30px]">
                     Select Payment Method
                   </h3>
@@ -432,13 +436,14 @@ export default function Checkout() {
                   </div>
                 </div>
 
-                <div>
+                <div className="px-3">
                   <Checkbox
                     onChange={() => {
                       setKeyboard(!keyboard);
                     }}
                     checked={keyboard}
                     style={{
+                      width: "100%",
                       margin: "0 0 15px 0",
                       color: "#727272",
                     }}
@@ -451,10 +456,11 @@ export default function Checkout() {
 
                   <Checkbox
                     onChange={() => {
-                      setKeyboard2(!keyboard2);
+                      setKeyboardTwo(!keyboardTwo);
                     }}
-                    checked={keyboard2}
+                    checked={keyboardTwo}
                     style={{
+                      width: "100%",
                       margin: "0 0 15px 0",
                       color: "#727272",
                     }}
@@ -469,7 +475,7 @@ export default function Checkout() {
                     </a>
                   </Checkbox>
                 </div>
-                <div>
+                <div className="px-3">
                   <styled.ButtonCustom type="primary" htmlType="submit">
                     Submit
                   </styled.ButtonCustom>

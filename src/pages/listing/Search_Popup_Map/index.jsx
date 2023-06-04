@@ -1,6 +1,6 @@
 import Aside from "../../../component/aside/index";
 import Container from "../../../component/container/index";
-import Search from "antd/es/transfer/search";
+import Search from "../../../component/search";
 
 import { Wrapper } from "./style";
 

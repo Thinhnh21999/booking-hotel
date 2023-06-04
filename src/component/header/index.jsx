@@ -1,4 +1,7 @@
+import { useState } from "react";
 import SignInOut from "../../component/signInOut";
+import { clearLocalLogin, getLocalLogin } from "../../untill/loginLocal";
+
 import { Link } from "react-router-dom/cjs/react-router-dom.min";
 import PhoneSvg from "../../assets/svgs/phone.svg";
 import EmailSvg from "../../assets/svgs/email.svg";
@@ -6,9 +9,10 @@ import CartSvg from "../../assets/svgs/cart.svg";
 import DropdownSvg from "../../assets/svgs/dropdown.svg";
 import MenuSvg from "../../assets/svgs/menu.svg";
 import ArrowLeftSvg from "../../assets/svgs/arrowLeft.svg";
-
+import UserSvg from "../../assets/svgs/user.svg";
 import * as styled from "./style.js";
-import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { setAuth } from "../../redux/counter/reducerSlice";
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
@@ -16,7 +20,12 @@ export default function Header() {
     isListing: false,
     isHotel: false,
     isPages: false,
+    isUser: false,
   });
+
+  const dispatch = useDispatch();
+  const isAuth = useSelector((state) => state.counter.isAuth);
+  const userLocalLogin = getLocalLogin() || isAuth === true;
 
   const handleOnclickMenu = () => {
     setIsOpen(!isOpen);
@@ -43,6 +52,17 @@ export default function Header() {
       ...isDropdownMenuItem,
       isPages: !isDropdownMenuItem.isPages,
     });
+  };
+  const handleDropdownMenuUser = () => {
+    setIsDropdownMenuItem({
+      ...isDropdownMenuItem,
+      isUser: !isDropdownMenuItem.isUser,
+    });
+  };
+
+  const clearLocalLoginFC = () => {
+    dispatch(setAuth(false));
+    clearLocalLogin();
   };
   return (
     <div id="header" className="relative">
@@ -72,10 +92,10 @@ export default function Header() {
       <div className="flex justify-between relative bg-white px-10 border-b border-solid border-[#EAEEF3] ">
         <div className="center">
           <div
-            className="cursor-pointer mr-[200px] md:mr-[0] py-7 lg:hidden"
+            className="cursor-pointer py-7 lg:hidden"
             onClick={() => handleOnclickMenu()}
           >
-            <img className="w-5 mr-[70px] lg:block  " src={MenuSvg} alt="..." />
+            <img className="w-5 lg:block  " src={MenuSvg} alt="..." />
           </div>
 
           <styled.DropdownMenu
@@ -203,24 +223,31 @@ export default function Header() {
           ></styled.Overlay>
 
           <a className="" href="#">
-            <Link to="/"
-            ><img
-              className="lg:w-full w-[94px] "
-              src="https://modtel.wpengine.com/wp-content/uploads/2022/04/logohotel.png"
-              alt="logo"
-            /></Link>
-            
+            <Link to="/">
+              <img
+                className="lg:w-full w-[94px] "
+                src="https://modtel.wpengine.com/wp-content/uploads/2022/04/logohotel.png"
+                alt="logo"
+              />
+            </Link>
           </a>
         </div>
 
-        <div>
+        <div className="center">
+          <Link className="block md:hidden" to="/">
+            <img
+              className="lg:w-full w-[94px] "
+              src="https://modtel.wpengine.com/wp-content/uploads/2022/04/logohotel.png"
+              alt="logo"
+            />
+          </Link>
           <ul className=" lg:flex hidden justify-between font-bold">
             <li className="">
               <Link className="block hover py-[35px] ps-2.5 pe-6" to="/">
                 Home
               </Link>
             </li>
-            <li className="">
+            <li>
               <Link className="block hover py-[35px] ps-2.5 pe-6" to="#">
                 About
               </Link>
@@ -232,7 +259,10 @@ export default function Header() {
               </span>
               <ul className="dropdown z-[-1]">
                 <li className="px-[30px]">
-                  <Link className="py-[15px] font-medium block hover" to="/list">
+                  <Link
+                    className="py-[15px] font-medium block hover"
+                    to="/list"
+                  >
                     Search Popup Map
                   </Link>
                 </li>
@@ -269,7 +299,10 @@ export default function Header() {
               </span>
               <ul className="dropdown">
                 <li className="px-[30px]">
-                  <Link className="py-[15px] font-medium block hover" to="/room-detail">
+                  <Link
+                    className="py-[15px] font-medium block hover"
+                    to="/room-detail"
+                  >
                     Blog
                   </Link>
                 </li>
@@ -319,8 +352,8 @@ export default function Header() {
         </div>
         <div className="center">
           <ul className="center font-bold">
-            <styled.Dropdown className="relative lg:block hidden ">
-              <span className="flex hover py-[35px] ps-2.5 pe-6" to="#">
+            <styled.Dropdown className="relative mr-5 lg:block hidden ">
+              <span className="flex hover py-[35px] ps-2.5" to="#">
                 EUR
                 <img className="w-4" src={DropdownSvg} alt="" />
               </span>
@@ -337,18 +370,46 @@ export default function Header() {
                 </li>
               </ul>
             </styled.Dropdown>
-            <li className="ml-5">
-              <div className="lg:icon">
+            <li>
+              <div className="center lg:icon w-[44px] h-[44px] py-1 px-2.5 rounded-[50%] border-line shadow-custom">
                 <img className="w-5" src={CartSvg} alt=".." />
               </div>
             </li>
             <li className="ml-5">
-              <SignInOut />
+              {userLocalLogin ? (
+                <>
+                  <div
+                    className="center rounded-[50%] w-[44px] h-[44px] shadow-custom border-line cursor-pointer"
+                    onClick={() => handleDropdownMenuUser()}
+                  >
+                    <img className="w-5" src={UserSvg} alt="..." />
+                  </div>
+                  <styled.DropdownMenuItem
+                    isDropdownMenuItem={isDropdownMenuItem.isUser}
+                    className="absolute py-2.5 min-w-[230px] top-[100%] bg-white border rounded-[12px] shadow-custom hidden right-0"
+                  >
+                    <li className="px-[30px]">
+                      <p className="py-[15px] font-medium block hover">
+                        Thông tin người dùng
+                      </p>
+                    </li>
+                    <li className="px-[30px]">
+                      <p
+                        className="py-[15px] font-medium block hover:text-red-500 cursor-pointer"
+                        onClick={() => clearLocalLoginFC()}
+                      >
+                        Đăng Xuất
+                      </p>
+                    </li>
+                  </styled.DropdownMenuItem>
+                </>
+              ) : (
+                <SignInOut />
+              )}
             </li>
           </ul>
         </div>
       </div>
     </div>
   );
-
 }

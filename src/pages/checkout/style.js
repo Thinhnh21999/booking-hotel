@@ -28,6 +28,7 @@ export const FormCustom = styled(Form)`
         font-size: 18px;
         color: #212529 !important;
         height: 50px;
+        border: 1px solid #dae1e7;
       }
     }
   }
@@ -46,7 +47,6 @@ export const FormItemTextAreaCustom = styled(Form.Item)`
   .ant-input {
     color: #212529 !important;
     font-size: 16px;
-    margin-bottom: 30px;
   }
 `;
 

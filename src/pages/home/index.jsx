@@ -13,18 +13,20 @@ import { Navigation, Autoplay, Pagination } from "swiper";
 import * as styled from "./style.js";
 
 import { useEffect, useState } from "react";
-import RestClient from "../../Service/restClient";
+import restClientData from "../../services/restClientData";
 
 export default function Home() {
   const [data, setData] = useState([]);
+  const [numberItem, setNumberItem] = useState(4);
+  const [numberItemTwo, setNumberItemTwo] = useState(6);
+
   useEffect(() => {
-    RestClient("get", "/location").then((res) => setData(res));
+    restClientData("get", "/location").then((res) => setData(res));
   }, []);
   console.log(data);
 
-  const [numberItem, setNumberItem] = useState(4)
   return (
-    <div>
+    <>
       <div className="bg-home_tour h-[460px] lg:h-full  bg-no-repeat bg-cover">
         <div className="py-[130px] text-center">
           <h2 className="lg:text-[64px] lg:leading-74px text-[42px] leading-[52px] mb-3.5 font-bold text-white">
@@ -133,7 +135,7 @@ export default function Home() {
           <div className="lg:container lg:mx-auto px-5 xl:px-0">
             <h2 className="title">Plan your next staycation</h2>
             <div className=" grid xl:grid-cols-4 md:grid-cols-2 xs:grid-cols-1 gap-6">
-              {data.slice(0,numberItem).map((item) => (
+              {data.slice(0, numberItem).map((item) => (
                 <Card key={item.id} item={item} />
               ))}
             </div>
@@ -178,13 +180,11 @@ export default function Home() {
                 },
               }}
             >
-              <SwiperSlide>
-                <div className=" grid xl:grid-cols-4 md:grid-cols-2 xs:grid-cols-1 gap-6">
-                  {data.slice(0,numberItem).map((item) => (
-                    <Card key={item.id} item={item} />
-                  ))}
-                </div>
-              </SwiperSlide>
+              {data.slice(0, numberItemTwo).map((item) => (
+                <SwiperSlide>
+                  <Card key={item.id} item={item} />
+                </SwiperSlide>
+              ))}
             </Swiper>
           </div>
         </div>
@@ -228,6 +228,6 @@ export default function Home() {
       </div>
       <ScrollUp />
       <Anchor />
-    </div>
+    </>
   );
 }

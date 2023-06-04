@@ -1,18 +1,30 @@
-import { Button, Checkbox, Form, Input, RadioChangeEvent } from "antd";
 import { useState } from "react";
-import { Link } from "react-router-dom/cjs/react-router-dom.min";
+import { Button, Checkbox, Form, Input, Menu, Dropdown, Space } from "antd";
+
 import UserSvg from "../../assets/svgs/user.svg";
 import FacebookSvg from "../../assets/svgs/facebook.svg";
 import GoogleSvg from "../../assets/svgs/google.svg";
 import TwitterSvg from "../../assets/svgs/twitter.svg";
 import { Radio } from "antd";
 import * as styled from "./style.js";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  commonLogin,
+  commonRegister,
+  setAuth,
+  setIsSignIn,
+} from "../../redux/counter/counterSlice";
+import { setLocalLogin } from "../../untill/loginLocal";
 
 const App = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [keyboard, setKeyboard] = useState(true);
-  const [isSignIn, setIsSignIn] = useState(true);
   const [value, setValue] = useState(1);
+
+  const dispatch = useDispatch();
+
+  const isSignIn = useSelector((state) => state.counter.isSignIn);
+
   const onChange = (e) => {
     console.log("radio checked", e.target.value);
     setValue(e.target.value);
@@ -22,11 +34,17 @@ const App = () => {
   };
 
   const onFinish = (values) => {
-    console.log("Success:", values);
+    if (!isSignIn) {
+      dispatch(commonRegister(values));
+    } else {
+      dispatch(commonLogin(values));
+    }
   };
+
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
+
   return (
     <>
       <styled.ButtonCustom type="primary" onClick={showModal}>
@@ -43,10 +61,18 @@ const App = () => {
           isSignIn={isSignIn}
           className="center mb-[25px] px-[30px] pb-[25px] text-center border-b border-solid border-[#dedede]"
         >
-          <button onClick={() => setIsSignIn(true)} className="mx-5" to="">
+          <button
+            onClick={() => dispatch(setIsSignIn(true))}
+            className="mx-5"
+            to=""
+          >
             Sign in
           </button>
-          <button onClick={() => setIsSignIn(false)} className="mx-5" to="">
+          <button
+            onClick={() => dispatch(setIsSignIn(false))}
+            className="mx-5"
+            to=""
+          >
             Sign up
           </button>
         </styled.SignInOut>
@@ -67,22 +93,24 @@ const App = () => {
             }}
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
-            autoComplete="off"
           >
             <h2 className="font-bold text-[26px] mb-[30px]">
               Sign in to your account
             </h2>
             <styled.FormItemCustom
-              name="username"
+              name="email"
               rules={[
                 {
+                  type: "email",
+                  message: "The input is not valid E-mail!",
+                },
+                {
                   required: true,
-                  message: "Please input your username!",
+                  message: "Please input your E-mail!",
                 },
               ]}
-              placeholder="Email or username"
             >
-              <Input placeholder="Email or UserName" />
+              <Input placeholder="Email" />
             </styled.FormItemCustom>
 
             <styled.FormItemCustom
@@ -159,7 +187,7 @@ const App = () => {
 
             <div className="block text-center">
               <button
-                onClick={() => setIsSignIn(false)}
+                onClick={() => dispatch(setIsSignIn(false))}
                 className="text-primary font-medium underline"
               >
                 Create an account
@@ -198,33 +226,36 @@ const App = () => {
               ]}
               placeholder="Username"
             >
-              <Input placeholder="Email or UserName" />
+              <Input placeholder="UserName" />
             </styled.FormItemCustom>
 
             <styled.FormItemCustom
-              name="username"
+              name="fullname"
               rules={[
                 {
                   required: true,
-                  message: "Please input your username!",
+                  message: "Please input your fullname!",
                 },
               ]}
-              placeholder="Email or username"
+              placeholder="Full Name"
             >
-              <Input placeholder="Password" />
+              <Input placeholder="Full Name" />
             </styled.FormItemCustom>
 
             <styled.FormItemCustom
-              name="username"
+              name="email"
               rules={[
                 {
+                  type: "email",
+                  message: "The input is not valid E-mail!",
+                },
+                {
                   required: true,
-                  message: "Please input your username!",
+                  message: "Please input your E-mail!",
                 },
               ]}
-              placeholder="Email or username"
             >
-              <Input placeholder="Email or UserName" />
+              <Input placeholder="Email" />
             </styled.FormItemCustom>
 
             <styled.FormItemCustom

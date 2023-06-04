@@ -15,22 +15,21 @@ import {
 } from "react-router-dom/cjs/react-router-dom.min";
 import { useSelector } from "react-redux";
 
-import AuthRouter from "./router/authRouter.jsx";
+import AuthRouter from "./router/AuthRouter.jsx";
+import DefaultRouter from "./router/DefaultRouter";
 
 function App() {
   const auth = useSelector((state) => state.Auth);
-  console.log(auth);
   return (
     <div className="box-border m-0 p-0">
-      {/* <AuthRouter auth></AuthRouter> */}
-      <Checkout />
       <Switch>
-        <Route exact path="/home" render={Home} />
-        <Route exact path="/about" render={About} />
-        <Route exact path="/listing" render={Listing} />
-        <Route exact path="/hotel" render={Hotel} />
-        <Route exact path="/zoom" render={Zoom} />
-        <Route exact path="/contact" render={Contact} />
+        <DefaultRouter exact path="/" Component={Home} />
+        <DefaultRouter exact path="/about" Component={About} />
+        <DefaultRouter exact path="/listing" Component={Listing} />
+        <DefaultRouter exact path="/hotel" Component={Hotel} />
+        <DefaultRouter exact path="/zoom" Component={Zoom} />
+        <DefaultRouter exact path="/contact" Component={Contact} />
+        <AuthRouter exact path="/checkout" Component={Checkout} />
       </Switch>
     </div>
   );

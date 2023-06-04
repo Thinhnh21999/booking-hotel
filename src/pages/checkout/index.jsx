@@ -1,14 +1,5 @@
 import React, { useState } from "react";
-import {
-  Button,
-  Form,
-  Input,
-  Select,
-  Space,
-  TreeSelect,
-  Checkbox,
-  message,
-} from "antd";
+import { Form, Input, Checkbox, message } from "antd";
 import { Link } from "react-router-dom/cjs/react-router-dom";
 import Header from "../../component/header";
 import Footer from "../../component/footer";
@@ -43,12 +34,12 @@ const MyFormItem = ({ name, ...props }) => {
 };
 
 const handleChange = (value) => {
-  console.log(value); // { value: "lucy", key: "lucy", label: "Lucy (101)" }
+  console.log(value);
 };
 
 export default function Checkout() {
   const [keyboard, setKeyboard] = useState(true);
-  const [keyboard2, setKeyboard2] = useState(true);
+  const [keyboard2, setKeyboard2] = useState(false);
   const [form] = Form.useForm();
 
   const onFinish = (value) => {
@@ -63,9 +54,12 @@ export default function Checkout() {
       });
   };
 
+  const onFinishFailed = (error) => {
+    message.error("Vui lòng điền đầy đủ thông tin");
+  };
+
   return (
     <>
-      <Header />
       <div className="pb-[60px]">
         <div className="py-5 border-bottom">
           <div className="lg:container lg:mx-auto px-5">
@@ -202,6 +196,7 @@ export default function Checkout() {
                 name="form_item_path"
                 layout="vertical"
                 onFinish={onFinish}
+                onFinishFailed={onFinishFailed}
                 form={form}
               >
                 <MyFormItemGroup prefix={["user"]}>
@@ -389,7 +384,8 @@ export default function Checkout() {
                 <styled.FormItemTextAreaCustom label="Special Requirements">
                   <TextArea rows={8} placeholder="Special Requirements" />
                 </styled.FormItemTextAreaCustom>
-                <div className="mt-5 !w-full">
+
+                <div className="mt-5 px-3 !w-full">
                   <h3 className="title-checkout mb-[30px]">
                     Select Payment Method
                   </h3>
@@ -444,13 +440,14 @@ export default function Checkout() {
                   </div>
                 </div>
 
-                <div>
+                <div className="px-3">
                   <Checkbox
                     onChange={() => {
                       setKeyboard(!keyboard);
                     }}
                     checked={keyboard}
                     style={{
+                      width: "100%",
                       margin: "0 0 15px 0",
                       color: "#727272",
                     }}
@@ -467,6 +464,7 @@ export default function Checkout() {
                     }}
                     checked={keyboard2}
                     style={{
+                      width: "100%",
                       margin: "0 0 15px 0",
                       color: "#727272",
                     }}
@@ -481,7 +479,7 @@ export default function Checkout() {
                     </a>
                   </Checkbox>
                 </div>
-                <div>
+                <div className="px-3">
                   <styled.ButtonCustom type="primary" htmlType="submit">
                     Submit
                   </styled.ButtonCustom>
@@ -491,7 +489,6 @@ export default function Checkout() {
           </div>
         </div>
       </div>
-      <Footer />
       <ScrollUp />
       <Anchor />
     </>

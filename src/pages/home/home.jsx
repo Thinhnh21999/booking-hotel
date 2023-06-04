@@ -16,8 +16,7 @@ import * as styled from "./style.js";
 
 export default function home() {
   return (
-    <div className="">
-      <Header />
+    <>
       <div className="bg-home_tour h-[460px] lg:h-full  bg-no-repeat bg-cover">
         <div className="py-[130px] text-center">
           <h2 className="lg:text-[64px] lg:leading-74px text-[42px] leading-[52px] mb-3.5 font-bold text-white">
@@ -231,9 +230,8 @@ export default function home() {
           </div>
         </div>
       </div>
-      <Footer />
       <ScrollUp />
       <Anchor />
-    </div>
+    </>
   );
 }

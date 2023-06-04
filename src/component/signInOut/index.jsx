@@ -13,8 +13,7 @@ import {
   commonRegister,
   setAuth,
   setIsSignIn,
-} from "../../redux/counter/counterSlice";
-import { setLocalLogin } from "../../untill/loginLocal";
+} from "../../redux/counter/reducerSlice";
 
 const App = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -41,10 +40,6 @@ const App = () => {
     }
   };
 
-  const onFinishFailed = (errorInfo) => {
-    console.log("Failed:", errorInfo);
-  };
-
   return (
     <>
       <styled.ButtonCustom type="primary" onClick={showModal}>
@@ -61,18 +56,10 @@ const App = () => {
           isSignIn={isSignIn}
           className="center mb-[25px] px-[30px] pb-[25px] text-center border-b border-solid border-[#dedede]"
         >
-          <button
-            onClick={() => dispatch(setIsSignIn(true))}
-            className="mx-5"
-            to=""
-          >
+          <button onClick={() => dispatch(setIsSignIn(true))} className="mx-5">
             Sign in
           </button>
-          <button
-            onClick={() => dispatch(setIsSignIn(false))}
-            className="mx-5"
-            to=""
-          >
+          <button onClick={() => dispatch(setIsSignIn(false))} className="mx-5">
             Sign up
           </button>
         </styled.SignInOut>
@@ -92,7 +79,6 @@ const App = () => {
               remember: true,
             }}
             onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
           >
             <h2 className="font-bold text-[26px] mb-[30px]">
               Sign in to your account
@@ -210,7 +196,6 @@ const App = () => {
               remember: true,
             }}
             onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
             autoComplete="off"
           >
             <h2 className="font-bold text-[26px] mb-[30px]">

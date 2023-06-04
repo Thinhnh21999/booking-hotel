@@ -19,7 +19,6 @@ import AuthRouter from "./router/AuthRouter.jsx";
 import DefaultRouter from "./router/DefaultRouter";
 
 function App() {
-  const auth = useSelector((state) => state.Auth);
   return (
     <div className="box-border m-0 p-0">
       <Switch>

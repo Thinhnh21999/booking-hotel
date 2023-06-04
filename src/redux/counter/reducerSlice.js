@@ -5,7 +5,7 @@ const initialState = {
   isSignIn: true,
 };
 
-export const counterSlice = createSlice({
+export const reducerSlice = createSlice({
   name: "counter",
   initialState,
   reducers: {
@@ -25,6 +25,6 @@ export const counterSlice = createSlice({
 export const commonRegister = createAction("commonRegister");
 export const commonLogin = createAction("commonLogin");
 
-export const { setAuth, setIsSignIn } = counterSlice.actions;
+export const { setAuth, setIsSignIn } = reducerSlice.actions;
 
-export default counterSlice.reducer;
+export default reducerSlice.reducer;

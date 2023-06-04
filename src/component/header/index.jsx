@@ -12,7 +12,7 @@ import ArrowLeftSvg from "../../assets/svgs/arrowLeft.svg";
 import UserSvg from "../../assets/svgs/user.svg";
 import * as styled from "./style.js";
 import { useDispatch, useSelector } from "react-redux";
-import { setAuth } from "../../redux/counter/counterSlice";
+import { setAuth } from "../../redux/counter/reducerSlice";
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
@@ -25,7 +25,6 @@ export default function Header() {
 
   const dispatch = useDispatch();
   const isAuth = useSelector((state) => state.counter.isAuth);
-  console.log(isAuth);
   const userLocalLogin = getLocalLogin() || isAuth === true;
 
   const handleOnclickMenu = () => {
@@ -55,7 +54,6 @@ export default function Header() {
     });
   };
   const handleDropdownMenuUser = () => {
-    console.log("asdasdas");
     setIsDropdownMenuItem({
       ...isDropdownMenuItem,
       isUser: !isDropdownMenuItem.isUser,

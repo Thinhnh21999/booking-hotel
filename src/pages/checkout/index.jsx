@@ -33,13 +33,11 @@ const MyFormItem = ({ name, ...props }) => {
   return <Form.Item name={concatName} {...props} />;
 };
 
-const handleChange = (value) => {
-  console.log(value);
-};
+const handleChange = (value) => {};
 
 export default function Checkout() {
   const [keyboard, setKeyboard] = useState(true);
-  const [keyboard2, setKeyboard2] = useState(false);
+  const [keyboardTwo, setKeyboardTwo] = useState(false);
   const [form] = Form.useForm();
 
   const onFinish = (value) => {
@@ -460,9 +458,9 @@ export default function Checkout() {
 
                   <Checkbox
                     onChange={() => {
-                      setKeyboard2(!keyboard2);
+                      setKeyboardTwo(!keyboardTwo);
                     }}
-                    checked={keyboard2}
+                    checked={keyboardTwo}
                     style={{
                       width: "100%",
                       margin: "0 0 15px 0",

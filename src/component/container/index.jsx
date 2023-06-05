@@ -9,25 +9,24 @@ import filter from "../../assets/svgs/filter.svg";
 import Card from "../card/index";
 import Sort from "../sort/index";
 import { ContainerStyled, Para, FilterButton } from "./style.js";
-import RestClient from "../../Service/restClient";
+import restClientData from "../../services/restClientData";
 import { useState, useEffect } from "react";
 
 export default function Container() {
   const [data, setData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  
 
   useEffect(() => {
-    RestClient("get", "/location").then((res) => setData(res));
+    restClientData("get", "/location").then((res) => setData(res));
   }, []);
   console.log(data);
 
   const handleChangePage = (page) => {
-    setCurrentPage(page)
+    setCurrentPage(page);
   };
-  
+
   const startIndex = (currentPage - 1) * 12;
-  const endIndex = currentPage*12;
+  const endIndex = currentPage * 12;
   return (
     <ContainerStyled className=" w-3/4 ml-5">
       <div className="px-2.5 flex justify-between text-gray">

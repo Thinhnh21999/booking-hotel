@@ -18,10 +18,10 @@ import { Content } from "antd/es/layout/layout";
 import { NavBar, Title } from "./style.js";
 import Button from "../buttonShare/index";
 
-import React from 'react';
-import { Rate } from 'antd';
+import React from "react";
+import { Rate } from "antd";
 import { useEffect, useState } from "react";
-import RestClient from "../../Service/restClient";
+import RestClient from "../../services/restClient.js";
 import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 
 export default function Hotel_Detail() {
@@ -89,10 +89,10 @@ export default function Hotel_Detail() {
         <Content className="w-2/3 px-3">
           <div className="flex justify-between flex-wrap">
             <div>
-              <div >
-                 <Rate disabled defaultValue={data.rate.star} />
+              <div>
+                <Rate disabled defaultValue={data.rate.star} />
               </div>
-              <h1 className="text-4xl font-bold">{data.nameHotel }</h1>
+              <h1 className="text-4xl font-bold">{data.nameHotel}</h1>
               <div className="flex my-2">
                 <div className="text-primary font-bold border-solid border-[1px] border-primary pg-[#F9FBFF] rounded-md px-2 py-[1px]">
                   5 <span>/</span> 5

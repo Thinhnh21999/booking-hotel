@@ -58,7 +58,7 @@ export default function Hotel() {
       </div>
       <Price>
         <div className="flex justify-between w-full p-3">
-          <div >
+          <div>
             {data.slice(0, numberItem).map((item) => (
               <div key={item.id}>
                 <p className="text-gray">
@@ -84,4 +84,3 @@ export default function Hotel() {
     </div>
   );
 }
-

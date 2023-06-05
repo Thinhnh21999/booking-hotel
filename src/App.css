@@ -120,5 +120,3 @@ body {
 .scroll-top-up {
   @apply bottom-[55px] transition-all ease-in duration-500 opacity-100;
 }
-
-

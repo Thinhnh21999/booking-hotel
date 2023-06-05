@@ -88,7 +88,7 @@ export default function Room() {
                           </p>
                           <div className="roomDetail ">
                             <div className="bg-primary text-white px-5 py-3 rounded-[30px] text-center font-bold ">
-                              <Link to="/room-detail">Room Detail</Link>
+                              <Link to="/rooms">Room Detail</Link>
                             </div>
                           </div>
                         </div>
@@ -161,7 +161,7 @@ export default function Room() {
                           </p>
                           <div className="roomDetail ">
                             <div className="bg-primary text-white px-5 py-3 rounded-[30px] text-center font-bold ">
-                              <Link to="/room-detail">Room Detail</Link>
+                              <Link to="/rooms">Room Detail</Link>
                             </div>
                           </div>
                         </div>
@@ -234,7 +234,7 @@ export default function Room() {
                           </p>
                           <div className="roomDetail ">
                             <div className="bg-primary text-white px-5 py-3 rounded-[30px] text-center font-bold ">
-                              <Link to="/room-detail">Room Detail</Link>
+                              <Link to="/rooms">Room Detail</Link>
                             </div>
                           </div>
                         </div>

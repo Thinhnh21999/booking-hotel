@@ -232,7 +232,7 @@ export default function Header() {
               </span>
               <ul className="dropdown z-[-1]">
                 <li className="px-[30px]">
-                  <Link className="py-[15px] font-medium block hover" to="/list">
+                  <Link className="py-[15px] font-medium block hover" to="/listing">
                     Search Popup Map
                   </Link>
                 </li>

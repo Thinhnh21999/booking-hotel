@@ -9,7 +9,7 @@ export default function Footer() {
     <div className=" bg-[#F7F8FA]">
       <div className="pt-[100px] lg:container px-5 lg:mx-auto">
         <FooterAbout className="flex flex-wrap pb-10">
-          <div className="footer">
+          <div className="w-full md:w-1/4">
             <h2 className="text-lg font-semibold pb-4">Support</h2>
             <p className="text-footer">Help Center</p>
             <p className="text-footer">Our COVID-19 Response</p>

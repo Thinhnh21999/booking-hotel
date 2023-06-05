@@ -10,7 +10,7 @@ export default function Card(props) {
       <div className="w-full">
         <div className="bg-white rounded-2xl shadow-custom">
           <div className="overflow-hidden rounded-t-2xl">
-            <Link to={`/hotel/${id}`}>
+            <Link to={`/hotels/${id}`}>
               <img
                 className="w-full rounded-t-2xl hover:scale-110 transition-all duration-300 ease-in-out transform"
                 src={image}
@@ -24,7 +24,7 @@ export default function Card(props) {
                 <Rate disabled defaultValue={rate.star} />
               </div>
               <div>
-                <Link to={`/hotel/${id}`}>
+                <Link to={`/hotels/${id}`}>
                   <h2 className="hover:text-primary font-bold text-lg">
                     {nameHotel}
                   </h2>

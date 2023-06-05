@@ -24,14 +24,15 @@ import { useEffect, useState } from "react";
 import RestClient from "../../Service/restClient";
 import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 
-export default function Redac_Gateway_Hotel() {
+export default function Hotel_Detail() {
 
   const params = useParams();
   const [data, setData] = useState([]);
-
+  
   useEffect(() => {
-    RestClient("get", `/hotel/${params.id}?`).then((res) => setData(res));
+    RestClient("get", `/hotels/${params.id}?`).then((res) => setData(res));
   }, []);
+  console.log(params);
   return (
     <div>
       <Title className="border-y-[1px] border-gray border-slate-100 ">

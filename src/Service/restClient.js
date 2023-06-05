@@ -6,7 +6,7 @@ import history from "../util/history";
 import { getLoginLocal } from "../util/loginLocal";
 
 const token = getLoginLocal()?.token;
-export default function RestClient(method, url,params, data) {
+export default function RestClient(method, url, params, data) {
   return axios({
     method,
     url: `${baseUrl}${url}`,

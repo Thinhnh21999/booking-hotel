@@ -156,26 +156,7 @@ export default function Home() {
               modules={[Autoplay, Pagination, Navigation]}
               className="mySwiper"
               breakpoints={{
-                430: {
-                  slidesPerView: 1,
-                  spaceBetween: 24,
-                },
-                640: {
-                  slidesPerView: 1,
-                  spaceBetween: 24,
-                },
-                768: {
-                  slidesPerView: 2,
-                  spaceBetween: 24,
-                },
-                992: {
-                  slidesPerView: 2,
-                  spaceBetween: 24,
-                },
-                1366: {
-                  slidesPerView: 4,
-                  spaceBetween: 24,
-                },
+                
               }}
             >
               <SwiperSlide>

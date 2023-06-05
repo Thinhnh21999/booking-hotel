@@ -6,7 +6,7 @@ import {
   setIsSignIn,
 } from "../counter/reducerSlice";
 import { registerUsers, loginUsers } from "../../services/fetchUsers";
-import openNotification from "../../component/notifigation";
+import openNotification from "../../component/Cotification";
 import { setLocalLogin } from "../../untill/loginLocal";
 
 function* registerUserSaga(action) {

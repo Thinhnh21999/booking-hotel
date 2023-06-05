@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import openNotification from "../component/notifigation";
+import openNotification from "../component/Notification";
 import { base3000Url } from "../constants.js";
 import { createBrowserHistory } from "history";
 import { getLocalLogin } from "../untill/loginLocal";

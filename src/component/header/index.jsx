@@ -261,7 +261,7 @@ export default function Header() {
                 <li className="px-[30px]">
                   <Link
                     className="py-[15px] font-medium block hover"
-                    to="/listing"
+                    to="/list"
                   >
                     Search Popup Map
                   </Link>

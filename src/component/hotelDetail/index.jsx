@@ -21,18 +21,17 @@ import Button from "../buttonShare/index";
 import React from "react";
 import { Rate } from "antd";
 import { useEffect, useState } from "react";
-import RestClient from "../../services/restClient.js";
+import restClientData from "../../services/restClient.js";
 import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 
-export default function Hotel_Detail() {
-
+export default function Redac_Gateway_Hotel() {
   const params = useParams();
   const [data, setData] = useState([]);
-  
+
   useEffect(() => {
-    RestClient("get", `/hotels/${params.id}?`).then((res) => setData(res));
+    restClientData("get", `/hotels/${params.id}?`).then((res) => setData(res));
   }, []);
-  console.log(params);
+
   return (
     <div>
       <Title className="border-y-[1px] border-gray border-slate-100 ">
@@ -112,29 +111,7 @@ export default function Hotel_Detail() {
           <hr className="my-10 text-slate-200"></hr>
           <div>
             <h2 className="text-4xl font-semibold mb-10">About this hotel</h2>
-            <p className="text-base text-[#5e6d77]">
-              Nestled in the heart of Torrance, Redac Gateway Hotel in Torrance
-              is an ideal spot from which to discover Los Angeles (CA). From
-              here, guests can enjoy easy access to all that the lively city has
-              to offer. With its convenient location, the hotel offers easy
-              access to the city’s must-see destinations.
-            </p>
-            <p className="text-base text-[#5e6d77] my-5">
-              At Redac Gateway Hotel in Torrance, the excellent service and
-              superior facilities make for an unforgettable stay. Guests of the
-              hotel can enjoy on-site features like free Wi-Fi in all rooms,
-              24-hour front desk, facilities for disabled guests, express
-              check-in/check-out, luggage storage.
-            </p>
-            <p className="text-base text-[#5e6d77]">
-              Experience high quality room facilities during your stay here.
-              Some rooms include television LCD/plasma screen, carpeting,
-              linens, mirror, sofa, provided to help guests recharge after a
-              long day. Besides, the hotel’s host of recreational offerings
-              ensures you have plenty to do during your stay. Redac Gateway
-              Hotel in Torrance is an ideal place of stay for travelers seeking
-              charm, comfort and convenience in Los Angeles (CA).
-            </p>
+            <p className="text-base text-[#5e6d77]">{data.map(description)}</p>
           </div>
           <hr className="my-10 text-slate-200"></hr>
           <div>

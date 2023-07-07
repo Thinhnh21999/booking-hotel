@@ -21,7 +21,7 @@ import Button from "../buttonShare/index";
 import React from "react";
 import { Rate } from "antd";
 import { useEffect, useState } from "react";
-import RestClient from "../../services/restClient.js";
+import RestClient from "../../services/restClientUser.js";
 import { useParams } from "react-router-dom/cjs/react-router-dom.min";
 
 export default function Redac_Gateway_Hotel() {

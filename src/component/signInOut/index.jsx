@@ -13,7 +13,7 @@ import {
   commonRegister,
   setAuth,
   setIsSignIn,
-} from "../../redux/counter/reducerSlice";
+} from "../../redux/counter/userSlice";
 
 const App = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -22,7 +22,7 @@ const App = () => {
 
   const dispatch = useDispatch();
 
-  const isSignIn = useSelector((state) => state.counter.isSignIn);
+  const isSignIn = useSelector((state) => state.Users.isSignIn);
 
   const onChange = (e) => {
     console.log("radio checked", e.target.value);

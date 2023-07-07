@@ -13,12 +13,15 @@ import { Navigation, Autoplay, Pagination } from "swiper";
 import * as styled from "./style.js";
 
 import { useEffect, useState } from "react";
-import restClientData from "../../services/restClientData";
+import restClientData from "../../services/restClient";
+import { useSelector } from "react-redux";
 
 export default function Home() {
   const [data, setData] = useState([]);
   const [numberItem, setNumberItem] = useState(4);
   const [numberItemTwo, setNumberItemTwo] = useState(6);
+
+  const { products, params } = useSelector((state) => state.Products);
 
   useEffect(() => {
     restClientData("get", "/location").then((res) => setData(res));
@@ -135,7 +138,7 @@ export default function Home() {
           <div className="lg:container lg:mx-auto px-5 xl:px-0">
             <h2 className="title">Plan your next staycation</h2>
             <div className=" grid xl:grid-cols-4 md:grid-cols-2 xs:grid-cols-1 gap-6">
-              {data.slice(0, numberItem).map((item) => (
+              {products.slice(0, numberItem).map((item) => (
                 <Card key={item.id} item={item} />
               ))}
             </div>
@@ -180,7 +183,7 @@ export default function Home() {
                 },
               }}
             >
-              {data.slice(0, numberItemTwo).map((item) => (
+              {products.slice(0, numberItemTwo).map((item) => (
                 <SwiperSlide>
                   <Card key={item.id} item={item} />
                 </SwiperSlide>

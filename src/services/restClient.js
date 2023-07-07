@@ -8,7 +8,7 @@ import { getLocalLogin } from "../untill/loginLocal";
 const history = createBrowserHistory();
 const token = getLocalLogin()?.token;
 
-export default function RestClient(method, url, data = {}, params = {}) {
+export default function restClient(method, url, params = {}, data = {}) {
   return axios({
     method,
     url: `${baseUrl}${url}`,
@@ -17,7 +17,7 @@ export default function RestClient(method, url, data = {}, params = {}) {
     headers: `Bearer ${token}`,
   })
     .then((res) => {
-      return res.data;
+      return res;
     })
     .then((res) => {
       if (res.status === 200) {

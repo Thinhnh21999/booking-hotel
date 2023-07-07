@@ -1,17 +1,17 @@
 import axios from "axios";
 
 import openNotification from "../component/notifigation";
-import { base3000Url } from "../constants.js";
+import { baseUrl } from "../constants.js";
 import { createBrowserHistory } from "history";
 import { getLocalLogin } from "../untill/loginLocal";
 
 const history = createBrowserHistory();
 const token = getLocalLogin()?.token;
 
-export default function RestClient(method, url, data = {}, params = {}) {
+export default function restClient(method, url, data = {}, params = {}) {
   return axios({
     method,
-    url: `${base3000Url}${url}`,
+    url: `${baseUrl}${url}`,
     data,
     params,
     headers: `Bearer ${token}`,

@@ -7,8 +7,7 @@ import openNotification from "../component/Notification";
 import { getLocalLogin } from "../untill/loginLocal";
 
 export default function AuthRouter({ Component, ...props }) {
-  const isAuth =
-    useSelector((state) => state.counter.isAuth) || getLocalLogin();
+  const isAuth = useSelector((state) => state.Users.isAuth) || getLocalLogin();
   if (!isAuth) {
     openNotification("error", "Bạn không có quyền để vào trang");
     return <Redirect to="/"></Redirect>;

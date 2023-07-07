@@ -1,10 +1,10 @@
-
 import { Link } from "react-router-dom/cjs/react-router-dom.min";
 
 import React from "react";
 import { Rate } from "antd";
+
 export default function Card(props) {
-  const { id, image, nameHotel, location, price, rate } = props.item;
+  const { id, image, nameHotel, location, price, star, review } = props.item;
   return (
     <div className="">
       <div className="w-full">
@@ -21,7 +21,14 @@ export default function Card(props) {
           <div className="p-5">
             <div>
               <div>
-                <Rate disabled defaultValue={rate.star} />
+                <Rate
+                  disabled
+                  defaultValue={star}
+                  count={star}
+                  style={{
+                    color: "#FA5636",
+                  }}
+                />
               </div>
               <div>
                 <Link to={`/hotel/${id}`}>
@@ -37,9 +44,7 @@ export default function Card(props) {
                 <span className="text-[14px] px-1.5 py-1 bg-[#f9fbff] text-[#3B71FE] font-bold rounded-[5px] border border-solid border-[#b8ccff] mr-3 ">
                   5 <span className="text-[#3B71FE]"> / </span> 5
                 </span>
-                <span className="text-[14px] font-bold mr-[5px]">
-                  {rate.text}
-                </span>
+                <span className="text-[14px] font-bold mr-[5px]">{review}</span>
                 <span className="text-[14px] text-p">(3 Reviews)</span>
               </div>
               <div className="flex items-center">

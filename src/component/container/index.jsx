@@ -1,36 +1,53 @@
+import { useState, useEffect } from "react";
 import { Pagination } from "antd";
+import { useDispatch, useSelector } from "react-redux";
 import { ArrowDownOutlined } from "@ant-design/icons";
 import { Button, Dropdown, Space } from "antd";
+import Card from "../card/index";
+import Sort from "../sort/index";
+import { ContainerStyled, Para, FilterButton } from "./style.js";
 
 import list_category from "../../assets/svgs/list_category.svg";
 import list_menu from "../../assets/svgs/list_menu.svg";
 import filter from "../../assets/svgs/filter.svg";
-
-import Card from "../card/index";
-import Sort from "../sort/index";
-import { ContainerStyled, Para, FilterButton } from "./style.js";
-import restClientData from "../../services/restClientData";
-import { useState, useEffect } from "react";
+import { getProductSaga, setParams } from "../../redux/counter/productSlice";
 
 export default function Container() {
-  const [data, setData] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [current, setCurrent] = useState(1);
+  const { products, params } = useSelector((state) => state.Products);
+  console.log(products);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    restClientData("get", "/location").then((res) => setData(res));
+    dispatch(
+      getProductSaga({
+        _page: 1,
+        _limit: 12,
+      })
+    );
   }, []);
-  console.log(data);
 
   const handleChangePage = (page) => {
-    setCurrentPage(page);
+    setCurrent(page);
+    dispatch(
+      setParams({
+        ...params,
+        _page: page,
+      })
+    );
+    dispatch(
+      getProductSaga({
+        ...params,
+        _page: page,
+      })
+    );
   };
 
-  const startIndex = (currentPage - 1) * 12;
-  const endIndex = currentPage * 12;
   return (
     <ContainerStyled className=" w-3/4 ml-5">
       <div className="px-2.5 flex justify-between text-gray">
-        <Para>{data.length} hotels found</Para>
+        <Para>{products.length} hotels found</Para>
         <FilterButton>
           <div className="flex justify-between">
             <img src={filter} alt="" />
@@ -56,15 +73,15 @@ export default function Container() {
         </div>
       </div>
       <div className="my-5 grid xl:grid-cols-3 md:grid-cols-2 xs:grid-cols-1 gap-6">
-        {data.slice(startIndex, endIndex).map((item) => (
+        {products.map((item) => (
           <Card key={item.id} item={item} />
         ))}
       </div>
       <div className="flex justify-center ">
         <Pagination
-          current={currentPage}
-          total={data.length}
-          pageSize={12}
+          current={current}
+          total={params._totalRows}
+          pageSize={params._limit}
           onChange={handleChangePage}
         />
       </div>

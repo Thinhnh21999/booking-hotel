@@ -1,6 +1,6 @@
 import { useState } from "react";
 import SignInOut from "../../component/signInOut";
-import { clearLocalLogin, getLocalLogin } from "../../untill/loginLocal";
+import { clearLocalLogin, getLocalLogin } from "../../until/loginLocal";
 
 import { Link } from "react-router-dom/cjs/react-router-dom.min";
 import PhoneSvg from "../../assets/svgs/phone.svg";
@@ -10,9 +10,10 @@ import DropdownSvg from "../../assets/svgs/dropdown.svg";
 import MenuSvg from "../../assets/svgs/menu.svg";
 import ArrowLeftSvg from "../../assets/svgs/arrowLeft.svg";
 import UserSvg from "../../assets/svgs/user.svg";
+import Logo from "../../assets/svgs/logo.svg";
 import * as styled from "./style.js";
 import { useDispatch, useSelector } from "react-redux";
-import { setAuth } from "../../redux/counter/userSlice";
+import { setAuth } from "../../redux/slice/userSlice";
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
@@ -92,10 +93,10 @@ export default function Header() {
       <div className="flex justify-between relative bg-white px-10 border-b border-solid border-[#EAEEF3] ">
         <div className="center">
           <div
-            className="cursor-pointer py-7 lg:hidden"
+            className="cursor-pointer py-7 mr-[60px] lg:hidden"
             onClick={() => handleOnclickMenu()}
           >
-            <img className="w-5 lg:block  " src={MenuSvg} alt="..." />
+            <img className="w-5 lg:block" src={MenuSvg} alt="..." />
           </div>
 
           <styled.DropdownMenu
@@ -161,53 +162,7 @@ export default function Header() {
                   to="#"
                 >
                   PAGES
-                  <img className="w-4 ml-auto" src={DropdownSvg} alt="" />
                 </span>
-                <styled.DropdownMenuItem
-                  isDropdownMenuItem={isDropdownMenuItem.isPages}
-                  className="px-2.5 hidden"
-                >
-                  <li className="py-3 font-medium">
-                    <Link className="py-[15px] font-medium block hover" to="#">
-                      Blog
-                    </Link>
-                  </li>
-                  <li className="py-3 font-medium">
-                    <Link className="py-[15px] font-medium block hover" to="#">
-                      Become Local Expert
-                    </Link>
-                  </li>
-                  <li className="py-3 font-medium">
-                    <Link className="py-[15px] font-medium block hover" to="#">
-                      Function: Login
-                    </Link>
-                  </li>
-                  <li className="py-3 font-medium">
-                    <Link className="py-[15px] font-medium block hover" to="#">
-                      Function: Register
-                    </Link>
-                  </li>
-                  <li className="py-3 font-medium">
-                    <Link className="py-[15px] font-medium block hover" to="#">
-                      FQW
-                    </Link>
-                  </li>
-                  <li className="py-3 font-medium">
-                    <Link className="py-[15px] font-medium block hover" to="#">
-                      Destination
-                    </Link>
-                  </li>
-                  <li className="py-3 font-medium">
-                    <Link className="py-[15px] font-medium block hover" to="#">
-                      404
-                    </Link>
-                  </li>
-                  <li className="py-3 font-medium">
-                    <Link className="py-[15px] font-medium block hover" to="#">
-                      Function: Wishlist
-                    </Link>
-                  </li>
-                </styled.DropdownMenuItem>
               </li>
               <li>
                 <Link className="link-dropdown hover" to="#">
@@ -222,24 +177,16 @@ export default function Header() {
             className="fixed h-screen w-full bg-[rgba(0,0,0,.5)] z-[998] top-0 left-0 hidden"
           ></styled.Overlay>
 
-          <a className="" href="#">
+          <a className="hidden md:block" href="#">
             <Link to="/">
-              <img
-                className="lg:w-full w-[94px] "
-                src="https://modtel.wpengine.com/wp-content/uploads/2022/04/logohotel.png"
-                alt="logo"
-              />
+              <img className="lg:w-full w-[94px] " src={Logo} alt="logo" />
             </Link>
           </a>
         </div>
 
         <div className="center">
           <Link className="block md:hidden" to="/">
-            <img
-              className="lg:w-full w-[94px] "
-              src="https://modtel.wpengine.com/wp-content/uploads/2022/04/logohotel.png"
-              alt="logo"
-            />
+            <img className="lg:w-full w-[94px] " src={Logo} alt="logo" />
           </Link>
           <ul className=" lg:flex hidden justify-between font-bold">
             <li className="">
@@ -261,7 +208,7 @@ export default function Header() {
                 <li className="px-[30px]">
                   <Link
                     className="py-[15px] font-medium block hover"
-                    to="/list"
+                    to="/listing"
                   >
                     Search Popup Map
                   </Link>
@@ -280,12 +227,18 @@ export default function Header() {
               </span>
               <ul className="dropdown z-[-1]">
                 <li className="px-[30px]">
-                  <Link className="py-[15px] font-medium block hover" to="# ">
+                  <Link
+                    className="py-[15px] font-medium block hover"
+                    to="detail-hotel/1"
+                  >
                     Hotel Detail 1
                   </Link>
                 </li>
                 <li className="px-[30px]">
-                  <Link className="py-[15px] font-medium block hover" to="#">
+                  <Link
+                    className="py-[15px] font-medium block hover"
+                    to="detail-hotel/1"
+                  >
                     Hotel Detail 2
                   </Link>
                 </li>
@@ -295,53 +248,7 @@ export default function Header() {
             <styled.Dropdown className="relative">
               <span className="flex hover py-[35px] ps-2.5 pe-6" to="#">
                 Pages
-                <img className="w-4" src={DropdownSvg} alt="" />
               </span>
-              <ul className="dropdown">
-                <li className="px-[30px]">
-                  <Link
-                    className="py-[15px] font-medium block hover"
-                    to="/room-detail"
-                  >
-                    Blog
-                  </Link>
-                </li>
-                <li className="px-[30px]">
-                  <Link className="py-[15px] font-medium block hover" to="#">
-                    Become Local Expert
-                  </Link>
-                </li>
-                <li className="px-[30px]">
-                  <Link className="py-[15px] font-medium block hover" to="#">
-                    Function: Login
-                  </Link>
-                </li>
-                <li className="px-[30px]">
-                  <Link className="py-[15px] font-medium block hover" to="#">
-                    Function: Register
-                  </Link>
-                </li>
-                <li className="px-[30px]">
-                  <Link className="py-[15px] font-medium block hover" to="#">
-                    FQW
-                  </Link>
-                </li>
-                <li className="px-[30px]">
-                  <Link className="py-[15px] font-medium block hover" to="#">
-                    Destination
-                  </Link>
-                </li>
-                <li className="px-[30px]">
-                  <Link className="py-[15px] font-medium block hover" to="#">
-                    404
-                  </Link>
-                </li>
-                <li className="px-[30px]">
-                  <Link className="py-[15px] font-medium block hover" to="#">
-                    Function: Wishlist
-                  </Link>
-                </li>
-              </ul>
             </styled.Dropdown>
             <li className="">
               <Link className="flex  hover py-[35px] ps-2.5 pe-6" to="#">

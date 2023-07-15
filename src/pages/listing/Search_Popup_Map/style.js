@@ -1,14 +1,5 @@
 import styled from "styled-components";
-import { Form, Button, Checkbox, Rate, Space } from "antd";
-
-export const Wrapper = styled.div`
-  padding: 0 6%;
-  margin: 10px 0 20px;
-
-  @media (max-width: 1232px) {
-    padding: 0 1%;
-  }
-`;
+import { Form, Button, Checkbox, Rate, Space, Pagination } from "antd";
 
 export const Container = styled.div`
   @media (max-width: 990px) {
@@ -25,12 +16,6 @@ export const FilterButton = styled.div`
   }
 `;
 export const Para = styled.p`
-  @media (max-width: 990px) {
-    display: none;
-  }
-`;
-
-export const Aside = styled.div`
   @media (max-width: 990px) {
     display: none;
   }
@@ -82,5 +67,31 @@ export const SpaceCompact = styled(Space.Compact)`
     display: flex;
     justify-content: space-between;
     align-items: center;
+  }
+`;
+
+export const PaginationCustom = styled(Pagination)`
+  .ant-pagination-prev {
+    background-color: ##f7f8fa;
+    border: 1px solid #dedede;
+    border-radius: 10px;
+    svg {
+      color: #768090;
+    }
+  }
+  .ant-pagination-next {
+    background-color: ##f7f8fa;
+    border: 1px solid #dedede;
+    border-radius: 10px;
+    svg {
+      color: #768090;
+    }
+  }
+  .ant-pagination-item-active {
+    background-color: #3b71fe;
+    border-radius: 10px;
+    a {
+      color: #fff;
+    }
   }
 `;

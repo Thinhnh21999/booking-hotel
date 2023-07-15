@@ -1,4 +1,4 @@
-import Destinations from "../../component/Destinations";
+import Destinations from "../../component/destinations";
 import Card from "../../component/card/index.jsx";
 import Search from "../../component/search/index.jsx";
 import ScrollUp from "../../component/scrollUp";
@@ -13,20 +13,26 @@ import { Navigation, Autoplay, Pagination } from "swiper";
 import * as styled from "./style.js";
 
 import { useEffect, useState } from "react";
-import restClientData from "../../services/restClient";
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { getProductSaga } from "../../redux/slice/productSlice";
+import { getLocationSaga } from "../../redux/slice/locationSlice";
 
 export default function Home() {
-  const [data, setData] = useState([]);
-  const [numberItem, setNumberItem] = useState(4);
-  const [numberItemTwo, setNumberItemTwo] = useState(6);
-
   const { products, params } = useSelector((state) => state.Products);
+  const location = useSelector((state) => state.Locations.location);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    restClientData("get", "/location").then((res) => setData(res));
+    dispatch(getLocationSaga());
+
+    dispatch(
+      getProductSaga({
+        _page: 1,
+        _limit: 6,
+      })
+    );
   }, []);
-  console.log(data);
 
   return (
     <>
@@ -40,115 +46,91 @@ export default function Home() {
           </p>
         </div>
       </div>
-      <div className="lg:container lg:mx-auto px-5 relative top-[-150px] lg:top-[-40px]">
+      <div className="lg:container lg:mx-auto px-5 relative top-[-150px] lg:top-[-40px] xl:px-[90px]">
         <Search />
       </div>
+
       <div>
         <div className="lg:container lg:mt-[70px] lg:mx-auto px-2.5">
           <div className="flex flex-wrap ">
-            <div className="w-1/2 p-2.5 rounded-[20px]">
-              <img
-                src="https://modtel.travelerwp.com/wp-content/uploads/2022/04/Frame-3151-min.png"
-                alt="..."
-              />
+            <div className="w-1/2 p-2.5 ">
+              <div className="overflow-hidden rounded-[20px]">
+                <img
+                  className="hover:scale-110 transition-all duration-300 ease-in-out"
+                  src="https://modtel.travelerwp.com/wp-content/uploads/2022/04/Frame-3151-min.png"
+                  alt="..."
+                />
+              </div>
             </div>
-            <div className="w-1/2 p-2.5 rounded-[20px]">
-              <img
-                src="https://modtel.travelerwp.com/wp-content/uploads/2022/04/Frame-3150-min.png"
-                alt="..."
-              />
+            <div className="w-1/2 p-2.5 rounded-[20px] overflow-hidden">
+              <div className="overflow-hidden rounded-[20px]">
+                <img
+                  className="hover:scale-110 transition-all duration-300 ease-in-out"
+                  src="https://modtel.travelerwp.com/wp-content/uploads/2022/04/Frame-3150-min.png"
+                  alt="..."
+                />
+              </div>
             </div>
           </div>
         </div>
-        <div className="lg:container lg:mx-auto mt-[80px] lg:px-2.5 px-5 pb-[45px]">
+        <div className="lg:container lg:mx-auto mt-[80px] px-5 pb-[45px]">
           <h2 className="title">Top destinations</h2>
-          <div className="">
-            <div className="center">
-              <Swiper
-                loop={true}
-                navigation={true}
-                modules={[Navigation]}
-                slidesPerView={6}
-                className="mySwiper"
-                breakpoints={{
-                  430: {
-                    slidesPerView: 2,
-                    spaceBetween: 20,
-                  },
-                  640: {
-                    slidesPerView: 2,
-                    spaceBetween: 20,
-                  },
-                  768: {
-                    slidesPerView: 4,
-                    spaceBetween: 20,
-                  },
-                  992: {
-                    slidesPerView: 4,
-                    spaceBetween: 20,
-                  },
-                  1366: {
-                    slidesPerView: 6,
-                    spaceBetween: 40,
-                  },
-                }}
-              >
-                <SwiperSlide>
-                  <Destinations />
-                </SwiperSlide>
-                <SwiperSlide>
-                  <Destinations />
-                </SwiperSlide>
-                <SwiperSlide>
-                  <Destinations />
-                </SwiperSlide>
-                <SwiperSlide>
-                  <Destinations />
-                </SwiperSlide>
-                <SwiperSlide>
-                  <Destinations />
-                </SwiperSlide>
-                <SwiperSlide>
-                  <Destinations />
-                </SwiperSlide>
-                <SwiperSlide>
-                  <Destinations />
-                </SwiperSlide>
-                <SwiperSlide>
-                  <Destinations />
-                </SwiperSlide>
-                <SwiperSlide>
-                  <Destinations />
-                </SwiperSlide>
-                <SwiperSlide>
-                  <Destinations />
-                </SwiperSlide>
-                <SwiperSlide>
-                  <Destinations />
-                </SwiperSlide>
-                <SwiperSlide>
-                  <Destinations />
-                </SwiperSlide>
-              </Swiper>
-            </div>
+          <div className="center">
+            <styled.SwiperCustomTwo
+              loop={true}
+              navigation={true}
+              modules={[Navigation]}
+              slidesPerView={6}
+              className="mySwiper"
+              breakpoints={{
+                430: {
+                  slidesPerView: 2,
+                  spaceBetween: 20,
+                },
+                640: {
+                  slidesPerView: 2,
+                  spaceBetween: 20,
+                },
+                768: {
+                  slidesPerView: 4,
+                  spaceBetween: 20,
+                },
+                992: {
+                  slidesPerView: 4,
+                  spaceBetween: 20,
+                },
+                1366: {
+                  slidesPerView: 6,
+                  spaceBetween: 40,
+                },
+              }}
+            >
+              {location.map((item) => {
+                return (
+                  <SwiperSlide key={item.id}>
+                    <Destinations item={item} />
+                  </SwiperSlide>
+                );
+              })}
+            </styled.SwiperCustomTwo>
           </div>
         </div>
 
         <div className=" bg-grey py-[45px]">
-          <div className="lg:container lg:mx-auto px-5 xl:px-0">
+          <div className="lg:container lg:mx-auto px-5">
             <h2 className="title">Plan your next staycation</h2>
             <div className=" grid xl:grid-cols-4 md:grid-cols-2 xs:grid-cols-1 gap-6">
-              {products.slice(0, numberItem).map((item) => (
+              {products.slice(0, 4).map((item) => (
                 <Card key={item.id} item={item} />
               ))}
             </div>
           </div>
         </div>
 
-        <div className="lg:container lg:mx-auto px-5 pt-[65px] pb-[30px]">
-          <h2 className="title text-left">Recommended for you</h2>
+        <div className="lg:container lg:mx-auto px-5 pt-[65px] pb-[30px] overflow-hidden">
+          <h2 className="title !text-left">Recommended for you</h2>
           <div>
-            <Swiper
+            <styled.SwiperCustom
               slidesPerView={1}
               autoplay={{
                 delay: 3500,
@@ -183,12 +165,12 @@ export default function Home() {
                 },
               }}
             >
-              {products.slice(0, numberItemTwo).map((item) => (
-                <SwiperSlide>
-                  <Card key={item.id} item={item} />
+              {products.map((item) => (
+                <SwiperSlide key={item.id}>
+                  <Card item={item} />
                 </SwiperSlide>
               ))}
-            </Swiper>
+            </styled.SwiperCustom>
           </div>
         </div>
 

@@ -1,7 +1,10 @@
+import React from "react";
+import { Rate } from "antd";
+import { useParams } from "react-router-dom/cjs/react-router-dom.min";
+
 import star from "../../assets/svgs/star.svg";
 import heart from "../../assets/svgs/heart.svg";
 import arrow_down_white from "../../assets/svgs/arrowDownWhite.svg";
-
 import airport from "../../assets/svgs/airport.svg";
 import fitness from "../../assets/svgs/fitness.svg";
 import heater from "../../assets/svgs/heater.svg";
@@ -18,19 +21,9 @@ import { Content } from "antd/es/layout/layout";
 import { NavBar, Title } from "./style.js";
 import Button from "../buttonShare/index";
 
-import React from "react";
-import { Rate } from "antd";
-import { useEffect, useState } from "react";
-import RestClient from "../../services/restClientUser.js";
-import { useParams } from "react-router-dom/cjs/react-router-dom.min";
-
-export default function Redac_Gateway_Hotel() {
+export default function Hotel(products) {
   const params = useParams();
-  const [data, setData] = useState([]);
 
-  useEffect(() => {
-    RestClient("get", `/hotel/${params.id}?`).then((res) => setData(res));
-  }, []);
   return (
     <div>
       <Title className="border-y-[1px] border-gray border-slate-100 ">
@@ -39,7 +32,7 @@ export default function Redac_Gateway_Hotel() {
           <li className="px-10 text-primary cursor-pointer font-semibold">
             United States
           </li>
-          <li className="text-gray">{data.nameHotel}</li>
+          <li className="text-gray">{products.nameHotel}</li>
         </ul>
       </Title>
       <div className="flex mx-2">
@@ -88,16 +81,16 @@ export default function Redac_Gateway_Hotel() {
           <div className="flex justify-between flex-wrap">
             <div>
               <div>
-                <Rate disabled defaultValue={data.rate.star} />
+                <Rate disabled defaultValue={products.star} />
               </div>
-              <h1 className="text-4xl font-bold">{data.nameHotel}</h1>
+              <h1 className="text-4xl font-bold">{products.nameHotel}</h1>
               <div className="flex my-2">
                 <div className="text-primary font-bold border-solid border-[1px] border-primary pg-[#F9FBFF] rounded-md px-2 py-[1px]">
                   5 <span>/</span> 5
                 </div>
-                <span className="font-bold px-4">{data.rate.text}</span>
+                <span className="font-bold px-4">{products.text}</span>
                 <p className="text-primary">(3 Reviews)</p>
-                <span className="text-gray pl-5">{data.location}</span>
+                <span className="text-gray pl-5">{products.location}</span>
               </div>
             </div>
             <div className="flex items-center">
@@ -324,8 +317,8 @@ export default function Redac_Gateway_Hotel() {
             <div className="flex justify-between">
               <p className="text-gray py-4">
                 From:{" "}
-                <span className="font-bold text-black">${data.price}</span> /
-                night
+                <span className="font-bold text-black">${products.price}</span>{" "}
+                / night
               </p>
               <div className="flex py-4">
                 <img className="w-4 " src={star} alt="" />

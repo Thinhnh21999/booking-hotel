@@ -1,7 +1,7 @@
 import { put, call, takeEvery } from "redux-saga/effects";
-import openNotification from "../../../component/notifigation";
+import openNotification from "../../../component/notification";
 import { registerUsers } from "../../../services/fetch";
-import { commonRegister, setIsSignIn } from "../../counter/userSlice";
+import { commonRegister, setIsSignIn } from "../../slice/userSlice";
 
 function* registerUserSaga(action) {
   try {

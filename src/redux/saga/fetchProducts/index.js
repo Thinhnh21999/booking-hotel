@@ -4,14 +4,13 @@ import {
   getProductSaga,
   setParams,
   setProduct,
-} from "../../counter/productSlice";
+} from "../../slice/productSlice";
 
 function* fetchProductSaga(action) {
   try {
     const result = yield call(getProducts, action.payload);
     yield put(setProduct(result.data.data));
     yield put(setParams(result.data.pagination));
-    console.log(result);
   } catch (error) {
     console.log(error);
     return;

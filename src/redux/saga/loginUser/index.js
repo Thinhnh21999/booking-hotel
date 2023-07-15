@@ -1,8 +1,8 @@
 import { call, put, takeEvery } from "redux-saga/effects";
-import openNotification from "../../../component/notifigation";
+import openNotification from "../../../component/notification";
 import { loginUsers } from "../../../services/fetch";
-import { setLocalLogin } from "../../../untill/loginLocal";
-import { commonLogin, setAuth } from "../../counter/userSlice";
+import { setLocalLogin } from "../../../until/loginLocal";
+import { commonLogin, setAuth } from "../../slice/userSlice";
 
 function* loginUserSaga(action) {
   try {

@@ -10,18 +10,18 @@ import child from "../../assets/svgs/child.svg";
 
 import { Col, Row } from "antd";
 import { Link } from "react-router-dom/cjs/react-router-dom.min";
-import Room_Detail from "../../component/zoomDetail";
+import Room from "../../component/room";
 import { Wrapper, Price, PriceFixed } from "./style";
 
-export default function Room() {
+export default function DetailRoom() {
   return (
     <div className="overflow-hidden relative">
       <div>
         <Wrapper>
-          <Room_Detail />
+          <Room />
           <div>
             <h2 className="text-3xl font-bold mb-7">Explore other options</h2>
-            <div >
+            <div>
               <Row className="flex justify-between ">
                 <Col
                   lg={7}
@@ -269,4 +269,3 @@ export default function Room() {
     </div>
   );
 }
-

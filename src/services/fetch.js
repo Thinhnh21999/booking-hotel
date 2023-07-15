@@ -10,5 +10,9 @@ export const loginUsers = (values) => {
 };
 
 export const getProducts = (params) => {
+  return restClient("get", "/hotels", params, {});
+};
+
+export const getLocations = (params) => {
   return restClient("get", "/location", params, {});
 };

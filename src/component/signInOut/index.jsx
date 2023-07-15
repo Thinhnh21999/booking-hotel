@@ -13,7 +13,7 @@ import {
   commonRegister,
   setAuth,
   setIsSignIn,
-} from "../../redux/counter/userSlice";
+} from "../../redux/slice/userSlice";
 
 const App = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);

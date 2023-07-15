@@ -1,7 +1,7 @@
 import { createAction, createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  isAuth: false,
+  isAuth: null,
   isSignIn: true,
 };
 

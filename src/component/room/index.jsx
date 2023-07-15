@@ -17,11 +17,11 @@ import { Col, DatePicker, Row } from "antd";
 
 import ButtonShare from "../buttonShare";
 import { Contact, Heading, NavBar, Content } from "./style";
-import { Title } from "../hotelDetail/style.js";
+import { Title } from "../hotel/style.js";
 
 const { RangePicker } = DatePicker;
 
-export default function Room_Detail() {
+export default function Room() {
   return (
     <div>
       <Title className="border-y-[1px] border-gray border-slate-100">

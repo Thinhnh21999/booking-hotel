@@ -1,15 +1,21 @@
 import createSagaMiddleware from "@redux-saga/core";
 import { configureStore } from "@reduxjs/toolkit";
-import counterReducer from "./counter/reducerSlice";
-import mySaga from "./saga";
+import UerReducer from "./slice/userSlice";
+import ProductsReducer from "./slice/productSlice";
+import LocationsReducer from "./slice/locationSlice";
+import loadingReducer from "./slice/loadingSlice";
+import rootSaga from "./saga";
 
 const sagaMiddleware = createSagaMiddleware();
 
 export const store = configureStore({
   reducer: {
-    counter: counterReducer,
+    Users: UerReducer,
+    Products: ProductsReducer,
+    Locations: LocationsReducer,
+    Loading: loadingReducer,
   },
   middleware: [sagaMiddleware],
 });
 
-sagaMiddleware.run(mySaga);
+sagaMiddleware.run(rootSaga);

@@ -6,7 +6,7 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  color: #232323;
+  /* color: #232323; */
   font-size: 16px;
   font-family: sans-serif;
   behavior: smooth;
@@ -114,9 +114,10 @@ body {
 }
 
 .search-item {
-  @apply px-5 py-5 w-full lg:py-0 flex border-b border-solid border-[#dedede];
+  @apply px-5 py-5 w-full h-full lg:py-0 flex items-center border-b border-solid border-[#dedede];
 }
 
 .scroll-top-up {
   @apply bottom-[55px] transition-all ease-in duration-500 opacity-100;
 }
+

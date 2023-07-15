@@ -2,27 +2,66 @@ import { Switch } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import "./App.css";
-import Home from "./pages/home/index.jsx";
-import Contact from "./pages/about/index.jsx";
-import About from "./pages/contact/index.jsx";
-import Listing from "./pages/listing/Search_Popup_Map/index.jsx";
-import Hotel from "./pages/hotel/index.jsx";
-import Room from "./pages/room/index.jsx";
+import Home from "./pages/home";
+import Contact from "./pages/about";
+import About from "./pages/contact";
+import Listing from "./pages/listing/Search_Popup_Map";
+import DetailHotel from "./pages/detailHotel";
+import DetailRoom from "./pages/detailRoom";
 import Checkout from "./pages/checkout";
 
 import DefaultRouter from "./router/DefaultRouter";
 import AuthRouter from "./router/authRouter.jsx";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { setLoadingSg } from "./redux/slice/loadingSlice";
 
 function App() {
+  const loading = useSelector((state) => state.Loading.isLoading);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(setLoadingSg(true));
+    setTimeout(() => {
+      dispatch(setLoadingSg(false));
+    }, 1500);
+    return () => {
+      clearTimeout(1500);
+    };
+  }, []);
   return (
     <div className="box-border m-0 p-0">
       <Switch>
-        <DefaultRouter exact path="/" Component={Home} />
-        <DefaultRouter exact path="/about" Component={About} />
-        <DefaultRouter exact path="/listing" Component={Listing} />
-        <DefaultRouter exact path="/hotel-detail/:idHotel" Component={Hotel} />
-        <DefaultRouter exact path="/room-detail/:idRoom" Component={Room} />
-        <DefaultRouter exact path="/contact" Component={Contact} />
+        <DefaultRouter exact path="/" loading={loading} Component={Home} />
+        <DefaultRouter
+          exact
+          path="/about"
+          loading={loading}
+          Component={About}
+        />
+        <DefaultRouter
+          exact
+          path="/listing"
+          loading={loading}
+          Component={Listing}
+        />
+        <DefaultRouter
+          exact
+          path="/detail-hotel/:idHotel"
+          loading={loading}
+          Component={DetailHotel}
+        />
+        <DefaultRouter
+          exact
+          path="/detail-room/:idRoom"
+          loading={loading}
+          Component={DetailRoom}
+        />
+        <DefaultRouter
+          exact
+          path="/contact"
+          loading={loading}
+          Component={Contact}
+        />
         <AuthRouter exact path="/checkout" Component={Checkout} />
       </Switch>
     </div>

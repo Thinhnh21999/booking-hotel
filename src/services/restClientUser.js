@@ -8,7 +8,7 @@ import { getLocalLogin } from "../until/loginLocal";
 const history = createBrowserHistory();
 const token = getLocalLogin()?.token;
 
-export default function restClient(method, url, params = {}, data = {}) {
+export default function restClient(method, url, data = {}, params = {}) {
   return axios({
     method,
     url: `${baseUrl}${url}`,
@@ -17,12 +17,12 @@ export default function restClient(method, url, params = {}, data = {}) {
     headers: `Bearer ${token}`,
   })
     .then((res) => {
-      return res;
+      return res.data;
     })
     .then((res) => {
-      // if (res.status === 200) {
-      //   console.log("render thanh cong");
-      // }
+      if (res.status === 200) {
+        openNotification("success", "Bạn nhập thành công");
+      }
       return res;
     })
     .catch((err) => {

@@ -46,7 +46,7 @@ function App() {
         />
         <DefaultRouter
           exact
-          path="/detail-hotel/:idHotel"
+          path="/detail-hotel/:nameHotel"
           loading={loading}
           Component={DetailHotel}
         />

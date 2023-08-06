@@ -16,3 +16,15 @@ export const getProducts = (params) => {
 export const getLocations = (params) => {
   return restClient("get", "/location", params, {});
 };
+
+export const postReviews = (data) => {
+  return restClient("post", "/reviews", {}, data);
+};
+
+export const putReviews = (value) => {
+  return restClient("put", "/reviews", value, {});
+};
+
+export const getReviews = (params) => {
+  return restClient("get", "/reviews", params, {});
+};

@@ -3,7 +3,8 @@ import { configureStore } from "@reduxjs/toolkit";
 import UerReducer from "./slice/userSlice";
 import ProductsReducer from "./slice/productSlice";
 import LocationsReducer from "./slice/locationSlice";
-import loadingReducer from "./slice/loadingSlice";
+import LoadingReducer from "./slice/loadingSlice";
+import ReviewsReducer from "./slice/reviewSlice";
 import rootSaga from "./saga";
 
 const sagaMiddleware = createSagaMiddleware();
@@ -13,7 +14,8 @@ export const store = configureStore({
     Users: UerReducer,
     Products: ProductsReducer,
     Locations: LocationsReducer,
-    Loading: loadingReducer,
+    Loading: LoadingReducer,
+    Reviews: ReviewsReducer,
   },
   middleware: [sagaMiddleware],
 });

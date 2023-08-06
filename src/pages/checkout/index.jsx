@@ -57,6 +57,7 @@ export default function Checkout() {
   return (
     <>
       <div className="pb-[60px]">
+        
         <div className="py-5 border-bottom">
           <div className="lg:container lg:mx-auto px-5">
             <ul className="flex items-center justify-start">
@@ -73,6 +74,7 @@ export default function Checkout() {
             </ul>
           </div>
         </div>
+
         <div className="lg:container lg:mx-auto px-5">
           <div className="mx-[-12px] mt-[60px] flex flex-wrap">
             <div className="w-full lg:order-2 lg:w-4/12 px-3">
@@ -86,6 +88,7 @@ export default function Checkout() {
                       alt=""
                     />
                   </Link>
+
                   <div>
                     <h4 className="text-lg font-bold mb-2 leading-[26px]">
                       <Link to="#">EnVision Hotel Boston</Link>

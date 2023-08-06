@@ -177,11 +177,11 @@ export default function Header() {
             className="fixed h-screen w-full bg-[rgba(0,0,0,.5)] z-[998] top-0 left-0 hidden"
           ></styled.Overlay>
 
-          <a className="hidden md:block" href="#">
+          <div className="hidden md:block" href="#">
             <Link to="/">
               <img className="lg:w-full w-[94px] " src={Logo} alt="logo" />
             </Link>
-          </a>
+          </div>
         </div>
 
         <div className="center">
@@ -257,6 +257,7 @@ export default function Header() {
             </li>
           </ul>
         </div>
+
         <div className="center">
           <ul className="center font-bold">
             <styled.Dropdown className="relative mr-5 lg:block hidden ">
@@ -293,7 +294,7 @@ export default function Header() {
                   </div>
                   <styled.DropdownMenuItem
                     isDropdownMenuItem={isDropdownMenuItem.isUser}
-                    className="absolute py-2.5 min-w-[230px] top-[100%] bg-white border rounded-[12px] shadow-custom hidden right-0"
+                    className="absolute z-[999] py-2.5 min-w-[230px] top-[100%] bg-white border rounded-[12px] shadow-custom hidden right-0"
                   >
                     <li className="px-[30px]">
                       <p className="py-[15px] font-medium block hover">

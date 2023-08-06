@@ -175,7 +175,7 @@ export default function Search() {
           <div className="h-5 border-r border-solid border-gray-300 hidden lg:block"></div>
 
           {isOpen.isOpenSearch && (
-            <div className="absolute bg-white top-0 translate-y-[82px] z-[999] w-full lg:max-w-[360px] py-[30px] px-[10px] mt-4 border-line shadow-custom rounded-2xl">
+            <div className="absolute bg-white top-0 left-0 translate-y-[82px] z-[999] w-full lg:max-w-[360px] py-[30px] px-[10px] mt-4 border-line shadow-custom rounded-2xl">
               <ul className="text-left max-h-[333px] scroll-smooth overflow-auto">
                 <li className="pe-[30px] ps-[20px]">
                   <span className="block font-medium hover pb-5 mb-3 border-bottom">
@@ -266,7 +266,7 @@ export default function Search() {
           <div className="h-5 border-r border-solid border-gray-300 hidden lg:block"></div>
 
           {isOpen.isOpenCalendar && (
-            <div className="flex px-[30px] shadow-custom bg-white py-5 absolute translate-y-[82px] mt-4 top-0 z-[999] rounded-[20px] border-line">
+            <div className="flex px-[30px] shadow-custom bg-white py-5 absolute translate-y-[82px] mt-4 top-0 left-0 z-[999] rounded-[20px] border-line">
               <styled.CalendarCustom
                 onChange={onChangeCalendarOne}
                 value={dateOne}

@@ -3,7 +3,7 @@ import openNotification from "../../../component/notification";
 import { registerUsers } from "../../../services/fetch";
 import { commonRegister, setIsSignIn } from "../../slice/userSlice";
 
-function* registerUserSaga(action) {
+function* registerUser(action) {
   try {
     const result = yield call(registerUsers, action.payload);
     yield put(setIsSignIn(true));
@@ -14,6 +14,6 @@ function* registerUserSaga(action) {
   }
 }
 
-export default function* watchRegisterUserSaga() {
-  yield takeEvery(commonRegister.type, registerUserSaga);
+export default function* watchRegisterUser() {
+  yield takeEvery(commonRegister.type, registerUser);
 }

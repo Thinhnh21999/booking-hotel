@@ -6,7 +6,7 @@ import {
   setProduct,
 } from "../../slice/productSlice";
 
-function* fetchProductSaga(action) {
+function* fetchProduct(action) {
   try {
     const result = yield call(getProducts, action.payload);
     yield put(setProduct(result.data.data));
@@ -18,5 +18,5 @@ function* fetchProductSaga(action) {
 }
 
 export default function* watchFetchProducts() {
-  yield takeEvery(getProductSaga.type, fetchProductSaga);
+  yield takeEvery(getProductSaga.type, fetchProduct);
 }

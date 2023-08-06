@@ -5,6 +5,7 @@ const initialState = {
   params: {
     _page: 1,
     _limit: 12,
+    _totalRows: null,
     _sort: "",
     _order: "",
     star: "",

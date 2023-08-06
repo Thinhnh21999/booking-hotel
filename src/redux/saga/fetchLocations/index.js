@@ -2,7 +2,7 @@ import { call, put, takeEvery } from "redux-saga/effects";
 import { getLocations } from "../../../services/fetch";
 import { getLocationSaga, setLocation } from "../../slice/locationSlice";
 
-function* fetchLocationSaga(action) {
+function* fetchLocation(action) {
   try {
     const result = yield call(getLocations, action.payload);
     yield put(setLocation(result.data));
@@ -13,5 +13,5 @@ function* fetchLocationSaga(action) {
 }
 
 export default function* watchFetchLocation() {
-  yield takeEvery(getLocationSaga.type, fetchLocationSaga);
+  yield takeEvery(getLocationSaga.type, fetchLocation);
 }

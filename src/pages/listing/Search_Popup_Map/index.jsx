@@ -9,7 +9,6 @@ import ScrollUp from "../../../component/scrollUp";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
-import { ArrowDownOutlined } from "@ant-design/icons";
 import DropDownSvg from "../../../assets/svgs/dropdown.svg";
 import list_category from "../../../assets/svgs/list_category.svg";
 import list_menu from "../../../assets/svgs/list_menu.svg";
@@ -54,6 +53,8 @@ export default function Listing() {
   const { products, params } = useSelector((state) => state.Products);
   const dispatch = useDispatch();
 
+  console.log(products);
+
   useEffect(() => {
     dispatch(
       getProductSaga({
@@ -65,142 +66,85 @@ export default function Listing() {
 
   const handleChangePage = (page) => {
     dispatch(setLoading(true));
-    setTimeout(() => {
-      dispatch(setLoading(false));
-    }, 1500);
     setIsPage(page);
     setCurrent(page);
-    dispatch(
-      setParams({
-        ...params,
-        _page: page,
-        price_gte: 100,
-        price_lte: isPrice,
-        review: isReview,
-        star: isStar,
-        _sort: isValueName,
-        _order: isValueOrder,
-      })
-    );
-    dispatch(
-      getProductSaga({
-        ...params,
-        _page: page,
-        price_gte: 100,
-        price_lte: isPrice,
-        review: isReview,
-        star: isStar,
-        _sort: isValueName,
-        _order: isValueOrder,
-      })
-    );
-    return () => {
-      clearTimeout(1500);
+
+    const updatedParams = {
+      ...params,
+      _page: page,
+      price_gte: 100,
+      price_lte: isPrice,
+      review: isReview,
+      star: isStar,
+      _sort: isValueName,
+      _order: isValueOrder,
     };
+
+    dispatch(setParams(updatedParams));
+    dispatch(getProductSaga(updatedParams));
   };
 
   const onFinishPrice = (Prices) => {
     dispatch(setLoading(true));
-    setTimeout(() => {
-      dispatch(setLoading(false));
-    }, 1500);
+
     const price = Prices?.priceRange?.slice(1);
     setIsPrice(price);
-    dispatch(
-      setParams({
-        ...params,
-        _page: isPage,
-        price_gte: 100,
-        price_lte: price,
-        review: isReview,
-        star: isStar,
-        _sort: isValueName,
-        _order: isValueOrder,
-      })
-    );
 
-    dispatch(
-      getProductSaga({
-        ...params,
-        _page: isPage,
-        price_gte: 100,
-        price_lte: price,
-        review: isReview,
-        star: isStar,
-        _sort: isValueName,
-        _order: isValueOrder,
-      })
-    );
-  };
+    const updatedParams = {
+      ...params,
+      _page: isPage,
+      price_gte: 100,
+      price_lte: price,
+      review: isReview,
+      star: isStar,
+      _sort: isValueName,
+      _order: isValueOrder,
+    };
 
-  const handleChangePrice = (price) => {
-    setIsPrice(price.slice(1));
+    dispatch(setParams(updatedParams));
+    dispatch(getProductSaga(updatedParams));
   };
 
   const onChangeReview = (value) => {
     dispatch(setLoading(true));
-    setTimeout(() => {
-      dispatch(setLoading(false));
-    }, 1500);
     setIsReview(value);
-    dispatch(
-      setParams({
-        ...params,
-        _page: isPage,
-        review: value,
-        price_gte: 100,
-        price_lte: isPrice,
-        star: isStar,
-        _sort: isValueName,
-        _order: isValueOrder,
-      })
-    );
 
-    dispatch(
-      getProductSaga({
-        ...params,
-        _page: isPage,
-        review: value,
-        price_gte: 100,
-        price_lte: isPrice,
-        star: isStar,
-        _sort: isValueName,
-        _order: isValueOrder,
-      })
-    );
+    const updatedParams = {
+      ...params,
+      _page: isPage,
+      review: value,
+      price_gte: 100,
+      price_lte: isPrice,
+      star: isStar,
+      _sort: isValueName,
+      _order: isValueOrder,
+    };
+
+    dispatch(setParams(updatedParams));
+    dispatch(getProductSaga(updatedParams));
   };
 
   const onChangeStar = (value) => {
     dispatch(setLoading(true));
-    setTimeout(() => {
-      dispatch(setLoading(false));
-    }, 1500);
     setIsStar(value);
-    dispatch(
-      setParams({
-        ...params,
-        _page: isPage,
-        star: value,
-        price_gte: 100,
-        price_lte: isPrice,
-        review: isReview,
-        _sort: isValueName,
-        _order: isValueOrder,
-      })
-    );
 
-    dispatch(
-      getProductSaga({
-        ...params,
-        _page: isPage,
-        star: value,
-        price_gte: 100,
-        price_lte: isPrice,
-        review: isReview,
-        _sort: isValueName,
-        _order: isValueOrder,
-      })
-    );
+    const updatedParams = {
+      ...params,
+      _page: isPage,
+      star: value,
+      price_gte: 100,
+      price_lte: isPrice,
+      review: isReview,
+      _sort: isValueName,
+      _order: isValueOrder,
+    };
+
+    dispatch(setParams(updatedParams));
+    dispatch(getProductSaga(updatedParams));
+  };
+
+  const handleChangePrice = (price) => {
+    setIsPrice(price.slice(1));
   };
 
   const onChangeFacilities = (value) => {

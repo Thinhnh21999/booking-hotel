@@ -10,7 +10,7 @@ export default function Card(props) {
       <div className="w-full">
         <div className="bg-white rounded-2xl shadow-custom">
           <div className="overflow-hidden rounded-t-2xl">
-            <Link to={`/hotel/${id}`}>
+            <Link to={`/detail-hotel/${nameHotel}`}>
               <img
                 className="w-full rounded-t-2xl hover:scale-110 transition-all duration-300 ease-in-out transform"
                 src={image}
@@ -20,7 +20,7 @@ export default function Card(props) {
           </div>
           <div className="p-5">
             <div>
-              <div>
+              <div className="mb-[5px]">
                 <Rate
                   disabled
                   defaultValue={star}
@@ -30,8 +30,8 @@ export default function Card(props) {
                   }}
                 />
               </div>
-              <div>
-                <Link to={`/hotel/${id}`}>
+              <div className="mb-[5px]">
+                <Link to={`/detail-hotel/${nameHotel}`}>
                   <h2 className="hover:text-primary font-bold text-lg">
                     {nameHotel}
                   </h2>
@@ -40,12 +40,14 @@ export default function Card(props) {
               <p className="text-p">{location}</p>
             </div>
             <div className="mt-[15px] pt-[15px] border-t border-solid border-[#dedede]">
-              <div className="flex items-center mb-2.5">
+              <div className="block mb-2.5">
                 <span className="text-[14px] px-1.5 py-1 bg-[#f9fbff] text-[#3B71FE] font-bold rounded-[5px] border border-solid border-[#b8ccff] mr-3 ">
                   5 <span className="text-[#3B71FE]"> / </span> 5
                 </span>
                 <span className="text-[14px] font-bold mr-[5px]">{review}</span>
-                <span className="text-[14px] text-p">(3 Reviews)</span>
+                <span className="text-[14px] text-p whitespace-normal">
+                  (3 Reviews)
+                </span>
               </div>
               <div className="flex items-center">
                 <span className="text-p mr-[5px]">From: </span>

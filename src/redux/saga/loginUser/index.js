@@ -4,7 +4,7 @@ import { loginUsers } from "../../../services/fetch";
 import { setLocalLogin } from "../../../until/loginLocal";
 import { commonLogin, setAuth } from "../../slice/userSlice";
 
-function* loginUserSaga(action) {
+function* loginUser(action) {
   try {
     const result = yield call(loginUsers, action.payload);
     yield put(setAuth(true));
@@ -17,6 +17,6 @@ function* loginUserSaga(action) {
   }
 }
 
-export default function* watchLoginUserSaga() {
-  yield takeEvery(commonLogin.type, loginUserSaga);
+export default function* watchLoginUser() {
+  yield takeEvery(commonLogin.type, loginUser);
 }

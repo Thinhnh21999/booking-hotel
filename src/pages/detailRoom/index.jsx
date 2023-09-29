@@ -17,11 +17,10 @@ import { commonBookRoomSg } from "../../redux/slice/bookRoomSlice";
 import { setIsOpenModal } from "../../redux/slice/userSlice";
 import openNotification from "../../component/notification";
 import {
-  getLocalCheckInOut,
+  getLocalCheckIn,
   getLocalLogin,
-  getLocalNumberGuests,
   setLocalBookRoom,
-  setLocalCheckInOut,
+  setLocalCheckIn,
 } from "../../until/local/local.js";
 
 import size from "../../assets/svgs/size.svg";
@@ -48,23 +47,21 @@ import * as styled from "./style.js";
 export default function DetailRoom(props) {
   const { hotels } = props;
   const [dates, setDates] = useState({
-    checkin: new Date(getLocalCheckInOut().checkIn),
+    checkin: new Date(getLocalCheckIn().checkIn),
 
-    checkout: new Date(getLocalCheckInOut().checkOut),
+    checkout: new Date(getLocalCheckIn().checkOut),
   });
   const checkIn = dates.checkin;
   const checkOut = dates.checkout;
   const [openOne, setOpenOne] = useState(true);
   const [isLoader, setIsLoader] = useState(false);
   const [errors, setErrors] = useState([]);
-  const [numberRooms, setNumberRooms] = useState(
-    getLocalNumberGuests().numberRooms
-  );
+  const [numberRooms, setNumberRooms] = useState(getLocalCheckIn().numberRooms);
   const [numberAdults, setNumberAdults] = useState(
-    getLocalNumberGuests().numberAdults
+    getLocalCheckIn().numberAdults
   );
   const [numberChildren, setNumberChildren] = useState(
-    getLocalNumberGuests().numberChildren
+    getLocalCheckIn().numberChildren
   );
   const dispatch = useDispatch();
   const history = useHistory();
@@ -83,8 +80,14 @@ export default function DetailRoom(props) {
   }, []);
 
   useEffect(() => {
-    setLocalCheckInOut({ checkIn, checkOut });
-  }, [checkIn, checkOut]);
+    setLocalCheckIn({
+      checkIn,
+      checkOut,
+      numberAdults,
+      numberChildren,
+      numberRooms,
+    });
+  }, [checkIn, checkOut, numberAdults, numberChildren, numberRooms]);
 
   const hotelItem = hotels?.find((hotel) => hotel.nameHotel === nameHotel);
   const roomItem = hotelItem?.rooms?.find((room) => room.nameRoom === nameRoom);

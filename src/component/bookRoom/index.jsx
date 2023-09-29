@@ -5,7 +5,6 @@ import moment from "moment/moment";
 import "react-responsive-calendar-picker/dist/index.css";
 import * as styled from "./styled.js";
 import { useClickOutside } from "../../until/clickOutside/clickOutside.js";
-import { setLocalNumberGuests } from "../../until/local/local.js";
 
 export default function Booking(props) {
   const {
@@ -45,14 +44,12 @@ export default function Booking(props) {
             "DD/MM/YYYY"
           )
         : "",
-      rooms: numberRooms,
-      adults: numberAdults,
-      children: numberChildren,
+      numberRooms: numberRooms,
+      numberAdults: numberAdults,
+      numberChildren: numberChildren,
       totalPrice: totalPrice,
       numberOffNight: numberOffNight,
     });
-
-    setLocalNumberGuests({ numberAdults, numberChildren, numberRooms });
   }, [
     checkIn,
     checkOut,
@@ -109,13 +106,19 @@ export default function Booking(props) {
         >
           <h2 className="font-medium">Guests</h2>
           <div className="flex items-center">
-            <Form.Item style={{ margin: "0" }} name="rooms">
+            <Form.Item style={{ margin: "0" }} name="numberRooms">
               <span className="text-gray">{numberRooms} room,</span>
             </Form.Item>
-            <Form.Item style={{ margin: "0", display: "none" }} name="adults">
+            <Form.Item
+              style={{ margin: "0", display: "none" }}
+              name="numberAdults"
+            >
               <span>{numberAdults}</span>
             </Form.Item>
-            <Form.Item style={{ margin: "0", display: "none" }} name="children">
+            <Form.Item
+              style={{ margin: "0", display: "none" }}
+              name="numberChildren"
+            >
               <span>{numberChildren}</span>
             </Form.Item>
             <span className="text-gray ml-1">

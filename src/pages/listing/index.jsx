@@ -14,6 +14,7 @@ import list_category from "../../assets/svgs/list_category.svg";
 import list_menu from "../../assets/svgs/list_menu.svg";
 import filter from "../../assets/svgs/filter.svg";
 import * as styled from "./style.js";
+import { clearLocalCheckIn, getLocalCheckIn } from "../../until/local/local";
 
 export default function Listing(props) {
   const hotels = props.hotels;
@@ -51,6 +52,7 @@ export default function Listing(props) {
       getHotelSaga({
         _page: 1,
         _limit: 12,
+        q: getLocalCheckIn()?.location,
       })
     );
     window.scrollTo(0, 0);
@@ -69,6 +71,7 @@ export default function Listing(props) {
       star: isStar,
       _sort: isValueName,
       _order: isValueOrder,
+      q: getLocalCheckIn()?.location,
     };
 
     dispatch(setLoading(true));
@@ -98,6 +101,7 @@ export default function Listing(props) {
       star: isStar,
       _sort: isValueName,
       _order: isValueOrder,
+      q: getLocalCheckIn()?.location,
     };
 
     dispatch(setLoading(true));
@@ -122,6 +126,7 @@ export default function Listing(props) {
       star: isStar,
       _sort: isValueName,
       _order: isValueOrder,
+      q: getLocalCheckIn()?.location,
     };
 
     dispatch(setLoading(true));
@@ -146,6 +151,7 @@ export default function Listing(props) {
       review: isReview,
       _sort: isValueName,
       _order: isValueOrder,
+      q: getLocalCheckIn()?.location,
     };
 
     dispatch(setLoading(true));
@@ -216,6 +222,7 @@ export default function Listing(props) {
         price_lte: isPrice,
         review: isReview,
         star: isStar,
+        q: getLocalCheckIn()?.location,
       })
     );
 
@@ -229,6 +236,7 @@ export default function Listing(props) {
         price_lte: isPrice,
         review: isReview,
         star: isStar,
+        q: getLocalCheckIn()?.location,
       })
     );
   };

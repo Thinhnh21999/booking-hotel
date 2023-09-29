@@ -10,9 +10,10 @@ import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 export default function Checkout() {
   const bookRoom = getLocalBookRoom();
   const {
-    rooms,
-    adults,
+    numberRooms,
+    numberAdults,
     numberOffNight,
+    numberChildren,
     checkIn,
     checkOut,
     nameRoom,
@@ -143,11 +144,15 @@ export default function Checkout() {
                         </li>
                         <li className="flex justify-between mb-3.5">
                           <span className="text-gray">Adults</span>
-                          <span>{adults}</span>
+                          <span>{numberAdults}</span>
+                        </li>
+                        <li className="flex justify-between mb-3.5">
+                          <span className="text-gray">Children</span>
+                          <span>{numberChildren}</span>
                         </li>
                         <li className="flex justify-between mb-3.5">
                           <span className="text-gray">Room</span>
-                          <span>{rooms}</span>
+                          <span>{numberRooms}</span>
                         </li>
                       </ul>
                     </li>

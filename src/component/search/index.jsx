@@ -1,22 +1,35 @@
 import { useEffect, useRef, useState } from "react";
 import React, { Component } from "react";
 import { Form, Input, Button } from "antd";
-import "react-responsive-calendar-picker/dist/index.css";
+import moment from "moment";
+import { useClickOutside } from "../../until/clickOutside/clickOutside";
+import {
+  clearLocalCheckIn,
+  getLocalCheckIn,
+  setLocalCheckIn,
+} from "../../until/local/local";
+import {
+  useHistory,
+  useLocation,
+} from "react-router-dom/cjs/react-router-dom.min";
 
+import "react-responsive-calendar-picker/dist/index.css";
 import MapSvg from "../../assets/svgs/map.svg";
 import ArrowSvg from "../../assets/svgs/arrowRight.svg";
 import CalendarSvg from "../../assets/svgs/calendar.svg";
 import UsersSvg from "../../assets/svgs/users.svg";
 import { SearchOutlined } from "@ant-design/icons";
 import * as styled from "./style.js";
-import moment from "moment";
-import { useClickOutside } from "../../until/clickOutside/clickOutside";
+import { useDispatch } from "react-redux";
+import { setLoading } from "../../redux/slice/loadingSlice";
+import { getHotelSaga } from "../../redux/slice/hotelSlice";
 
 export default function Search(props) {
+  const localCheckIn = getLocalCheckIn();
   const [dates, setDates] = useState({
-    checkin: new Date(),
+    checkin: new Date(localCheckIn?.checkIn),
 
-    checkout: new Date(),
+    checkout: new Date(localCheckIn?.checkOut),
   });
   const [isOpenCalendar, setIsOpenCalendar] = useState(false);
   const [isOpen, setIsOpen] = useState({
@@ -50,25 +63,35 @@ export default function Search(props) {
     },
   ];
   const [isLocation, setIsLocation] = useState(locationOption);
-  const [currentInput, setCurrentInput] = useState("");
-  const [isNumberRooms, setIsNumberRooms] = useState(1);
-  const [isNumberAdults, setIsNumberAdults] = useState(1);
-  const [isNumberChildren, setIsNumberChildren] = useState(0);
+  const [currentInput, setCurrentInput] = useState(() =>
+    localCheckIn?.location ? localCheckIn?.location : ""
+  );
+  const [isNumberRooms, setIsNumberRooms] = useState(() =>
+    localCheckIn?.numberRooms > 0 ? localCheckIn?.numberRooms : 1
+  );
+  const [isNumberAdults, setIsNumberAdults] = useState(() =>
+    localCheckIn?.numberAdults > 0 ? localCheckIn?.numberAdults : 1
+  );
+  const [isNumberChildren, setIsNumberChildren] = useState(() =>
+    localCheckIn?.numberChildren > 0 ? localCheckIn?.numberChildren : 0
+  );
   const [form] = Form.useForm();
   const refSearch = useRef();
   const refGuests = useRef();
+  const history = useHistory();
+  const location = useLocation();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     // Kiểm tra nếu biến state đã thay đổi (ví dụ: sau khi nhận được dữ liệu từ nguồn khác),
     // thì mới cập nhật giá trị của các trường trong biểu mẫu.
     form.setFieldsValue({
-      "check-in": moment(dates.checkin, "ddd MMM DD YYYY").format("DD/MM/YYYY"),
-      "check-out": moment(dates.checkout, "ddd MMM DD YYYY").format(
-        "DD/MM/YYYY"
-      ),
+      checkIn: moment(dates.checkin, "ddd MMM DD YYYY").format("MM/DD/YYYY"),
+      checkOut: moment(dates.checkout, "ddd MMM DD YYYY").format("MM/DD/YYYY"),
       location: currentInput,
-      rooms: isNumberRooms,
-      guests: isNumberAdults + isNumberChildren,
+      numberRooms: isNumberRooms,
+      numberAdults: isNumberAdults,
+      numberChildren: isNumberChildren,
     });
   }, [dates, currentInput, isNumberRooms, isNumberAdults, isNumberChildren]);
 
@@ -113,8 +136,42 @@ export default function Search(props) {
     setIsOpen({ ...isOpen, isOpenSearch: false });
   };
 
-  const handleOnFinishSearch = (e) => {
-    console.log(e);
+  const handleOnFinishSearch = async (e) => {
+    try {
+      setLocalCheckIn(e);
+      if (location.pathname !== "/listing") {
+        history.push("/listing");
+        dispatch(setLoading(true));
+
+        await dispatch(
+          getHotelSaga({
+            _page: 1,
+            _limit: 12,
+            q: getLocalCheckIn()?.location,
+          })
+        );
+
+        setTimeout(() => {
+          dispatch(setLoading(false));
+        }, 2000);
+      } else {
+        dispatch(setLoading(true));
+
+        await dispatch(
+          getHotelSaga({
+            _page: 1,
+            _limit: 12,
+            q: getLocalCheckIn()?.location,
+          })
+        );
+        setTimeout(() => {
+          dispatch(setLoading(false));
+        }, 2000);
+      }
+    } catch (error) {
+      console.log(error);
+      dispatch(setLoading(false));
+    }
   };
 
   return (
@@ -155,12 +212,20 @@ export default function Search(props) {
             <div className="absolute bg-white top-0 left-0 translate-y-[82px] z-[999] w-full lg:max-w-[360px] py-[30px] px-[10px] mt-4 border-line shadow-custom rounded-2xl">
               <ul className="text-left max-h-[333px] scroll-smooth overflow-auto">
                 <li className="pe-[30px] ps-[20px]">
-                  <span className="block font-medium hover pb-5 mb-3 border-bottom">
+                  <span
+                    onClick={() => setCurrentInput("")}
+                    className="block font-medium hover pb-5 mb-3 border-bottom"
+                  >
                     Popular destinations
                   </span>
                 </li>
                 <li className="pe-[30px] ps-[20px] py-2">
-                  <span className="block hover text-gray">United States</span>
+                  <span
+                    onClick={() => setCurrentInput("")}
+                    className="block hover text-gray"
+                  >
+                    United States
+                  </span>
                 </li>
                 {isLocation.map((item) => (
                   <li className="flex flex-col" key={item.name}>
@@ -221,15 +286,15 @@ export default function Search(props) {
                     ? moment(
                         dates.checkin.toDateString(),
                         "ddd MMM DD YYYY"
-                      ).format("DD/MM/YYYY")
+                      ).format("MM/DD/YYYY")
                     : "Add date"}
                 </span>
               </div>
             </div>
-            <Form.Item name="check-in" className="hidden">
+            <Form.Item name="checkIn" className="hidden">
               <Input
                 value={moment(dates.checkin, "ddd MMM DD YYYY").format(
-                  "DD/MM/YYYY"
+                  "MM/DD/YYYY"
                 )}
               />
             </Form.Item>
@@ -244,15 +309,15 @@ export default function Search(props) {
                     ? moment(
                         dates.checkout.toDateString(),
                         "ddd MMM DD YYYY"
-                      ).format("DD/MM/YYYY")
+                      ).format("MM/DD/YYYY")
                     : "Add date"}
                 </span>
               </div>
             </div>
-            <Form.Item name="check-out" className="hidden">
+            <Form.Item name="checkOut" className="hidden">
               <Input
                 value={moment(dates.checkout, "ddd MMM DD YYYY").format(
-                  "DD/MM/YYYY"
+                  "MM/DD/YYYY"
                 )}
               />
             </Form.Item>
@@ -275,14 +340,17 @@ export default function Search(props) {
               <span className="font-semibold text-base">Guests</span>
               <div>
                 <span className="text-p">{isNumberRooms} room</span>,
-                <Form.Item name="rooms" className="hidden">
+                <Form.Item name="numberRooms" className="hidden">
                   <Input value={isNumberRooms} />
                 </Form.Item>
                 <span className="text-p ml-1">
                   {isNumberAdults + isNumberChildren} guest
                 </span>
-                <Form.Item name="guests" className="hidden">
-                  <Input value={isNumberAdults + isNumberChildren} />
+                <Form.Item name="numberAdults" className="hidden">
+                  <Input value={isNumberAdults} />
+                </Form.Item>
+                <Form.Item name="numberChildren" className="hidden">
+                  <Input value={isNumberChildren} />
                 </Form.Item>
               </div>
             </div>

@@ -35,12 +35,13 @@ import userSvg from "../../assets/svgs/user.svg";
 import LikeSvg from "../../assets/svgs/like.svg";
 
 import * as styled from "./style";
-import { setLocalCheckInOut } from "../../until/local/local.js";
+import { getLocalCheckIn, setLocalCheckIn } from "../../until/local/local.js";
 
 export default function DetailHotel(props) {
   const hotels = props.hotels;
   const paramsReviews = props.paramsReviews;
   const reviews = props.reviews;
+  const localCheckIn = getLocalCheckIn();
   const [isLoading, setIsLoading] = useState(false);
   const [isOpenReview, setIsOpenReview] = useState(false);
   const [showPriceRoom, setShowPriceRoom] = useState(false);
@@ -51,15 +52,21 @@ export default function DetailHotel(props) {
     // checkin: moment().toDate(), // Set ngày hôm nay
 
     // checkout: moment().add(1, "days").toDate(), // Set ngày mai
-    checkin: new Date(),
+    checkin: new Date(localCheckIn?.checkIn),
 
-    checkout: new Date(),
+    checkout: new Date(localCheckIn?.checkOut),
   });
   const checkIn = dates.checkin;
   const checkOut = dates.checkout;
-  const [numberRooms, setNumberRooms] = useState(1);
-  const [numberAdults, setNumberAdults] = useState(1);
-  const [numberChildren, setNumberChildren] = useState(0);
+  const [numberRooms, setNumberRooms] = useState(() =>
+    localCheckIn?.numberRooms > 0 ? localCheckIn?.numberRooms : 1
+  );
+  const [numberAdults, setNumberAdults] = useState(() =>
+    localCheckIn?.numberAdults > 0 ? localCheckIn?.numberAdults : 1
+  );
+  const [numberChildren, setNumberChildren] = useState(() =>
+    localCheckIn?.numberChildren > 0 ? localCheckIn?.numberChildren : 0
+  );
   const [form] = Form.useForm();
   const [formMessages] = Form.useForm();
   const dispatch = useDispatch();
@@ -126,8 +133,14 @@ export default function DetailHotel(props) {
   const numberOffNight = moment(checkOut).diff(moment(checkIn), "days");
 
   useEffect(() => {
-    setLocalCheckInOut({ checkIn, checkOut });
-  }, [checkIn, checkOut]);
+    setLocalCheckIn({
+      checkIn,
+      checkOut,
+      numberAdults,
+      numberChildren,
+      numberRooms,
+    });
+  }, [checkIn, checkOut, numberAdults, numberChildren, numberRooms]);
 
   const handleCheckRoom = () => {
     const timeoutId = setTimeout(() => {

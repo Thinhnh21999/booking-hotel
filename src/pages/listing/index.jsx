@@ -1,22 +1,22 @@
 import { useState, useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
-import { getProductSaga, setParams } from "../../../redux/slice/productSlice";
 import { Slider, Rate, Form, Dropdown, Radio } from "antd";
-import Search from "../../../component/search";
-import Card from "../../../component/card";
+import { getHotelSaga, setParams } from "../../redux/slice/hotelSlice";
+import { setLoading } from "../../redux/slice/loadingSlice";
+import Search from "../../component/search";
+import Card from "../../component/card";
+import { debounce } from "lodash";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
-import DropDownSvg from "../../../assets/svgs/dropdown.svg";
-import list_category from "../../../assets/svgs/list_category.svg";
-import list_menu from "../../../assets/svgs/list_menu.svg";
-import filter from "../../../assets/svgs/filter.svg";
+import DropDownSvg from "../../assets/svgs/dropdown.svg";
+import list_category from "../../assets/svgs/list_category.svg";
+import list_menu from "../../assets/svgs/list_menu.svg";
+import filter from "../../assets/svgs/filter.svg";
 import * as styled from "./style.js";
-import { setLoading } from "../../../redux/slice/loadingSlice";
-import { debounce } from "lodash";
 
 export default function Listing(props) {
-  const products = props.products;
+  const hotels = props.hotels;
   const params = props.params;
   const locationHotel = props.locationHotel;
   const [current, setCurrent] = useState(1);
@@ -48,7 +48,7 @@ export default function Listing(props) {
 
   useEffect(() => {
     dispatch(
-      getProductSaga({
+      getHotelSaga({
         _page: 1,
         _limit: 12,
       })
@@ -73,7 +73,7 @@ export default function Listing(props) {
 
     dispatch(setLoading(true));
     dispatch(setParams(updatedParams));
-    dispatch(getProductSaga(updatedParams));
+    dispatch(getHotelSaga(updatedParams));
     topRef.current.scrollIntoView({ behavior: "smooth" });
 
     setTimeout(() => {
@@ -102,7 +102,7 @@ export default function Listing(props) {
 
     dispatch(setLoading(true));
     dispatch(setParams(updatedParams));
-    dispatch(getProductSaga(updatedParams));
+    dispatch(getHotelSaga(updatedParams));
     topRef.current.scrollIntoView({ behavior: "smooth" });
 
     setTimeout(() => {
@@ -126,7 +126,7 @@ export default function Listing(props) {
 
     dispatch(setLoading(true));
     dispatch(setParams(updatedParams));
-    dispatch(getProductSaga(updatedParams));
+    dispatch(getHotelSaga(updatedParams));
     topRef.current.scrollIntoView({ behavior: "smooth" });
 
     setTimeout(() => {
@@ -150,7 +150,7 @@ export default function Listing(props) {
 
     dispatch(setLoading(true));
     dispatch(setParams(updatedParams));
-    dispatch(getProductSaga(updatedParams));
+    dispatch(getHotelSaga(updatedParams));
     topRef.current.scrollIntoView({ behavior: "smooth" });
 
     setTimeout(() => {
@@ -220,7 +220,7 @@ export default function Listing(props) {
     );
 
     dispatch(
-      getProductSaga({
+      getHotelSaga({
         ...params,
         _sort: valueName,
         _order: valueOrder,
@@ -310,7 +310,7 @@ export default function Listing(props) {
       dispatch(setLoading(false));
     }, 2000);
     dispatch(
-      getProductSaga({
+      getHotelSaga({
         _page: 1,
         _limit: 12,
       })
@@ -574,7 +574,7 @@ export default function Listing(props) {
             <div className="w-full lg:w-3/4 lg:ml-6">
               <div className="flex justify-between items-center text-gray mb-10">
                 <p className="hidden lg:block">
-                  {products.length} hotels found
+                  {hotels.length} hotels found
                   <span
                     onClick={() => handleReset()}
                     className="text-primary ml-3 cursor-pointer"
@@ -633,10 +633,10 @@ export default function Listing(props) {
                   </div>
                 </div>
               </div>
-              {products.length !== 0 ? (
+              {hotels.length !== 0 ? (
                 <>
                   <div className="mb-[60px] grid xl:grid-cols-3 md:grid-cols-2 xs:grid-cols-1 gap-6">
-                    {products.map((item) => (
+                    {hotels.map((item) => (
                       <Card key={item.id} item={item} />
                     ))}
                   </div>

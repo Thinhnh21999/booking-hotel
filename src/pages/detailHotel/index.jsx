@@ -1,7 +1,7 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { useEffect, useState, useMemo, useRef } from "react";
 import { useDispatch } from "react-redux";
-import { getProductSaga, setParams } from "../../redux/slice/productSlice";
+import { getHotelSaga, setParams } from "../../redux/slice/hotelSlice";
 import { Rate, Col, Row, message } from "antd";
 import Card from "../../component/card/index.jsx";
 import CardRoom from "../../component/cardRoom";
@@ -23,7 +23,6 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 
 import star from "../../assets/svgs/star.svg";
-import heart from "../../assets/svgs/heart.svg";
 import UpArrow from "../../assets/svgs/upArrow.svg";
 import airport from "../../assets/svgs/airport.svg";
 import fitness from "../../assets/svgs/fitness.svg";
@@ -36,10 +35,10 @@ import userSvg from "../../assets/svgs/user.svg";
 import LikeSvg from "../../assets/svgs/like.svg";
 
 import * as styled from "./style";
-import { setLocalCheckInOut } from "../../until/local";
+import { setLocalCheckInOut } from "../../until/local/local.js";
 
 export default function DetailHotel(props) {
-  const products = props.products;
+  const hotels = props.hotels;
   const paramsReviews = props.paramsReviews;
   const reviews = props.reviews;
   const [isLoading, setIsLoading] = useState(false);
@@ -70,7 +69,7 @@ export default function DetailHotel(props) {
 
   useEffect(() => {
     dispatch(
-      getProductSaga({
+      getHotelSaga({
         _limit: 24,
       })
     );
@@ -79,7 +78,7 @@ export default function DetailHotel(props) {
     window.scrollTo(0, 0);
   }, []);
 
-  const hotelItem = products?.find((hotel) => hotel.nameHotel === nameHotel);
+  const hotelItem = hotels?.find((hotel) => hotel.nameHotel === nameHotel);
 
   const handleReviewComment = (values) => {
     const reviewData = {
@@ -900,7 +899,7 @@ export default function DetailHotel(props) {
               },
             }}
           >
-            {products.slice(0, 8).map((item) => (
+            {hotels.slice(0, 8).map((item) => (
               <SwiperSlide key={item.id}>
                 <Card item={item} />
               </SwiperSlide>

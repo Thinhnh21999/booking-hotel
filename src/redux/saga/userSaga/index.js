@@ -1,6 +1,6 @@
 import { put, call, takeEvery } from "redux-saga/effects";
 import openNotification from "../../../component/notification";
-import { setLocalLogin } from "../../../until/local";
+import { setLocalLogin } from "../../../until/local/local.js";
 import { registerUsers, loginUsers } from "../../../services/fetch";
 import {
   commonRegister,

@@ -12,19 +12,19 @@ import * as styled from "./style.js";
 
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { getProductSaga } from "../../redux/slice/productSlice";
+import { getHotelSaga } from "../../redux/slice/hotelSlice";
 import { getLocationSaga } from "../../redux/slice/locationSlice";
 
 export default function Home(props) {
   const dispatch = useDispatch();
-  const products = props.products;
+  const hotels = props.hotels;
   const locationHotel = props.locationHotel;
 
   useEffect(() => {
     dispatch(getLocationSaga());
 
     dispatch(
-      getProductSaga({
+      getHotelSaga({
         _page: 1,
         _limit: 6,
       })
@@ -124,7 +124,7 @@ export default function Home(props) {
           <div className="lg:container lg:mx-auto px-5">
             <h2 className="title">Plan your next staycation</h2>
             <div className=" grid xl:grid-cols-4 md:grid-cols-2 xs:grid-cols-1 gap-6">
-              {products.slice(0, 4).map((item) => (
+              {hotels?.slice(0, 4).map((item) => (
                 <Card key={item.id} item={item} />
               ))}
             </div>
@@ -169,7 +169,7 @@ export default function Home(props) {
                 },
               }}
             >
-              {products.map((item) => (
+              {hotels?.map((item) => (
                 <SwiperSlide key={item.id}>
                   <Card item={item} />
                 </SwiperSlide>

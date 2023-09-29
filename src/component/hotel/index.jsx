@@ -20,7 +20,7 @@ import Feedback from "../feedback";
 import Button from "../buttonShare/index";
 
 export default function Hotel(props) {
-  const { products, id } = props;
+  const { hotels, id } = props;
 
   return (
     <>
@@ -104,16 +104,16 @@ export default function Hotel(props) {
             <div className="flex justify-between flex-wrap">
               <div>
                 <div>
-                  <Rate disabled defaultValue={products.star} />
+                  <Rate disabled defaultValue={hotels.star} />
                 </div>
-                <h1 className="text-4xl font-bold">{products.nameHotel}</h1>
+                <h1 className="text-4xl font-bold">{hotels.nameHotel}</h1>
                 <div className="flex my-2">
                   <div className="text-primary font-bold border-solid border-[1px] border-primary pg-[#F9FBFF] rounded-md px-2 py-[1px]">
                     5 <span>/</span> 5
                   </div>
-                  <span className="font-bold px-4">{products.text}</span>
+                  <span className="font-bold px-4">{hotels.text}</span>
                   <p className="text-primary">(3 Reviews)</p>
-                  <span className="text-gray pl-5">{products.location}</span>
+                  <span className="text-gray pl-5">{hotels.location}</span>
                 </div>
               </div>
               <div className="flex items-center">
@@ -357,7 +357,7 @@ export default function Hotel(props) {
                   <p className="text-gray py-4">
                     From:
                     <span className="font-bold text-black">
-                      ${products.price}
+                      ${hotels.price}
                     </span>
                     / night
                   </p>

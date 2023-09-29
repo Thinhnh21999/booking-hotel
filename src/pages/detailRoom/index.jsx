@@ -10,8 +10,19 @@ import {
 import "react-responsive-calendar-picker/dist/index.css";
 import ButtonShare from "../../component/buttonShare";
 import CardRoom from "../../component/cardRoom";
-import { getProductSaga } from "../../redux/slice/productSlice";
+import { getHotelSaga } from "../../redux/slice/hotelSlice";
 import BookRoom from "../../component/bookRoom";
+import { Rate, Form, Button } from "antd";
+import { commonBookRoomSg } from "../../redux/slice/bookRoomSlice";
+import { setIsOpenModal } from "../../redux/slice/userSlice";
+import openNotification from "../../component/notification";
+import {
+  getLocalCheckInOut,
+  getLocalLogin,
+  getLocalNumberGuests,
+  setLocalBookRoom,
+  setLocalCheckInOut,
+} from "../../until/local/local.js";
 
 import size from "../../assets/svgs/size.svg";
 import adults from "../../assets/svgs/adults.svg";
@@ -33,20 +44,9 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import moment from "moment";
 import * as styled from "./style.js";
-import {
-  getLocalCheckInOut,
-  getLocalLogin,
-  getLocalNumberGuests,
-  setLocalBookRoom,
-  setLocalCheckInOut,
-} from "../../until/local";
-import { Rate, Form, Button } from "antd";
-import { commonBookRoomSg } from "../../redux/slice/bookRoomSlice";
-import { setIsOpenModal } from "../../redux/slice/userSlice";
-import openNotification from "../../component/notification";
 
 export default function DetailRoom(props) {
-  const { products } = props;
+  const { hotels } = props;
   const [dates, setDates] = useState({
     checkin: new Date(getLocalCheckInOut().checkIn),
 
@@ -75,7 +75,7 @@ export default function DetailRoom(props) {
 
   useEffect(() => {
     dispatch(
-      getProductSaga({
+      getHotelSaga({
         _limit: 24,
       })
     );
@@ -86,7 +86,7 @@ export default function DetailRoom(props) {
     setLocalCheckInOut({ checkIn, checkOut });
   }, [checkIn, checkOut]);
 
-  const hotelItem = products?.find((hotel) => hotel.nameHotel === nameHotel);
+  const hotelItem = hotels?.find((hotel) => hotel.nameHotel === nameHotel);
   const roomItem = hotelItem?.rooms?.find((room) => room.nameRoom === nameRoom);
 
   const { location, image } = hotelItem || {};

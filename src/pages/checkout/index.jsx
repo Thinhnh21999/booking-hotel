@@ -4,7 +4,7 @@ import { Link } from "react-router-dom/cjs/react-router-dom";
 import MapSvg from "../../assets/svgs/map.svg";
 import DropdownSvg from "../../assets/svgs/arrow_down.svg";
 import * as styled from "./style.js";
-import { getLocalBookRoom } from "../../until/local";
+import { getLocalBookRoom } from "../../until/local/local.js";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 export default function Checkout() {

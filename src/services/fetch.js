@@ -9,7 +9,7 @@ export const loginUsers = (values) => {
   return restClientUser("post", "/auth/login", values, {});
 };
 
-export const getProducts = (params) => {
+export const getHotels = (params) => {
   return restClient("get", "/hotels", params, {});
 };
 

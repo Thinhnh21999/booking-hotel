@@ -5,7 +5,7 @@ import "./App.css";
 import Home from "./pages/home";
 import Contact from "./pages/about";
 import About from "./pages/contact";
-import Listing from "./pages/listing/Search_Popup_Map";
+import Listing from "./pages/listing";
 import DetailHotel from "./pages/detailHotel";
 import DetailRoom from "./pages/detailRoom";
 import Checkout from "./pages/checkout";
@@ -21,12 +21,12 @@ function App() {
   const loading = useSelector((state) => state.Loading.isLoading);
   const locationHotel = useSelector((state) => state.Locations.location);
   // ss trước và sau return ra giá trị hiện tại để giảm bớt reload
-  const { products, params } = useSelector(
-    (state) => state.Products,
-    (prevProducts, newProducts) => {
+  const { hotels, params } = useSelector(
+    (state) => state.Hotels,
+    (prevHotels, newHotels) => {
       return (
-        isEqual(prevProducts.params, newProducts.params) &&
-        prevProducts.reviews?.length === newProducts.reviews?.length
+        isEqual(prevHotels.params, newHotels.params) &&
+        prevHotels.reviews?.length === newHotels.reviews?.length
       );
     }
   );
@@ -61,7 +61,7 @@ function App() {
           exact
           path="/"
           loading={loading}
-          products={products}
+          hotels={hotels}
           params={params}
           locationHotel={locationHotel}
           Component={Home}
@@ -76,7 +76,7 @@ function App() {
           exact
           path="/listing"
           loading={loading}
-          products={products}
+          hotels={hotels}
           params={params}
           locationHotel={locationHotel}
           Component={Listing}
@@ -84,7 +84,7 @@ function App() {
         <DefaultRouter
           exact
           path="/detail-hotel/:nameHotel"
-          products={products}
+          hotels={hotels}
           paramsReviews={paramsReviews}
           reviews={reviews}
           loading={loading}
@@ -94,7 +94,7 @@ function App() {
           exact
           path="/detail-room/:nameHotel/:nameRoom"
           loading={loading}
-          products={products}
+          hotels={hotels}
           Component={DetailRoom}
         />
         <DefaultRouter

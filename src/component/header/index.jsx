@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import SignInOut from "../../component/signInOut";
-import { clearLocalLogin, getLocalLogin } from "../../until/local";
+import { clearLocalLogin, getLocalLogin } from "../../until/local/local.js";
 
 import { Link, useLocation } from "react-router-dom/cjs/react-router-dom.min";
 import PhoneSvg from "../../assets/svgs/phone.svg";

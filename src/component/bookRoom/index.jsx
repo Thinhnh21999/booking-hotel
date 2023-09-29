@@ -4,8 +4,8 @@ import moment from "moment/moment";
 
 import "react-responsive-calendar-picker/dist/index.css";
 import * as styled from "./styled.js";
-import { setLocalNumberGuests } from "../../until/local";
 import { useClickOutside } from "../../until/clickOutside/clickOutside.js";
+import { setLocalNumberGuests } from "../../until/local/local.js";
 
 export default function Booking(props) {
   const {

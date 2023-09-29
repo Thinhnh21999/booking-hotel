@@ -4,7 +4,7 @@ import {
   getBookRoom,
   postBookRoom,
 } from "../../../services/fetch";
-import { getLocalLogin } from "../../../until/local";
+import { getLocalLogin } from "../../../until/local/local.js";
 import {
   getBookRoomSg,
   setBookRoomSg,

@@ -1,7 +1,7 @@
 import createSagaMiddleware from "@redux-saga/core";
 import { configureStore } from "@reduxjs/toolkit";
 import UerReducer from "./slice/userSlice";
-import ProductsReducer from "./slice/productSlice";
+import HotelsReducer from "./slice/hotelSlice";
 import LocationsReducer from "./slice/locationSlice";
 import LoadingReducer from "./slice/loadingSlice";
 import ReviewsReducer from "./slice/reviewSlice";
@@ -13,7 +13,7 @@ const sagaMiddleware = createSagaMiddleware();
 export const store = configureStore({
   reducer: {
     Users: UerReducer,
-    Products: ProductsReducer,
+    Hotels: HotelsReducer,
     Locations: LocationsReducer,
     Loading: LoadingReducer,
     Reviews: ReviewsReducer,

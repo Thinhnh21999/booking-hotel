@@ -13,7 +13,7 @@ export default function DefaultRouter({
   locationHotel,
   paramsReviews,
   reviews,
-  products,
+  hotels,
   ...props
 }) {
   return (
@@ -25,7 +25,7 @@ export default function DefaultRouter({
             {loading ? <Loading /> : ""}
             <Header />
             <Component
-              products={products}
+              hotels={hotels}
               params={params}
               locationHotel={locationHotel}
               reviews={reviews}

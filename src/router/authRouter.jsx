@@ -10,7 +10,7 @@ import Footer from "../component/footer";
 import Anchor from "../component/anchor";
 import ScrollUp from "../component/scrollUp";
 import OpenNotification from "../component/notification";
-import { getLocalLogin } from "../until/local";
+import { getLocalLogin } from "../until/local/local.js";
 import { setIsOpenModal } from "../redux/slice/userSlice";
 import { useDispatch } from "react-redux";
 

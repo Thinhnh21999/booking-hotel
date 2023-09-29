@@ -1,9 +1,9 @@
 import React from "react";
-import "./style.css";
+import "../loading/style.css";
 
 export default function loading() {
   return (
-    <div className="overlay">
+    <div className="overlay !absolute">
       <svg className="pl" width="240" height="240" viewBox="0 0 240 240">
         <circle
           className="pl__ring pl__ring--a"

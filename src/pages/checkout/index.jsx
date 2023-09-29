@@ -1,53 +1,61 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Form, Input, Checkbox, message } from "antd";
 import { Link } from "react-router-dom/cjs/react-router-dom";
-import ScrollUp from "../../component/scrollUp";
-import Anchor from "../../component/anchor";
 import MapSvg from "../../assets/svgs/map.svg";
 import DropdownSvg from "../../assets/svgs/arrow_down.svg";
 import * as styled from "./style.js";
-const MyFormItemContext = React.createContext([]);
-const { TextArea } = Input;
-
-function toArr(str) {
-  return Array.isArray(str) ? str : [str];
-}
-const MyFormItemGroup = ({ prefix, children }) => {
-  const prefixPath = React.useContext(MyFormItemContext);
-  const concatPath = React.useMemo(
-    () => [...prefixPath, ...toArr(prefix)],
-    [prefixPath, prefix]
-  );
-  return (
-    <MyFormItemContext.Provider value={concatPath}>
-      {children}
-    </MyFormItemContext.Provider>
-  );
-};
-const MyFormItem = ({ name, ...props }) => {
-  const prefixPath = React.useContext(MyFormItemContext);
-  const concatName =
-    name !== undefined ? [...prefixPath, ...toArr(name)] : undefined;
-  return <Form.Item name={concatName} {...props} />;
-};
-
-const handleChange = (value) => {};
+import { getLocalBookRoom } from "../../until/local";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 export default function Checkout() {
+  const bookRoom = getLocalBookRoom();
+  const {
+    rooms,
+    adults,
+    numberOffNight,
+    checkIn,
+    checkOut,
+    nameRoom,
+    location,
+    image,
+    nameHotel,
+    totalPrice,
+  } = bookRoom || {};
+  console.log(bookRoom);
   const [keyboard, setKeyboard] = useState(true);
   const [keyboardTwo, setKeyboardTwo] = useState(false);
   const [form] = Form.useForm();
+  const history = useHistory();
+
+  const MyFormItemContext = React.createContext([]);
+  const { TextArea } = Input;
+
+  function toArr(str) {
+    return Array.isArray(str) ? str : [str];
+  }
+  const MyFormItemGroup = ({ prefix, children }) => {
+    const prefixPath = React.useContext(MyFormItemContext);
+    const concatPath = React.useMemo(
+      () => [...prefixPath, ...toArr(prefix)],
+      [prefixPath, prefix]
+    );
+    return (
+      <MyFormItemContext.Provider value={concatPath}>
+        {children}
+      </MyFormItemContext.Provider>
+    );
+  };
+  const MyFormItem = ({ name, ...props }) => {
+    const prefixPath = React.useContext(MyFormItemContext);
+    const concatName =
+      name !== undefined ? [...prefixPath, ...toArr(name)] : undefined;
+    return <Form.Item name={concatName} {...props} />;
+  };
+
+  const handleChange = (value) => {};
 
   const onFinish = (value) => {
-    form
-      .validateFields()
-      .then(() => {
-        console.log(value);
-      })
-      .catch((error) => {
-        console.log(error);
-        message.error("Vui lòng điền đầy đủ thông tin");
-      });
+    form.validateFields();
   };
 
   const onFinishFailed = (error) => {
@@ -76,33 +84,36 @@ export default function Checkout() {
 
         <div className="lg:container lg:mx-auto px-5">
           <div className="mx-[-12px] mt-[60px] flex flex-wrap">
-            <div className="w-full lg:order-2 lg:w-4/12 px-3">
+            <div className="w-full relative lg:order-2 lg:w-4/12 px-3">
               <h3 className="title-checkout">Your Booking</h3>
-              <div className="py-[30px] mt-[30px] xl:mt-5 px-5 xl:px-[30px] border-line shadow-custom rounded-2xl">
+              <div className="lg:sticky lg:top-0 mb-10 py-[30px] mt-[30px] xl:mt-5 px-5 xl:px-[30px] border-line shadow-custom rounded-2xl">
                 <div className="flex mb-5 items-center">
-                  <Link className="w-[110px] mr-5" to="#">
+                  <Link
+                    className="w-[110px] mr-5 overflow-hidden rounded-2xl"
+                    to="#"
+                  >
                     <img
-                      className="w-full rounded-2xl"
-                      src="https://modtel.travelerwp.com/wp-content/uploads/2022/04/feature-4-140x110.png"
-                      alt=""
+                      className="w-full h-[80px] rounded-2xl hover:scale-110 transition-all duration-300 ease-in-out transform"
+                      src={image}
+                      alt="image hotel"
                     />
                   </Link>
 
                   <div>
-                    <h4 className="text-lg font-bold mb-2 leading-[26px]">
-                      <Link to="#">EnVision Hotel Boston</Link>
+                    <h4 className="text-lg font-bold mb-2 leading-[26px] cursor-pointer">
+                      {nameHotel}
                     </h4>
                     <div className="flex text-gray text-[14px]">
                       <img className="w-3 mr-1.5" src={MapSvg} alt=".." />
-                      Los Angeles
+                      {location}
                     </div>
                   </div>
                 </div>
 
                 <div className="flex justify-between pb-5 mb-5 border-bottom">
                   <span className="text-gray">Room Type:</span>
-                  <span>
-                    <Link to="#">Standard Room</Link>
+                  <span onClick={history.goBack} className="cursor-pointer">
+                    {nameRoom}
                   </span>
                 </div>
 
@@ -114,7 +125,7 @@ export default function Checkout() {
                     <li>
                       <span className="text-gray">Date</span>
                       <span className="flex justify-end items-center">
-                        05/17/2023 - 05/18/2023
+                        {checkIn}-{checkOut}
                         <Link className="text-primary ml-1" to="#">
                           Edit
                         </Link>
@@ -128,15 +139,15 @@ export default function Checkout() {
                       <ul>
                         <li className="flex justify-between mb-3.5">
                           <span className="text-gray">Number of Night</span>
-                          <span>1</span>
+                          <span>{numberOffNight}</span>
                         </li>
                         <li className="flex justify-between mb-3.5">
                           <span className="text-gray">Adults</span>
-                          <span>1</span>
+                          <span>{adults}</span>
                         </li>
                         <li className="flex justify-between mb-3.5">
                           <span className="text-gray">Room</span>
-                          <span>1</span>
+                          <span>{rooms}</span>
                         </li>
                       </ul>
                     </li>
@@ -163,25 +174,25 @@ export default function Checkout() {
                     Price details
                   </h4>
                   <div className="flex justify-between">
-                    <span className="text-gray">1 night</span>
-                    <span>€342,00 </span>
+                    <span className="text-gray">{numberOffNight} night</span>
+                    <span>{totalPrice}</span>
                   </div>
                 </div>
 
                 <div className="pb-5 mb-5 border-bottom">
                   <div className="flex justify-between">
                     <span>Subtotal</span>
-                    <span>€342,00 </span>
+                    <span>{totalPrice} </span>
                   </div>
                 </div>
 
                 <div>
                   <div className="flex justify-between">
-                    <h4 className="text-lg font-bold leading-[26px]">
+                    <h4 className="text-xl font-bold leading-[26px]">
                       Pay Amount
                     </h4>
-                    <span className="text-lg font-bold leading-[26px]">
-                      €342,00{" "}
+                    <span className="text-xl font-bold leading-[26px]">
+                      {totalPrice}{" "}
                     </span>
                   </div>
                 </div>

@@ -3,10 +3,10 @@ import axios from "axios";
 import openNotification from "../component/notification";
 import { baseUrl } from "../constants.js";
 import { createBrowserHistory } from "history";
-import { getLocalLogin } from "../until/loginLocal";
+import { getLocalLogin } from "../until/local";
 
 const history = createBrowserHistory();
-const token = getLocalLogin()?.token;
+const token = getLocalLogin()?.access_token;
 
 export default function restClient(method, url, params = {}, data = {}) {
   return axios({
@@ -14,7 +14,9 @@ export default function restClient(method, url, params = {}, data = {}) {
     url: `${baseUrl}${url}`,
     data,
     params,
-    headers: `Bearer ${token}`,
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
   })
     .then((res) => {
       return res;

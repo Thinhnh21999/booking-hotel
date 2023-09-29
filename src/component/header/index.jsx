@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import SignInOut from "../../component/signInOut";
-import { clearLocalLogin, getLocalLogin } from "../../until/loginLocal";
+import { clearLocalLogin, getLocalLogin } from "../../until/local";
 
-import { Link } from "react-router-dom/cjs/react-router-dom.min";
+import { Link, useLocation } from "react-router-dom/cjs/react-router-dom.min";
 import PhoneSvg from "../../assets/svgs/phone.svg";
 import EmailSvg from "../../assets/svgs/email.svg";
 import CartSvg from "../../assets/svgs/cart.svg";
@@ -11,22 +11,35 @@ import MenuSvg from "../../assets/svgs/menu.svg";
 import ArrowLeftSvg from "../../assets/svgs/arrowLeft.svg";
 import UserSvg from "../../assets/svgs/user.svg";
 import Logo from "../../assets/svgs/logo.svg";
+import TrashSvg from "../../assets/svgs/trash.svg";
 import * as styled from "./style.js";
 import { useDispatch, useSelector } from "react-redux";
-import { setAuth } from "../../redux/slice/userSlice";
+import { setAuth, setIsOpenModal } from "../../redux/slice/userSlice";
+import {
+  deleteBookRoomSg,
+  getBookRoomSg,
+} from "../../redux/slice/bookRoomSlice";
+import { useClickOutside } from "../../until/clickOutside/clickOutside";
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [isDropdownMenuItem, setIsDropdownMenuItem] = useState({
     isListing: false,
     isHotel: false,
-    isPages: false,
+    isCart: false,
     isUser: false,
   });
-
+  const refCart = useRef();
+  const refMenu = useRef();
+  const refUser = useRef();
   const dispatch = useDispatch();
   const isAuth = useSelector((state) => state.Users.isAuth);
+  const { bookRoom } = useSelector((state) => state.BookRoom);
   const userLocalLogin = getLocalLogin() || isAuth === true;
+
+  useEffect(() => {
+    dispatch(getBookRoomSg());
+  }, []);
 
   const handleOnclickMenu = () => {
     setIsOpen(!isOpen);
@@ -61,7 +74,31 @@ export default function Header() {
     });
   };
 
+  const handleClickOutsideCart = () => {
+    setIsDropdownMenuItem((prevState) => ({
+      ...prevState,
+      isCart: false,
+    }));
+  };
+
+  const handleClickOutsideUser = () => {
+    setIsDropdownMenuItem((prevState) => ({
+      ...prevState,
+      isUser: false,
+    }));
+  };
+
+  const handleClickOutsideMenu = () => {
+    setIsOpen(false);
+  };
+
+  useClickOutside(refCart, handleClickOutsideCart);
+  useClickOutside(refMenu, handleClickOutsideMenu);
+  useClickOutside(refUser, handleClickOutsideUser);
+
   const clearLocalLoginFC = () => {
+    window.location.reload();
+    dispatch(setIsOpenModal(false));
     dispatch(setAuth(false));
     clearLocalLogin();
   };
@@ -101,7 +138,8 @@ export default function Header() {
 
           <styled.DropdownMenu
             isOpen={isOpen}
-            className="flex h-screen absolute z-[999] behavior-smooth overflow-auto top-0 min-w-[320px] bg-white flex-col"
+            ref={refMenu}
+            className="flex fixed h-screen z-[999] behavior-smooth overflow-auto top-0 min-w-[320px] bg-white flex-col"
           >
             <span
               onClick={() => handleOnclickArrowLeft()}
@@ -111,7 +149,11 @@ export default function Header() {
             </span>
             <ul className=" px-5">
               <li>
-                <Link className="link-dropdown hover" to="#">
+                <Link
+                  onClick={() => setTimeout(() => window.location.reload(), 0)}
+                  className="link-dropdown hover"
+                  to="/"
+                >
                   HOME
                 </Link>
               </li>
@@ -134,7 +176,13 @@ export default function Header() {
                   className="px-2.5 hidden"
                 >
                   <li className="py-3 font-medium">
-                    <Link className="link-dropdown-item hover" to="/listing">
+                    <Link
+                      onClick={() =>
+                        setTimeout(() => window.location.reload(), 0)
+                      }
+                      className="link-dropdown-item hover"
+                      to="/listing"
+                    >
                       Search Popup Map
                     </Link>
                   </li>
@@ -190,7 +238,11 @@ export default function Header() {
           </Link>
           <ul className=" lg:flex hidden justify-between font-bold">
             <li className="">
-              <Link className="block hover py-[35px] ps-2.5 pe-6" to="/">
+              <Link
+                onClick={() => setTimeout(() => window.location.reload(), 0)}
+                className="block hover py-[35px] ps-2.5 pe-6"
+                to="/"
+              >
                 Home
               </Link>
             </li>
@@ -207,6 +259,9 @@ export default function Header() {
               <ul className="dropdown z-[-1]">
                 <li className="px-[30px]">
                   <Link
+                    onClick={() =>
+                      setTimeout(() => window.location.reload(), 0)
+                    }
                     className="py-[15px] font-medium block hover"
                     to="/listing"
                   >
@@ -220,36 +275,18 @@ export default function Header() {
                 </li>
               </ul>
             </styled.Dropdown>
-            <styled.Dropdown className="relative">
+
+            <li className="relative">
               <span className="flex hover py-[35px] ps-2.5 pe-6" to="#">
                 Hotel
-                <img className="w-4" src={DropdownSvg} alt="" />
               </span>
-              <ul className="dropdown z-[-1]">
-                <li className="px-[30px]">
-                  <Link
-                    className="py-[15px] font-medium block hover"
-                    to="detail-hotel/1"
-                  >
-                    Hotel Detail 1
-                  </Link>
-                </li>
-                <li className="px-[30px]">
-                  <Link
-                    className="py-[15px] font-medium block hover"
-                    to="detail-hotel/1"
-                  >
-                    Hotel Detail 2
-                  </Link>
-                </li>
-              </ul>
-            </styled.Dropdown>
+            </li>
 
-            <styled.Dropdown className="relative">
+            <li className="relative">
               <span className="flex hover py-[35px] ps-2.5 pe-6" to="#">
                 Pages
               </span>
-            </styled.Dropdown>
+            </li>
             <li className="">
               <Link className="flex  hover py-[35px] ps-2.5 pe-6" to="#">
                 Contact
@@ -267,23 +304,101 @@ export default function Header() {
               </span>
               <ul className="dropdown !min-w-[100px]">
                 <li className="px-[30px]">
-                  <Link className="py-[15px] font-medium block hover" to="#">
+                  <span className="py-[15px] cursor-pointer font-medium block hover">
                     USD
-                  </Link>
+                  </span>
                 </li>
                 <li className="px-[30px]">
-                  <Link className="py-[15px] font-medium block hover" to="#">
+                  <span className="py-[15px] cursor-pointer font-medium block hover">
                     AUD
-                  </Link>
+                  </span>
                 </li>
               </ul>
             </styled.Dropdown>
-            <li>
-              <div className="center lg:icon w-[44px] h-[44px] py-1 px-2.5 rounded-[50%] border-line shadow-custom">
+
+            <li ref={refCart} className="relative">
+              <button
+                onClick={() =>
+                  setIsDropdownMenuItem({
+                    ...isDropdownMenuItem,
+                    isCart: !isDropdownMenuItem.isCart,
+                  })
+                }
+                className="center relative lg:icon w-[44px] h-[44px] py-1 px-2.5 rounded-[50%] border-line shadow-custom"
+              >
                 <img className="w-5" src={CartSvg} alt=".." />
-              </div>
+                {bookRoom?.length > 0 && userLocalLogin ? (
+                  <span className="w-7 h-7 center absolute top-[-10px] right-[-10px] bg-red-500 text-white border-line rounded-full">
+                    {bookRoom?.length}
+                  </span>
+                ) : null}
+              </button>
+              {isDropdownMenuItem.isCart ? (
+                <div className="absolute min-w-[380px] z-[1000] bg-white top-[70px] right-0 px-[30px] py-[25px] border-line shadow-custom rounded-[12px]">
+                  <div className="font-semibold text-2xl pb-5 border-b border-[#dedede] border-solid">
+                    Your Cart
+                  </div>
+                  <div className="max-h-[220px] overflow-y-scroll">
+                    {bookRoom.length > 0 && userLocalLogin ? (
+                      bookRoom?.map((room, index) => {
+                        const { nameRoom, totalPrice, images, nameHotel } =
+                          room || {};
+                        return (
+                          <div key={index}>
+                            <div className="flex items-center mt-5 bg-[#f1f4f8]">
+                              <div className="w-[70px] h-[70px]">
+                                <img
+                                  className="h-full"
+                                  src={images}
+                                  alt="imageRoom"
+                                />
+                              </div>
+
+                              <div className="pl-2.5">
+                                <Link
+                                  to={`/detail-room/${nameHotel}/${nameRoom}`}
+                                  className="text-lg leading-3 font-semibold"
+                                >
+                                  {nameRoom}
+                                </Link>
+                                <div className="flex">
+                                  <span className="text-gray font-medium pr-1">
+                                    price:
+                                  </span>{" "}
+                                  <span className="text-primary font-medium">
+                                    {totalPrice}
+                                  </span>
+                                </div>
+                              </div>
+
+                              <button
+                                onClick={() =>
+                                  dispatch(deleteBookRoomSg(room.id))
+                                }
+                                className="w-5 mr-3 ml-auto"
+                              >
+                                <img src={TrashSvg} alt="trash" />
+                              </button>
+                            </div>
+                            <div className="border-b border-[#dedede] border-solid mt-5"></div>
+                          </div>
+                        );
+                      })
+                    ) : (
+                      <div className="font-semibold pt-5 text-yellow-400 pb-5 text-lg">
+                        Your cart is empty
+                      </div>
+                    )}
+                  </div>
+
+                  <button className="text-white uppercase bg-primary hover:opacity-80 text-center w-full px-5 py-3 rounded-[50px]">
+                    Pay Now
+                  </button>
+                </div>
+              ) : null}
             </li>
-            <li className="ml-5">
+
+            <li ref={refUser} className="ml-5">
               {userLocalLogin ? (
                 <>
                   <div
@@ -302,12 +417,12 @@ export default function Header() {
                       </p>
                     </li>
                     <li className="px-[30px]">
-                      <p
+                      <button
                         className="py-[15px] font-medium block hover:text-red-500 cursor-pointer"
                         onClick={() => clearLocalLoginFC()}
                       >
                         Đăng Xuất
-                      </p>
+                      </button>
                     </li>
                   </styled.DropdownMenuItem>
                 </>

@@ -2,7 +2,7 @@ import { createAction, createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   reviews: [],
-  params: {
+  paramsReviews: {
     _page: 1,
     _limit: 3,
     _totalRows: null,
@@ -20,7 +20,7 @@ export const reviewSlice = createSlice({
       state.reviews = action.payload.reverse();
     },
     setParamsReviews: (state, action) => {
-      state.params = action.payload;
+      state.paramsReviews = action.payload;
     },
   },
 });

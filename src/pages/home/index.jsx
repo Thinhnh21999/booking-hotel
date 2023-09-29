@@ -11,15 +11,14 @@ import { Navigation, Autoplay, Pagination } from "swiper";
 import * as styled from "./style.js";
 
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { getProductSaga } from "../../redux/slice/productSlice";
 import { getLocationSaga } from "../../redux/slice/locationSlice";
 
-export default function Home() {
-  const { products, params } = useSelector((state) => state.Products);
-  const location = useSelector((state) => state.Locations.location);
+export default function Home(props) {
   const dispatch = useDispatch();
+  const products = props.products;
+  const locationHotel = props.locationHotel;
 
   useEffect(() => {
     dispatch(getLocationSaga());
@@ -30,6 +29,7 @@ export default function Home() {
         _limit: 6,
       })
     );
+    window.scrollTo(0, 0);
   }, []);
 
   return (
@@ -75,10 +75,16 @@ export default function Home() {
           <h2 className="title">Top destinations</h2>
           <div className="center">
             <styled.SwiperCustomTwo
-              loop={true}
               navigation={true}
-              modules={[Navigation]}
+              pagination={{
+                clickable: true,
+              }}
               slidesPerView={6}
+              autoplay={{
+                delay: 2500,
+                disableOnInteraction: false,
+              }}
+              modules={[Navigation, Autoplay]}
               className="mySwiper"
               breakpoints={{
                 430: {
@@ -103,7 +109,7 @@ export default function Home() {
                 },
               }}
             >
-              {location.map((item) => {
+              {locationHotel.map((item) => {
                 return (
                   <SwiperSlide key={item.id}>
                     <Destinations item={item} />
@@ -131,7 +137,7 @@ export default function Home() {
             <styled.SwiperCustom
               slidesPerView={1}
               autoplay={{
-                delay: 3500,
+                delay: 2500,
                 disableOnInteraction: false,
               }}
               pagination={{

@@ -1,11 +1,9 @@
-import { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useState, useEffect, useRef } from "react";
+import { useDispatch } from "react-redux";
 import { getProductSaga, setParams } from "../../../redux/slice/productSlice";
 import { Slider, Rate, Form, Dropdown, Radio } from "antd";
 import Search from "../../../component/search";
 import Card from "../../../component/card";
-import Anchor from "../../../component/anchor";
-import ScrollUp from "../../../component/scrollUp";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
@@ -15,34 +13,30 @@ import list_menu from "../../../assets/svgs/list_menu.svg";
 import filter from "../../../assets/svgs/filter.svg";
 import * as styled from "./style.js";
 import { setLoading } from "../../../redux/slice/loadingSlice";
+import { debounce } from "lodash";
 
-export default function Listing() {
+export default function Listing(props) {
+  const products = props.products;
+  const params = props.params;
+  const locationHotel = props.locationHotel;
   const [current, setCurrent] = useState(1);
   const [isPrice, setIsPrice] = useState(254);
-  const [isReview, setIsReview] = useState();
-  const [isStar, setIsStar] = useState();
-  const [isPage, setIsPage] = useState();
+  const [isReview, setIsReview] = useState(null);
+  const [isStar, setIsStar] = useState(null);
+  const [isPage, setIsPage] = useState(null);
   const [isFacilitiesItem, setIsFacilitiesItem] = useState(4);
   const [isHotelThemeItem, setIsHotelThemeItem] = useState(4);
   const [isValueRadio, setIsValueRadio] = useState(1);
-  const [isValueName, setIsValueName] = useState();
-  const [isValueOrder, setIsValueOrder] = useState();
-
-  const reviewOptions = [
-    "Excellent",
-    "Very Good",
-    "Average",
-    "Poor",
-    "Terrible",
-  ];
-  const [isReviewOptions, setIsReviewOption] = useState(reviewOptions);
+  const [isValueName, setIsValueName] = useState(null);
+  const [isValueOrder, setIsValueOrder] = useState(null);
+  const topRef = useRef();
 
   const [isOpen, setIsOpen] = useState({
-    isFilter: true,
-    isReviewScore: true,
-    isHotelStar: true,
-    isFacilities: true,
-    isHotelTheme: true,
+    isFilter: false,
+    isReviewScore: false,
+    isHotelStar: false,
+    isFacilities: false,
+    isHotelTheme: false,
   });
   const [formPrice] = Form.useForm();
   const [formReview] = Form.useForm();
@@ -50,10 +44,7 @@ export default function Listing() {
   const [formFacilities] = Form.useForm();
   const [formHotelTheme] = Form.useForm();
 
-  const { products, params } = useSelector((state) => state.Products);
   const dispatch = useDispatch();
-
-  console.log(products);
 
   useEffect(() => {
     dispatch(
@@ -62,10 +53,10 @@ export default function Listing() {
         _limit: 12,
       })
     );
+    window.scrollTo(0, 0);
   }, []);
 
   const handleChangePage = (page) => {
-    dispatch(setLoading(true));
     setIsPage(page);
     setCurrent(page);
 
@@ -80,13 +71,21 @@ export default function Listing() {
       _order: isValueOrder,
     };
 
+    dispatch(setLoading(true));
     dispatch(setParams(updatedParams));
     dispatch(getProductSaga(updatedParams));
+    topRef.current.scrollIntoView({ behavior: "smooth" });
+
+    setTimeout(() => {
+      dispatch(setLoading(false));
+    }, 2000);
   };
 
-  const onFinishPrice = (Prices) => {
-    dispatch(setLoading(true));
+  const handleChangePrice = debounce((price) => {
+    setIsPrice(price.slice(1));
+  }, 500);
 
+  const onFinishPrice = (Prices) => {
     const price = Prices?.priceRange?.slice(1);
     setIsPrice(price);
 
@@ -101,12 +100,17 @@ export default function Listing() {
       _order: isValueOrder,
     };
 
+    dispatch(setLoading(true));
     dispatch(setParams(updatedParams));
     dispatch(getProductSaga(updatedParams));
+    topRef.current.scrollIntoView({ behavior: "smooth" });
+
+    setTimeout(() => {
+      dispatch(setLoading(false));
+    }, 2000);
   };
 
   const onChangeReview = (value) => {
-    dispatch(setLoading(true));
     setIsReview(value);
 
     const updatedParams = {
@@ -120,12 +124,17 @@ export default function Listing() {
       _order: isValueOrder,
     };
 
+    dispatch(setLoading(true));
     dispatch(setParams(updatedParams));
     dispatch(getProductSaga(updatedParams));
+    topRef.current.scrollIntoView({ behavior: "smooth" });
+
+    setTimeout(() => {
+      dispatch(setLoading(false));
+    }, 2000);
   };
 
   const onChangeStar = (value) => {
-    dispatch(setLoading(true));
     setIsStar(value);
 
     const updatedParams = {
@@ -139,35 +148,39 @@ export default function Listing() {
       _order: isValueOrder,
     };
 
+    dispatch(setLoading(true));
     dispatch(setParams(updatedParams));
     dispatch(getProductSaga(updatedParams));
-  };
+    topRef.current.scrollIntoView({ behavior: "smooth" });
 
-  const handleChangePrice = (price) => {
-    setIsPrice(price.slice(1));
+    setTimeout(() => {
+      dispatch(setLoading(false));
+    }, 2000);
   };
 
   const onChangeFacilities = (value) => {
     dispatch(setLoading(true));
+    topRef.current.scrollIntoView({ behavior: "smooth" });
+
     setTimeout(() => {
       dispatch(setLoading(false));
-    }, 1500);
-    console.log(value);
+    }, 2000);
   };
 
   const onChangeHotelTheme = (value) => {
     dispatch(setLoading(true));
+    topRef.current.scrollIntoView({ behavior: "smooth" });
     setTimeout(() => {
       dispatch(setLoading(false));
-    }, 1500);
-    console.log(value);
+    }, 2000);
   };
 
   const onChangeRadioSort = (e) => {
     dispatch(setLoading(true));
+    topRef.current.scrollIntoView({ behavior: "smooth" });
     setTimeout(() => {
       dispatch(setLoading(false));
-    }, 1500);
+    }, 2000);
     const value = e.target.value;
     setIsValueRadio(value);
     setIsValueName("price");
@@ -226,6 +239,14 @@ export default function Listing() {
       [item]: !isOpen[item],
     }));
   };
+
+  const reviewOptions = [
+    "Excellent",
+    "Very Good",
+    "Average",
+    "Poor",
+    "Terrible",
+  ];
 
   const starOptions = [
     {
@@ -287,15 +308,23 @@ export default function Listing() {
     dispatch(setLoading(true));
     setTimeout(() => {
       dispatch(setLoading(false));
-    }, 1500);
+    }, 2000);
     dispatch(
       getProductSaga({
         _page: 1,
         _limit: 12,
       })
     );
-    formPrice.resetFields(setIsPrice(254));
-    formReview.resetFields(setIsReviewOption(reviewOptions));
+
+    setIsPrice(254);
+    setIsStar(null);
+    setIsReview(null);
+
+    formPrice.resetFields();
+    formReview.resetFields();
+    formStar.resetFields();
+    formFacilities.resetFields();
+    formHotelTheme.resetFields();
   };
 
   return (
@@ -304,21 +333,21 @@ export default function Listing() {
         <div className="bg-home_tour h-[400px] lg:h-full  bg-no-repeat bg-cover">
           <div className="lg:py-[90px] py-[35px] text-center">
             <div className="lg:container lg:mx-auto px-5 relative">
-              <Search />
+              <Search locationHotel={locationHotel} />
             </div>
           </div>
         </div>
 
-        <div className="lg:container lg:mt-[70px] lg:mx-auto px-5 mb-[60px] mt-[46px]">
-          <div className="flex justify-center">
+        <div ref={topRef} className="lg:container lg:mx-auto px-5 mb-[60px]">
+          <div className="flex justify-center lg:pt-[70px] pt-[46px]">
             <div className="hidden lg:block w-1/4">
               <div className="relative rounded-[20px] mb-[30px]">
                 <iframe
                   src="https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d251637.95196238213!2d105.6189045!3d9.779349!3m2!1i1024!2i768!4f13.1!5e0!3m2!1svi!2s!4v1683879382654!5m2!1svi!2s"
-                  frameborder="0"
+                  frameBorder="0"
                   className="w-full h-[200px] border-0 rounded-[30px]"
                   loading="lazy"
-                  referrerpolicy="no-referrer-when-downgrade"
+                  referrerPolicy="no-referrer-when-downgrade"
                 ></iframe>
                 <p className="absolute bottom-2 right-[18%] cursor-pointer bg-white text-primary border-2 border-solid border-stone-300 mx-[10%] py-3 px-4 font-semibold rounded-3xl">
                   View in a map
@@ -340,7 +369,7 @@ export default function Listing() {
                   </div>
                 </div>
                 <div
-                  className={`max-h-0 px-5 overflow-hidden transition-all duration-700 ${
+                  className={`max-h-0 px-5 overflow-hidden transition-all duration-300 ${
                     isOpen.isFilter ? "max-h-screen" : ""
                   }`}
                 >
@@ -354,13 +383,13 @@ export default function Listing() {
                         range={{
                           draggableTrack: true,
                         }}
-                        count={[100, isPrice]}
                         defaultValue={[100, isPrice]}
                         min={100}
                         max={254}
                         onChange={(value) => handleChangePrice(value)}
                       />
                     </Form.Item>
+
                     <div className="flex justify-between mb-5">
                       <div className="mr-7 w-1/2 py-2 px-3 bg-white border-[#dedede] border-solid border rounded-2xl">
                         <h2 className="text-gray">Min price</h2>
@@ -379,7 +408,8 @@ export default function Listing() {
                     <div className="flex justify-between mt-5">
                       <p
                         onClick={() => {
-                          formPrice.resetFields(setIsPrice(254));
+                          formPrice.resetFields();
+                          setIsPrice(254);
                         }}
                         className="text-primary border-b-[1px] border-solid font-medium pt-2 cursor-pointer"
                       >
@@ -411,15 +441,17 @@ export default function Listing() {
                 </div>
 
                 <div
-                  className={`max-h-0 overflow-hidden transition-all duration-700 ${
+                  className={`max-h-0 overflow-hidden transition-all duration-300 ${
                     isOpen.isReviewScore ? "max-h-screen" : ""
                   }`}
                 >
                   <Form form={formReview} className="mt-5">
-                    <styled.CheckboxGroup
-                      options={isReviewOptions}
-                      onChange={onChangeReview}
-                    />
+                    <Form.Item name="review">
+                      <styled.CheckboxGroup
+                        options={reviewOptions}
+                        onChange={onChangeReview}
+                      />
+                    </Form.Item>
                   </Form>
                 </div>
               </div>
@@ -439,15 +471,17 @@ export default function Listing() {
                   </div>
                 </div>
                 <div
-                  className={`max-h-0 overflow-hidden transition-all duration-700 ${
+                  className={`max-h-0 overflow-hidden transition-all duration-300 ${
                     isOpen.isHotelStar ? "max-h-screen" : ""
                   }`}
                 >
                   <Form form={formStar} className="mt-5">
-                    <styled.CheckboxGroup
-                      options={starOptions}
-                      onChange={onChangeStar}
-                    />
+                    <Form.Item name="star">
+                      <styled.CheckboxGroup
+                        options={starOptions}
+                        onChange={onChangeStar}
+                      />
+                    </Form.Item>
                   </Form>
                 </div>
               </div>
@@ -467,15 +501,18 @@ export default function Listing() {
                   </div>
                 </div>
                 <div
-                  className={`max-h-0 overflow-hidden transition-all duration-700 ${
+                  className={`max-h-0 overflow-hidden transition-all duration-300 ${
                     isOpen.isFacilities ? "max-h-screen" : ""
                   }`}
                 >
                   <Form form={formFacilities} className="mt-5">
-                    <styled.CheckboxGroup
-                      options={facilitiesOption.slice(0, isFacilitiesItem)}
-                      onChange={onChangeFacilities}
-                    />
+                    <Form.Item name="facilities">
+                      <styled.CheckboxGroup
+                        options={facilitiesOption.slice(0, isFacilitiesItem)}
+                        onChange={onChangeFacilities}
+                      />
+                    </Form.Item>
+
                     {isFacilitiesItem < facilitiesOption.length && (
                       <div
                         onClick={() =>
@@ -506,15 +543,18 @@ export default function Listing() {
                   </div>
                 </div>
                 <div
-                  className={`max-h-0 overflow-hidden transition-all duration-700 ${
+                  className={`max-h-0 overflow-hidden transition-all duration-300 ${
                     isOpen.isHotelTheme ? "max-h-screen" : ""
                   }`}
                 >
                   <Form form={formHotelTheme} className="mt-5">
-                    <styled.CheckboxGroup
-                      options={hotelThemeOption.slice(0, isHotelThemeItem)}
-                      onChange={onChangeHotelTheme}
-                    />
+                    <Form.Item name="hotelTheme">
+                      <styled.CheckboxGroup
+                        options={hotelThemeOption.slice(0, isHotelThemeItem)}
+                        onChange={onChangeHotelTheme}
+                      />
+                    </Form.Item>
+
                     {isHotelThemeItem < hotelThemeOption.length && (
                       <div
                         onClick={() =>
@@ -553,21 +593,23 @@ export default function Listing() {
                     <Dropdown
                       placement="bottomRight"
                       overlay={
-                        <Radio.Group
-                          onChange={onChangeRadioSort}
-                          value={isValueRadio}
-                          className="z-10 absolute bg-white right-0 w-[150px] mt-4 text-black border-[1px] border-current border-solid border-slate-300 rounded-xl py-5 px-3 shadow-md shadow-slate-300"
-                        >
-                          <Radio value={"new hotel"}>New hotel</Radio>
-                          <p className="mt-3">Price</p>
-                          <Radio value={"asc"}> Low to Hight</Radio>
-                          <br></br>
-                          <Radio value={"desc"}> Hight to Low</Radio>
-                          <p className="mt-3">Name</p>
-                          <Radio value={"a-z"}> a-z</Radio>
-                          <br></br>
-                          <Radio value={"z-a"}> z-a</Radio>
-                        </Radio.Group>
+                        <>
+                          <Radio.Group
+                            onChange={onChangeRadioSort}
+                            value={isValueRadio}
+                            className="z-10 absolute bg-white right-0 w-[150px] mt-4 text-black border-[1px] border-current border-solid border-slate-300 rounded-xl py-5 px-3 shadow-md shadow-slate-300"
+                          >
+                            <Radio value={"new hotel"}>New hotel</Radio>
+                            <p className="mt-3">Price</p>
+                            <Radio value={"asc"}> Low to Hight</Radio>
+                            <br></br>
+                            <Radio value={"desc"}> Hight to Low</Radio>
+                            <p className="mt-3">Name</p>
+                            <Radio value={"a-z"}> a-z</Radio>
+                            <br></br>
+                            <Radio value={"z-a"}> z-a</Radio>
+                          </Radio.Group>
+                        </>
                       }
                       trigger={["click"]}
                     >

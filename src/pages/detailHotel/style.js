@@ -51,6 +51,15 @@ export const FormCustoms = styled(Form)`
   }
 `;
 
+export const FormItemMessages = styled(Form.Item)`
+  .ant-form-item-row {
+    display: block !important;
+  }
+  label {
+    font-size: 16px !important;
+  }
+`;
+
 export const FormItemCustoms = styled(Form.Item)`
   width: 50%;
   margin-bottom: 10px !important;

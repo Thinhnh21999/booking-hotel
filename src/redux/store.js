@@ -5,6 +5,7 @@ import ProductsReducer from "./slice/productSlice";
 import LocationsReducer from "./slice/locationSlice";
 import LoadingReducer from "./slice/loadingSlice";
 import ReviewsReducer from "./slice/reviewSlice";
+import BookRoomReducer from "./slice/bookRoomSlice";
 import rootSaga from "./saga";
 
 const sagaMiddleware = createSagaMiddleware();
@@ -16,6 +17,7 @@ export const store = configureStore({
     Locations: LocationsReducer,
     Loading: LoadingReducer,
     Reviews: ReviewsReducer,
+    BookRoom: BookRoomReducer,
   },
   middleware: [sagaMiddleware],
 });

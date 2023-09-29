@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import "react-calendar/dist/Calendar.css";
+import React, { Component } from "react";
+import { Form, Input, Button } from "antd";
+import "react-responsive-calendar-picker/dist/index.css";
 
 import MapSvg from "../../assets/svgs/map.svg";
 import ArrowSvg from "../../assets/svgs/arrowRight.svg";
@@ -8,15 +10,16 @@ import UsersSvg from "../../assets/svgs/users.svg";
 import { SearchOutlined } from "@ant-design/icons";
 import * as styled from "./style.js";
 import moment from "moment";
-import { Form, Input, Button } from "antd";
+import { useClickOutside } from "../../until/clickOutside/clickOutside";
 
-export default function Search() {
-  const [dateOne, setDateOne] = useState(new Date());
-  const [dateTwo, setDateTwo] = useState(new Date());
-  const [dateOneValue, setDateOneValue] = useState();
-  const [dateTwoValue, setDateTwoValue] = useState();
+export default function Search(props) {
+  const [dates, setDates] = useState({
+    checkin: new Date(),
+
+    checkout: new Date(),
+  });
+  const [isOpenCalendar, setIsOpenCalendar] = useState(false);
   const [isOpen, setIsOpen] = useState({
-    isOpenCalendar: false,
     isOpenSearch: false,
     isOpenGuests: false,
   });
@@ -53,38 +56,27 @@ export default function Search() {
   const [isNumberChildren, setIsNumberChildren] = useState(0);
   const [form] = Form.useForm();
   const refSearch = useRef();
-  const refCalendar = useRef();
   const refGuests = useRef();
 
-  // useEffect phải được bỏ trong thành phần bắt đầu = chữ viết hoa hoặc use
-  const useClickOutside = (ref, callback) => {
-    useEffect(() => {
-      const handleClick = (e) => {
-        // contains để kiểm tra xem có thuộc phần tử con của nó hay không
-        if (ref.current && !ref.current.contains(e.target)) {
-          callback();
-        }
-      };
+  useEffect(() => {
+    // Kiểm tra nếu biến state đã thay đổi (ví dụ: sau khi nhận được dữ liệu từ nguồn khác),
+    // thì mới cập nhật giá trị của các trường trong biểu mẫu.
+    form.setFieldsValue({
+      "check-in": moment(dates.checkin, "ddd MMM DD YYYY").format("DD/MM/YYYY"),
+      "check-out": moment(dates.checkout, "ddd MMM DD YYYY").format(
+        "DD/MM/YYYY"
+      ),
+      location: currentInput,
+      rooms: isNumberRooms,
+      guests: isNumberAdults + isNumberChildren,
+    });
+  }, [dates, currentInput, isNumberRooms, isNumberAdults, isNumberChildren]);
 
-      document.addEventListener("click", handleClick);
-
-      return () => {
-        document.removeEventListener("click", handleClick);
-      };
-    }, [ref, callback]);
-  };
   // dùng ...prevState để đảm bảo isOpen ko bị ghi đè
   const handleSearchClickOutside = () => {
     setIsOpen((prevState) => ({
       ...prevState,
       isOpenSearch: false,
-    }));
-  };
-
-  const handleCalendarClickOutside = () => {
-    setIsOpen((prevState) => ({
-      ...prevState,
-      isOpenCalendar: false,
     }));
   };
 
@@ -96,20 +88,7 @@ export default function Search() {
   };
 
   useClickOutside(refSearch, handleSearchClickOutside);
-  useClickOutside(refCalendar, handleCalendarClickOutside);
   useClickOutside(refGuests, handleGuestsClickOutside);
-
-  const onChangeCalendarOne = (value) => {
-    setDateOneValue(value);
-    setDateOne(value);
-    form.setFieldsValue({ "check-in": value });
-  };
-
-  const onChangeCalendarTwo = (value) => {
-    setDateTwoValue(value);
-    setDateTwo(value);
-    form.setFieldsValue({ "check-out": value });
-  };
 
   const handleSearchInput = (e) => {
     const value = e.target.value.toLowerCase();
@@ -131,8 +110,6 @@ export default function Search() {
 
   const handleValueInput = (value) => {
     setCurrentInput(value);
-    // vì js,react là nn bất đồng bộ cho nên việc cập nhập state ko lập tức cho nên phải setFieldsValue để cập nhập value trc khi submit
-    form.setFieldsValue({ location: value });
     setIsOpen({ ...isOpen, isOpenSearch: false });
   };
 
@@ -221,14 +198,18 @@ export default function Search() {
           )}
         </div>
 
-        <div ref={refCalendar} className="center relative h-full min-w-[32%]">
+        <styled.DatePickerCustom
+          dates={dates}
+          setDates={setDates}
+          open={isOpenCalendar}
+          setOpen={setIsOpenCalendar}
+          className="center relative h-full min-w-[32%]"
+        >
           <div
-            onClick={() =>
-              setIsOpen({ ...isOpen, isOpenCalendar: !isOpen.isOpenCalendar })
-            }
+            onClick={() => setIsOpenCalendar(!isOpenCalendar)}
             className={
               "search-item lg:border-b-0 items-center cursor-pointer" +
-              (isOpen.isOpenCalendar ? " lg:shadow-custom lg:rounded-full" : "")
+              (isOpenCalendar ? " lg:shadow-custom lg:rounded-full" : "")
             }
           >
             <div className="flex lg:px-[30px] mr-auto">
@@ -236,14 +217,21 @@ export default function Search() {
               <div className="flex flex-col">
                 <span className="font-semibold text-base">Checkin</span>
                 <span className="text-p">
-                  {dateOneValue === ""
-                    ? "add date"
-                    : moment(dateOneValue).format("DD/MM/YYYY")}
+                  {dates.checkin
+                    ? moment(
+                        dates.checkin.toDateString(),
+                        "ddd MMM DD YYYY"
+                      ).format("DD/MM/YYYY")
+                    : "Add date"}
                 </span>
               </div>
             </div>
             <Form.Item name="check-in" className="hidden">
-              <Input value={moment(dateOneValue).format("DD/MM/YYYY")} />
+              <Input
+                value={moment(dates.checkin, "ddd MMM DD YYYY").format(
+                  "DD/MM/YYYY"
+                )}
+              />
             </Form.Item>
             <img className="w-3 mx-7 lg:mx-0" src={ArrowSvg} alt="" />
 
@@ -252,34 +240,25 @@ export default function Search() {
               <div className="flex flex-col">
                 <span className="font-semibold text-base">Checkout</span>
                 <span className="text-p">
-                  {dateTwoValue === ""
-                    ? "add date"
-                    : moment(dateTwoValue).format("DD/MM/YYYY")}
+                  {dates.checkout
+                    ? moment(
+                        dates.checkout.toDateString(),
+                        "ddd MMM DD YYYY"
+                      ).format("DD/MM/YYYY")
+                    : "Add date"}
                 </span>
               </div>
             </div>
             <Form.Item name="check-out" className="hidden">
-              <Input value={moment(dateTwoValue).format("DD/MM/YYYY")} />
+              <Input
+                value={moment(dates.checkout, "ddd MMM DD YYYY").format(
+                  "DD/MM/YYYY"
+                )}
+              />
             </Form.Item>
           </div>
-
           <div className="h-5 border-r border-solid border-gray-300 hidden lg:block"></div>
-
-          {isOpen.isOpenCalendar && (
-            <div className="flex px-[30px] shadow-custom bg-white py-5 absolute translate-y-[82px] mt-4 top-0 left-0 z-[999] rounded-[20px] border-line">
-              <styled.CalendarCustom
-                onChange={onChangeCalendarOne}
-                value={dateOne}
-                locale="en-US"
-              ></styled.CalendarCustom>
-              <styled.CalendarCustom
-                onChange={onChangeCalendarTwo}
-                value={dateTwo}
-                locale="en-US"
-              ></styled.CalendarCustom>
-            </div>
-          )}
-        </div>
+        </styled.DatePickerCustom>
 
         <div ref={refGuests} className="relative w-full h-full lg:max-w-[25%]">
           <div
@@ -319,9 +298,6 @@ export default function Search() {
                       onClick={() => {
                         if (isNumberRooms > 1) {
                           setIsNumberRooms(isNumberRooms - 1);
-                          form.setFieldsValue({
-                            rooms: isNumberRooms - 1,
-                          });
                         }
                       }}
                       className="w-[32px] h-[32px] cursor-pointer text-xl text-center border border-solid border-[#5E6D77] rounded-[50%]"
@@ -332,9 +308,6 @@ export default function Search() {
                     <span
                       onClick={() => {
                         setIsNumberRooms(isNumberRooms + 1);
-                        form.setFieldsValue({
-                          rooms: isNumberRooms + 1,
-                        });
                       }}
                       className="w-[32px] h-[32px] cursor-pointer text-xl text-center border border-solid border-[#5E6D77] rounded-[50%]"
                     >
@@ -349,9 +322,6 @@ export default function Search() {
                       onClick={() => {
                         isNumberAdults > 1 &&
                           setIsNumberAdults(isNumberAdults - 1);
-                        form.setFieldsValue({
-                          guests: isNumberAdults - 1 + isNumberChildren,
-                        });
                       }}
                       className="w-[32px] h-[32px] cursor-pointer text-xl text-center border border-solid border-[#5E6D77] rounded-[50%]"
                     >
@@ -361,9 +331,6 @@ export default function Search() {
                     <span
                       onClick={() => {
                         setIsNumberAdults(isNumberAdults + 1);
-                        form.setFieldsValue({
-                          guests: isNumberAdults + 1 + isNumberChildren,
-                        });
                       }}
                       className="w-[32px] h-[32px] cursor-pointer text-xl text-center border border-solid border-[#5E6D77] rounded-[50%]"
                     >
@@ -378,9 +345,6 @@ export default function Search() {
                       onClick={() => {
                         isNumberChildren > 0 &&
                           setIsNumberChildren(isNumberChildren - 1);
-                        form.setFieldsValue({
-                          guests: isNumberChildren - 1 + isNumberAdults,
-                        });
                       }}
                       className="w-[32px] h-[32px] cursor-pointer text-xl text-center border border-solid border-[#5E6D77] rounded-[50%]"
                     >
@@ -390,9 +354,6 @@ export default function Search() {
                     <span
                       onClick={() => {
                         setIsNumberChildren(isNumberChildren + 1);
-                        form.setFieldsValue({
-                          guests: isNumberChildren + 1 + isNumberAdults,
-                        });
                       }}
                       className="w-[32px] h-[32px] cursor-pointer text-xl text-center border border-solid border-[#5E6D77] rounded-[50%]"
                     >

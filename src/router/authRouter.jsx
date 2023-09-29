@@ -1,17 +1,26 @@
 import { useSelector } from "react-redux";
-import { Redirect, Route } from "react-router-dom/cjs/react-router-dom.min";
+import {
+  Redirect,
+  Route,
+  useLocation,
+} from "react-router-dom/cjs/react-router-dom.min";
 
 import Header from "../component/header/index";
 import Footer from "../component/footer";
+import Anchor from "../component/anchor";
+import ScrollUp from "../component/scrollUp";
 import OpenNotification from "../component/notification";
-import { getLocalLogin } from "../until/loginLocal";
+import { getLocalLogin } from "../until/local/local.js";
+import { setIsOpenModal } from "../redux/slice/userSlice";
+import { useDispatch } from "react-redux";
 
 export default function AuthRouter({ Component, ...props }) {
   const isAuth = useSelector((state) => state.Users.isAuth) || getLocalLogin();
-  console.log(isAuth);
+  const dispatch = useDispatch();
   if (!isAuth) {
-    OpenNotification("error", "Bạn không có quyền để vào trang");
-    return <Redirect to="/"></Redirect>;
+    OpenNotification("error", "Bạn cần đăng nhập để vào trang");
+    dispatch(setIsOpenModal(true));
+    return <Redirect to="/" />;
   }
   return (
     <Route
@@ -22,6 +31,8 @@ export default function AuthRouter({ Component, ...props }) {
             <Header />
             <Component />
             <Footer />
+            <Anchor />
+            <ScrollUp />
           </>
         );
       }}

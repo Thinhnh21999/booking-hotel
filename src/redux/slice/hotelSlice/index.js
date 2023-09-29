@@ -1,7 +1,7 @@
 import { createAction, createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  products: [],
+  hotels: [],
   params: {
     _page: 1,
     _limit: 12,
@@ -15,13 +15,13 @@ const initialState = {
   },
 };
 
-export const productSlice = createSlice({
-  name: "products",
+export const hotelSlice = createSlice({
+  name: "hotels",
   initialState,
   reducers: {
-    getProductSaga: () => {},
-    setProduct: (state, action) => {
-      state.products = action.payload;
+    getHotelSaga: () => {},
+    setHotels: (state, action) => {
+      state.hotels = action.payload;
     },
     setParams: (state, action) => {
       state.params = action.payload;
@@ -29,8 +29,8 @@ export const productSlice = createSlice({
   },
 });
 
-export const getProductSaga = createAction("getProductSaga");
+export const getHotelSaga = createAction("getHotelSaga");
 
-export const { setProduct, setParams } = productSlice.actions;
+export const { setHotels, setParams } = hotelSlice.actions;
 
-export default productSlice.reducer;
+export default hotelSlice.reducer;

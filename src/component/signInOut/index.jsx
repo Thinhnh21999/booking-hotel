@@ -13,23 +13,18 @@ import {
   commonRegister,
   setAuth,
   setIsSignIn,
+  setIsOpenModal,
 } from "../../redux/slice/userSlice";
 
 const App = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const { isSignIn, isOpenModal } = useSelector((state) => state.Users);
   const [keyboard, setKeyboard] = useState(true);
   const [value, setValue] = useState(1);
-
   const dispatch = useDispatch();
-
-  const isSignIn = useSelector((state) => state.Users.isSignIn);
 
   const onChange = (e) => {
     console.log("radio checked", e.target.value);
     setValue(e.target.value);
-  };
-  const showModal = () => {
-    setIsModalOpen(true);
   };
 
   const onFinish = (values) => {
@@ -42,15 +37,16 @@ const App = () => {
 
   return (
     <>
-      <styled.ButtonCustom type="primary" onClick={showModal}>
+      <styled.ButtonCustom
+        type="primary"
+        onClick={() => dispatch(setIsOpenModal(true))}
+      >
         <img className="w-5" src={UserSvg} alt="" />
       </styled.ButtonCustom>
-      <styled.ModalCustom open={isModalOpen}>
+      <styled.ModalCustom open={isOpenModal}>
         <button
           className="ant-modal-close"
-          onClick={() => {
-            setIsModalOpen(false);
-          }}
+          onClick={() => dispatch(setIsOpenModal(false))}
         ></button>
         <styled.SignInOut
           isSignIn={isSignIn}

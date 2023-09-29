@@ -10,7 +10,10 @@ export default function Card(props) {
       <div className="w-full">
         <div className="bg-white rounded-2xl shadow-custom">
           <div className="overflow-hidden rounded-t-2xl">
-            <Link to={`/detail-hotel/${nameHotel}`}>
+            <Link
+              onClick={() => setTimeout(() => window.location.reload(), 0)}
+              to={`/detail-hotel/${nameHotel}`}
+            >
               <img
                 className="w-full rounded-t-2xl hover:scale-110 transition-all duration-300 ease-in-out transform"
                 src={image}
@@ -31,7 +34,10 @@ export default function Card(props) {
                 />
               </div>
               <div className="mb-[5px]">
-                <Link to={`/detail-hotel/${nameHotel}`}>
+                <Link
+                  onClick={() => setTimeout(() => window.location.reload(), 0)}
+                  to={`/detail-hotel/${nameHotel}`}
+                >
                   <h2 className="hover:text-primary font-bold text-lg">
                     {nameHotel}
                   </h2>

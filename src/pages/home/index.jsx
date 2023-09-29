@@ -1,8 +1,6 @@
 import Destinations from "../../component/destinations";
 import Card from "../../component/card/index.jsx";
 import Search from "../../component/search/index.jsx";
-import ScrollUp from "../../component/scrollUp";
-import Anchor from "../../component/anchor";
 
 import { Form, Input, Button } from "antd";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -13,25 +11,25 @@ import { Navigation, Autoplay, Pagination } from "swiper";
 import * as styled from "./style.js";
 
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { getProductSaga } from "../../redux/slice/productSlice";
+import { getHotelSaga } from "../../redux/slice/hotelSlice";
 import { getLocationSaga } from "../../redux/slice/locationSlice";
 
-export default function Home() {
-  const { products, params } = useSelector((state) => state.Products);
-  const location = useSelector((state) => state.Locations.location);
+export default function Home(props) {
   const dispatch = useDispatch();
+  const hotels = props.hotels;
+  const locationHotel = props.locationHotel;
 
   useEffect(() => {
     dispatch(getLocationSaga());
 
     dispatch(
-      getProductSaga({
+      getHotelSaga({
         _page: 1,
         _limit: 6,
       })
     );
+    window.scrollTo(0, 0);
   }, []);
 
   return (
@@ -77,10 +75,16 @@ export default function Home() {
           <h2 className="title">Top destinations</h2>
           <div className="center">
             <styled.SwiperCustomTwo
-              loop={true}
               navigation={true}
-              modules={[Navigation]}
+              pagination={{
+                clickable: true,
+              }}
               slidesPerView={6}
+              autoplay={{
+                delay: 2500,
+                disableOnInteraction: false,
+              }}
+              modules={[Navigation, Autoplay]}
               className="mySwiper"
               breakpoints={{
                 430: {
@@ -105,7 +109,7 @@ export default function Home() {
                 },
               }}
             >
-              {location.map((item) => {
+              {locationHotel.map((item) => {
                 return (
                   <SwiperSlide key={item.id}>
                     <Destinations item={item} />
@@ -120,7 +124,7 @@ export default function Home() {
           <div className="lg:container lg:mx-auto px-5">
             <h2 className="title">Plan your next staycation</h2>
             <div className=" grid xl:grid-cols-4 md:grid-cols-2 xs:grid-cols-1 gap-6">
-              {products.slice(0, 4).map((item) => (
+              {hotels?.slice(0, 4).map((item) => (
                 <Card key={item.id} item={item} />
               ))}
             </div>
@@ -133,7 +137,7 @@ export default function Home() {
             <styled.SwiperCustom
               slidesPerView={1}
               autoplay={{
-                delay: 3500,
+                delay: 2500,
                 disableOnInteraction: false,
               }}
               pagination={{
@@ -165,7 +169,7 @@ export default function Home() {
                 },
               }}
             >
-              {products.map((item) => (
+              {hotels?.map((item) => (
                 <SwiperSlide key={item.id}>
                   <Card item={item} />
                 </SwiperSlide>
@@ -211,8 +215,6 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <ScrollUp />
-      <Anchor />
     </>
   );
 }

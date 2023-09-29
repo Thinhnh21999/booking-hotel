@@ -1,20 +1,18 @@
 import { all } from "redux-saga/effects";
-import watchRegisterUser from "./registerUser";
-import watchLoginUser from "./loginUser";
-import watchFetchProducts from "./fetchProducts";
-import watchFetchLocation from "./fetchLocations";
+import watchFetchHotels from "./hotelSaga";
+import watchFetchLocation from "./locationSaga";
 import watchLoading from "./loadingSaga";
-import watchPostReview from "./postReviewSaga";
-import watchFetchReview from "./fetchReviewSaga";
+import watchBookRoom from "./bookRoomSaga";
+import watchReview from "./reviewSaga";
+import watchUser from "./userSaga";
 
 export default function* rootSaga() {
   yield all([
-    watchRegisterUser(),
-    watchLoginUser(),
-    watchFetchProducts(),
+    watchFetchHotels(),
     watchFetchLocation(),
-    watchPostReview(),
-    watchFetchReview(),
     watchLoading(),
+    watchBookRoom(),
+    watchReview(),
+    watchUser(),
   ]);
 }

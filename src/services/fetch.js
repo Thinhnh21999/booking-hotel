@@ -9,7 +9,7 @@ export const loginUsers = (values) => {
   return restClientUser("post", "/auth/login", values, {});
 };
 
-export const getProducts = (params) => {
+export const getHotels = (params) => {
   return restClient("get", "/hotels", params, {});
 };
 
@@ -27,4 +27,16 @@ export const putReviews = (value) => {
 
 export const getReviews = (params) => {
   return restClient("get", "/reviews", params, {});
+};
+
+export const getBookRoom = (params) => {
+  return restClient("get", "/bookRoom", params, {});
+};
+
+export const postBookRoom = (data) => {
+  return restClient("post", "/bookRoom", {}, data);
+};
+
+export const deleteApiBookRoom = (roomId) => {
+  return restClient("delete", `/bookRoom/${roomId}`, {}, roomId);
 };

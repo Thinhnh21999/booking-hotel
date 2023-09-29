@@ -5,33 +5,67 @@ import "./App.css";
 import Home from "./pages/home";
 import Contact from "./pages/about";
 import About from "./pages/contact";
-import Listing from "./pages/listing/Search_Popup_Map";
+import Listing from "./pages/listing";
 import DetailHotel from "./pages/detailHotel";
 import DetailRoom from "./pages/detailRoom";
 import Checkout from "./pages/checkout";
 
-import DefaultRouter from "./router/DefaultRouter";
+import DefaultRouter from "./router/defaultRouter";
 import AuthRouter from "./router/authRouter.jsx";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { setLoadingSg } from "./redux/slice/loadingSlice";
+import { isEqual } from "lodash";
 
 function App() {
   const loading = useSelector((state) => state.Loading.isLoading);
+  const locationHotel = useSelector((state) => state.Locations.location);
+  // ss trước và sau return ra giá trị hiện tại để giảm bớt reload
+  const { hotels, params } = useSelector(
+    (state) => state.Hotels,
+    (prevHotels, newHotels) => {
+      return (
+        isEqual(prevHotels.params, newHotels.params) &&
+        prevHotels.reviews?.length === newHotels.reviews?.length
+      );
+    }
+  );
+
+  const { reviews, paramsReviews } = useSelector(
+    (state) => state.Reviews,
+    (prevReviews, newReviews) => {
+      // isEqual là pt ss của thư viện lodash
+      return (
+        isEqual(prevReviews.paramsReviews, newReviews.paramsReviews) &&
+        newReviews.reviews?.length === prevReviews.reviews?.length
+      );
+    }
+  );
+
   const dispatch = useDispatch();
+
   useEffect(() => {
     dispatch(setLoadingSg(true));
-    setTimeout(() => {
+    const timeoutId = setTimeout(() => {
       dispatch(setLoadingSg(false));
-    }, 1500);
+    }, 2000);
     return () => {
-      clearTimeout(1500);
+      clearTimeout(timeoutId);
     };
   }, []);
+
   return (
     <div className="box-border m-0 p-0">
       <Switch>
-        <DefaultRouter exact path="/" loading={loading} Component={Home} />
+        <DefaultRouter
+          exact
+          path="/"
+          loading={loading}
+          hotels={hotels}
+          params={params}
+          locationHotel={locationHotel}
+          Component={Home}
+        />
         <DefaultRouter
           exact
           path="/about"
@@ -42,18 +76,25 @@ function App() {
           exact
           path="/listing"
           loading={loading}
+          hotels={hotels}
+          params={params}
+          locationHotel={locationHotel}
           Component={Listing}
         />
         <DefaultRouter
           exact
           path="/detail-hotel/:nameHotel"
+          hotels={hotels}
+          paramsReviews={paramsReviews}
+          reviews={reviews}
           loading={loading}
           Component={DetailHotel}
         />
         <DefaultRouter
           exact
-          path="/detail-room/:idRoom"
+          path="/detail-room/:nameHotel/:nameRoom"
           loading={loading}
+          hotels={hotels}
           Component={DetailRoom}
         />
         <DefaultRouter

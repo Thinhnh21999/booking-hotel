@@ -4,8 +4,9 @@ import twitter from "../../assets/svgs/twitter.svg";
 import youTube from "../../assets/svgs/youtube.svg";
 import instagram from "../../assets/svgs/instagram.svg";
 
-import {Dropdown, Space} from "antd";
+import { Dropdown, Space } from "antd";
 import { Form } from "./style";
+import { Link } from "react-router-dom/cjs/react-router-dom";
 
 export default function ButtonShare() {
   return (
@@ -14,36 +15,44 @@ export default function ButtonShare() {
         <Dropdown
           placement="bottomRight"
           overlay={
-            <div className="mt-2">
-              <img
-                className="my-[1px] bg-slate-200 share w-12 h-12 p-3 border-[1px] border-solid shadow-slate-200 shadow-lg rounded-full"
-                src={facebook}
-                alt=""
-              />
-              <img
-                className="my-[1px] bg-slate-200 share w-12 h-12 p-3 border-[1px] border-solid shadow-slate-200 shadow-lg rounded-full"
-                src={twitter}
-                alt=""
-              />
-              <img
-                className="my-[1px] bg-slate-200 share w-12 h-12 p-3 border-[1px] border-solid shadow-slate-200 shadow-lg rounded-full"
-                src={youTube}
-                alt=""
-              />
-              <img
-                className="my-[1px] bg-slate-200 share w-12 h-12 p-3 border-[1px] border-solid shadow-slate-200 shadow-lg rounded-full"
-                src={instagram}
-                alt=""
-              />
+            <div className="mt-1">
+              <Link to="/">
+                <img
+                  className="my-1 bg-[#f7f8fa] hover:bg-white share w-12 h-12 p-3 border-line shadow-custom rounded-full"
+                  src={facebook}
+                  alt=""
+                />
+              </Link>
+              <Link to="/">
+                <img
+                  className="my-1 bg-[#f7f8fa] hover:bg-white share w-12 h-12 p-3 border-line shadow-custom rounded-full"
+                  src={twitter}
+                  alt=""
+                />
+              </Link>
+              <Link to="/">
+                <img
+                  className="my-1 bg-[#f7f8fa] hover:bg-white share w-12 h-12 p-3 border-line shadow-custom rounded-full"
+                  src={youTube}
+                  alt=""
+                />
+              </Link>
+              <Link to="/">
+                <img
+                  className="my-1 bg-[#f7f8fa] hover:bg-white share w-12 h-12 p-3 border-line shadow-custom rounded-full"
+                  src={instagram}
+                  alt=""
+                />
+              </Link>
             </div>
           }
           trigger={["click"]}
         >
-          <div className="">
+          <div className="cursor-pointer ">
             <img
-              className="img share w-12 h-12 p-3 border-[1px] border-solid shadow-slate-200 shadow-lg rounded-full"
+              className="bg-[#f7f8fa] hover:bg-white share w-12 h-12 p-3 border-line shadow-custom rounded-full"
               src={share}
-              alt=""
+              alt="..."
             />
           </div>
         </Dropdown>

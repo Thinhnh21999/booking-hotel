@@ -3,8 +3,19 @@ import { Route } from "react-router-dom/cjs/react-router-dom.min";
 import Header from "../component/header";
 import Footer from "../component/footer";
 import Loading from "../component/loading";
+import Anchor from "../component/anchor";
+import ScrollUp from "../component/scrollUp";
 
-export default function DefaultRouter({ Component, loading, ...props }) {
+export default function DefaultRouter({
+  Component,
+  loading,
+  params,
+  locationHotel,
+  paramsReviews,
+  reviews,
+  hotels,
+  ...props
+}) {
   return (
     <Route
       {...props}
@@ -13,8 +24,16 @@ export default function DefaultRouter({ Component, loading, ...props }) {
           <>
             {loading ? <Loading /> : ""}
             <Header />
-            <Component />
+            <Component
+              hotels={hotels}
+              params={params}
+              locationHotel={locationHotel}
+              reviews={reviews}
+              paramsReviews={paramsReviews}
+            />
             <Footer />
+            <Anchor />
+            <ScrollUp />
           </>
         );
       }}

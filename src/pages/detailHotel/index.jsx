@@ -1,20 +1,21 @@
 import { Swiper, SwiperSlide } from "swiper/react";
-import { useEffect, useState, useMemo } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { getProductSaga, setParams } from "../../redux/slice/productSlice";
-import { Rate, Col, Row } from "antd";
+import { useEffect, useState, useMemo, useRef } from "react";
+import { useDispatch } from "react-redux";
+import { getHotelSaga, setParams } from "../../redux/slice/hotelSlice";
+import { Rate, Col, Row, message } from "antd";
 import Card from "../../component/card/index.jsx";
-import About from "../../component/cardAbout";
-import ButtonP from "../../component/buttonShare";
+import CardRoom from "../../component/cardRoom";
+import ButtonShare from "../../component/buttonShare";
 import { Form, Input, Button } from "antd";
 import { Link, useParams } from "react-router-dom/cjs/react-router-dom.min";
-import { isEqual } from "lodash";
 import moment from "moment";
 import {
   postReviewSaga,
   getReviewSaga,
   setParamsReviews,
 } from "../../redux/slice/reviewSlice";
+import BookRoom from "../../component/bookRoom";
+import LoadingItem from "../../component/loadingItem";
 
 import { Navigation, Autoplay, Pagination } from "swiper";
 import "swiper/css";
@@ -22,7 +23,6 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 
 import star from "../../assets/svgs/star.svg";
-import heart from "../../assets/svgs/heart.svg";
 import UpArrow from "../../assets/svgs/upArrow.svg";
 import airport from "../../assets/svgs/airport.svg";
 import fitness from "../../assets/svgs/fitness.svg";
@@ -35,49 +35,50 @@ import userSvg from "../../assets/svgs/user.svg";
 import LikeSvg from "../../assets/svgs/like.svg";
 
 import * as styled from "./style";
+import { setLocalCheckInOut } from "../../until/local/local.js";
 
-export default function DetailHotel() {
+export default function DetailHotel(props) {
+  const hotels = props.hotels;
+  const paramsReviews = props.paramsReviews;
+  const reviews = props.reviews;
+  const [isLoading, setIsLoading] = useState(false);
   const [isOpenReview, setIsOpenReview] = useState(false);
+  const [showPriceRoom, setShowPriceRoom] = useState(false);
+  const [isBookRoom, setIsBookRoom] = useState(true);
   const [rateValues, setRateValues] = useState({});
   const [current, setCurrent] = useState(1);
-  // ss trước và sau return ra giá trị hiện tại để giảm bớt reload
-  const products = useSelector(
-    (state) => state.Products.products,
-    (prevProducts, newProducts) => {
-      return prevProducts.length === newProducts.length;
-    }
-  );
-  const { params, reviews } = useSelector(
-    (state) => state.Reviews,
-    (prevReviews, newReviews) => {
-      // isEqual là pt ss của thư viện lodash
-      return (
-        isEqual(prevReviews.params, newReviews.params) &&
-        newReviews.reviews?.length === prevReviews.reviews?.length
-      );
-    }
-  );
+  const [dates, setDates] = useState({
+    // checkin: moment().toDate(), // Set ngày hôm nay
+
+    // checkout: moment().add(1, "days").toDate(), // Set ngày mai
+    checkin: new Date(),
+
+    checkout: new Date(),
+  });
+  const checkIn = dates.checkin;
+  const checkOut = dates.checkout;
+  const [numberRooms, setNumberRooms] = useState(1);
+  const [numberAdults, setNumberAdults] = useState(1);
+  const [numberChildren, setNumberChildren] = useState(0);
   const [form] = Form.useForm();
+  const [formMessages] = Form.useForm();
   const dispatch = useDispatch();
   const { nameHotel } = useParams();
   const formattedTime = moment().format("HH:mm DD/MM/YYYY");
-
-  console.log(reviews);
+  const ref = useRef();
 
   useEffect(() => {
     dispatch(
-      getProductSaga({
+      getHotelSaga({
         _limit: 24,
       })
     );
 
-    dispatch(getReviewSaga(params));
+    dispatch(getReviewSaga(paramsReviews));
+    window.scrollTo(0, 0);
   }, []);
 
-  const hotelItem = useMemo(
-    () => products.find((hotel) => hotel.nameHotel === nameHotel),
-    [products, nameHotel]
-  );
+  const hotelItem = hotels?.find((hotel) => hotel.nameHotel === nameHotel);
 
   const handleReviewComment = (values) => {
     const reviewData = {
@@ -91,14 +92,14 @@ export default function DetailHotel() {
     };
 
     dispatch(postReviewSaga(reviewData));
-    dispatch(getReviewSaga(params));
+    dispatch(getReviewSaga(paramsReviews));
   };
 
   const handleChangePage = (page) => {
     setCurrent(page);
     dispatch(
       setParamsReviews({
-        ...params,
+        ...paramsReviews,
         _page: page,
         _limit: 3,
       })
@@ -106,7 +107,7 @@ export default function DetailHotel() {
 
     dispatch(
       getReviewSaga({
-        ...params,
+        ...paramsReviews,
         _page: page,
         _limit: 3,
       })
@@ -121,6 +122,33 @@ export default function DetailHotel() {
     { name: "location", label: "Location" },
     { name: "value", label: "Value" },
   ];
+
+  const numberOffNight = moment(checkOut).diff(moment(checkIn), "days");
+
+  useEffect(() => {
+    setLocalCheckInOut({ checkIn, checkOut });
+  }, [checkIn, checkOut]);
+
+  const handleCheckRoom = () => {
+    const timeoutId = setTimeout(() => {
+      setIsLoading(false);
+    }, 3000);
+    setIsLoading(true);
+    setShowPriceRoom(true);
+    ref.current.scrollIntoView({ behavior: "smooth" });
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  };
+
+  const onFinishMessages = (value) => {
+    message.success("Thank you for your message. It has been sent.");
+
+    setTimeout(() => {
+      formMessages.resetFields();
+    }, 100);
+  };
 
   return (
     <>
@@ -148,75 +176,60 @@ export default function DetailHotel() {
         </div>
 
         <div className="block px-5 h-[630px] mt-10">
-          {hotelItem?.images.slice(0, 1).map((image, index) => (
-            <Link
-              className="md:w-1/3 w-full h-full md:inline-block block float-left"
-              to=""
-              key={index}
-            >
-              <img
-                className="w-full h-full md:rounded-bl-2xl md:rounded-tl-2xl md:rounded-br-none md:rounded-tr-none rounded-br-2xl rounded-tr-2xl object-cover pe-[5px]"
-                src={image}
-                alt={`image ${index + 1}`}
-              />
-            </Link>
-          ))}
+          <Link
+            className="md:w-1/3 w-full h-full md:inline-block block float-left md:pe-[5px]"
+            to=""
+          >
+            <img
+              className="w-full h-full md:rounded-bl-2xl md:rounded-tl-2xl md:rounded-br-none md:rounded-tr-none rounded-2xl object-cover"
+              src={hotelItem?.images[0]}
+              alt="image hotel"
+            />
+          </Link>
 
-          {hotelItem?.images.slice(1, 2).map((image, index) => (
-            <Link
-              className="w-1/3 h-[50%] px-[5px] pb-[5px] md:inline-block hidden float-left"
-              to=""
-              key={index}
-            >
-              <img
-                className="w-full h-full"
-                src={image}
-                alt={`image ${index + 1}`}
-              />
-            </Link>
-          ))}
+          <Link
+            className="w-1/3 h-[50%] px-[5px] pb-[5px] md:inline-block hidden float-left"
+            to=""
+          >
+            <img
+              className="w-full h-full"
+              src={hotelItem?.images[1]}
+              alt="image hotel 2"
+            />
+          </Link>
 
-          {hotelItem?.images.slice(2, 3).map((image, index) => (
-            <Link
-              className="w-1/3 px-[5px] h-[50%] pb-[5px] md:inline-block hidden float-left"
-              to=""
-              key={index}
-            >
-              <img
-                className="w-full h-full rounded-tr-2xl"
-                src={image}
-                alt={`image ${index + 1}`}
-              />
-            </Link>
-          ))}
+          <Link
+            className="w-1/3 px-[5px] h-[50%] pb-[5px] md:inline-block hidden float-left"
+            to=""
+          >
+            <img
+              className="w-full h-full rounded-tr-2xl"
+              src={hotelItem?.images[2]}
+              alt="image hotel 3"
+            />
+          </Link>
 
-          {hotelItem?.images.slice(3, 4).map((image, index) => (
-            <Link
-              to=""
-              className="w-1/3 h-[50%] px-[5px] pt-[5px] md:inline-block hidden float-left"
-              key={index}
-            >
-              <img
-                className="w-full h-full "
-                src={image}
-                alt={`image ${index + 1}`}
-              />
-            </Link>
-          ))}
+          <Link
+            to=""
+            className="w-1/3 h-[50%] px-[5px] pt-[5px] md:inline-block hidden float-left"
+          >
+            <img
+              className="w-full h-full "
+              src={hotelItem?.images[3]}
+              alt="image hotel 4"
+            />
+          </Link>
 
-          {hotelItem?.images.slice(4, 5).map((image, index) => (
-            <Link
-              className="w-1/3 h-[50%] px-[5px] pt-[5px] md:inline-block hidden float-left"
-              to=""
-              key={index}
-            >
-              <img
-                className="w-full h-full rounded-br-2xl"
-                src={image}
-                alt={`image ${index + 1}`}
-              />
-            </Link>
-          ))}
+          <Link
+            className="w-1/3 h-[50%] px-[5px] pt-[5px] md:inline-block hidden float-left"
+            to=""
+          >
+            <img
+              className="w-full h-full rounded-br-2xl"
+              src={hotelItem?.images[4]}
+              alt="image hotel 4"
+            />
+          </Link>
         </div>
 
         <div className="mt-12 lg:container lg:mx-auto px-5">
@@ -234,20 +247,34 @@ export default function DetailHotel() {
                   <h1 className="text-4xl font-bold">{hotelItem?.nameHotel}</h1>
                   <div className="flex my-2">
                     <div className="text-primary font-bold border-solid border-[1px] border-primary pg-[#F9FBFF] rounded-md px-2 py-[1px]">
-                      5 <span>/</span> 5
+                      {hotelItem?.star} <span>/</span> 5
                     </div>
-                    <span className="font-bold px-4">
+                    <span className="font-bold px-4">{hotelItem?.review}</span>
+                    <p className="text-primary">(3 Reviews)</p>
+                    <span className="text-gray pl-5">
                       {hotelItem?.location}
                     </span>
-                    <p className="text-primary">(3 Reviews)</p>
-                    <span className="text-gray pl-5">{hotelItem?.review}</span>
                   </div>
                 </div>
                 <div className="flex items-center">
-                  <ButtonP />
-                  <div className="w-10 h-10 ml-3 border-[1px] border-solid  border-slate-200 rounded-full shadow-lg shadow-slate-100 text-center">
-                    <img className="w-6 inline-block pt-2" src={heart} alt="" />
-                  </div>
+                  <ButtonShare />
+                  <Rate
+                    character={
+                      <span
+                        role="img"
+                        aria-label="heart"
+                        style={{
+                          fontSize: "24px",
+                          padding: "15px",
+                          borderRadius: "100%",
+                        }}
+                      >
+                        ❤️
+                      </span>
+                    }
+                    count={1}
+                    className="center w-12 h-12 ml-3 border-line rounded-full shadow-custom hover:bg-[#d9303066]"
+                  />
                 </div>
               </div>
 
@@ -268,7 +295,7 @@ export default function DetailHotel() {
 
               <div>
                 <h2 className="text-3xl font-bold my-5">Hotel Facilities</h2>
-                <div className="flex">
+                <div className="flex flex-col sm:flex-row">
                   <ul className="w-1/3">
                     <li className="text-gray">
                       <div className="flex items-center pb-5">
@@ -338,17 +365,33 @@ export default function DetailHotel() {
 
               <hr className="my-10 text-slate-200"></hr>
 
-              <div>
+              <div ref={ref}>
                 <h2 className="text-3xl font-bold mb-7">Availability</h2>
-                <About />
+                <div className="relative flex lg:flex-col flex-wrap mx-[-15px]">
+                  {isLoading ? <LoadingItem /> : null}
+
+                  {hotelItem?.rooms.map((room, index) => (
+                    <div
+                      key={index}
+                      className="flex flex-row lg:flex-col flex-wrap md:w-1/2 w-full lg:w-full px-[15px]"
+                    >
+                      <CardRoom
+                        room={room}
+                        showPriceRoom={showPriceRoom}
+                        numberRooms={numberRooms}
+                        numberOffNight={numberOffNight}
+                      />
+                    </div>
+                  ))}
+                </div>
               </div>
 
               <hr className="my-10 text-slate-200"></hr>
 
               <div className="bg-[#FCFCFC]">
                 <h2 className="text-3xl font-bold mb-7">Reviews</h2>
-                <div className="border-[1px] border-solid border-[#dedede] rounded-3xl p-8">
-                  <div className="flex my-2">
+                <div className="border-[1px] border-solid border-[#dedede] rounded-3xl px-5 py-[30px]">
+                  <div className="flex my-2 px-2.5">
                     <img className="w-4" src={star} alt="" />
                     <div className="ml-3 font-bold text-lg">
                       5 <span>/</span> 5
@@ -356,12 +399,12 @@ export default function DetailHotel() {
                     <span className="font-bold px-4 text-lg">
                       {hotelItem?.review}
                     </span>
-                    <p className="text-primary">(3 Reviews)</p>
+                    <p className="text-primary">({reviews?.length} Reviews)</p>
                   </div>
 
-                  <Row className="my-4">
-                    <Col span={12}>
-                      <div className="flex pr-5 ">
+                  <div className="my-4 flex flex-wrap">
+                    <div className="w-full md:w-1/2 mt-[15px]">
+                      <div className="flex px-2.5">
                         <h2 className="w-[42%]">Cleanliness</h2>
                         <span className="w-[42%] flex items-center">
                           <div className="w-full h-[20%] bg-[#4CBB7F] rounded-md"></div>
@@ -370,9 +413,9 @@ export default function DetailHotel() {
                           5/5
                         </span>
                       </div>
-                    </Col>
-                    <Col span={12}>
-                      <div className="flex pl-5 ">
+                    </div>
+                    <div className="w-full md:w-1/2 mt-[15px]">
+                      <div className="flex px-2.5">
                         <h2 className="w-[42%]">Accuracy</h2>
                         <span className="w-[42%] flex items-center">
                           <div className="w-full h-[20%] bg-[#4CBB7F] rounded-md"></div>
@@ -381,12 +424,9 @@ export default function DetailHotel() {
                           5/5
                         </span>
                       </div>
-                    </Col>
-                  </Row>
-
-                  <Row className="my-4">
-                    <Col span={12}>
-                      <div className="flex pr-5 ">
+                    </div>
+                    <div className="w-full md:w-1/2 mt-[15px]">
+                      <div className="flex px-2.5">
                         <h2 className="w-[42%]">Communication</h2>
                         <span className="w-[42%] flex items-center">
                           <div className="w-full h-[20%] bg-[#4CBB7F] rounded-md"></div>
@@ -395,9 +435,9 @@ export default function DetailHotel() {
                           5/5
                         </span>
                       </div>
-                    </Col>
-                    <Col span={12}>
-                      <div className="flex pl-5 ">
+                    </div>
+                    <div className="w-full md:w-1/2 mt-[15px]">
+                      <div className="flex px-2.5">
                         <h2 className="w-[42%]">Location</h2>
                         <span className="w-[42%] flex items-center">
                           <div className="w-full h-[20%] bg-[#4CBB7F] rounded-md"></div>
@@ -406,12 +446,9 @@ export default function DetailHotel() {
                           5/5
                         </span>
                       </div>
-                    </Col>
-                  </Row>
-
-                  <Row className="my-4">
-                    <Col span={12}>
-                      <div className="flex pr-5 ">
+                    </div>
+                    <div className="w-full md:w-1/2 mt-[15px]">
+                      <div className="flex px-2.5">
                         <h2 className="w-[42%]">Check-in</h2>
                         <span className="w-[42%] flex items-center">
                           <div className="w-full h-[20%] bg-[#4CBB7F] rounded-md"></div>
@@ -420,9 +457,9 @@ export default function DetailHotel() {
                           5/5
                         </span>
                       </div>
-                    </Col>
-                    <Col span={12}>
-                      <div className="flex pl-5 ">
+                    </div>
+                    <div className="w-full md:w-1/2 mt-[15px]">
+                      <div className="flex px-2.5">
                         <h2 className="w-[42%]">Value</h2>
                         <span className="w-[42%] flex items-center">
                           <div className="w-full h-[20%] bg-[#4CBB7F] rounded-md"></div>
@@ -431,8 +468,8 @@ export default function DetailHotel() {
                           5/5
                         </span>
                       </div>
-                    </Col>
-                  </Row>
+                    </div>
+                  </div>
                 </div>
               </div>
 
@@ -481,8 +518,8 @@ export default function DetailHotel() {
                 <styled.PaginationCustom
                   onChange={handleChangePage}
                   current={current}
-                  total={params._totalRows}
-                  pageSize={params._limit}
+                  total={paramsReviews._totalRows}
+                  pageSize={paramsReviews._limit}
                 ></styled.PaginationCustom>
               </div>
 
@@ -509,10 +546,7 @@ export default function DetailHotel() {
                       are marked *
                     </p>
 
-                    <styled.FormCustoms
-                      form={form}
-                      onFinish={handleReviewComment}
-                    >
+                    <Form form={form} onFinish={handleReviewComment}>
                       <Row className="mx-[-12px]">
                         <Col span={12} className="px-3">
                           <Form.Item
@@ -613,7 +647,7 @@ export default function DetailHotel() {
                           POST COMMENT
                         </styled.ButtonCustoms>
                       </Form.Item>
-                    </styled.FormCustoms>
+                    </Form>
                   </div>
                 )}
               </div>
@@ -622,56 +656,159 @@ export default function DetailHotel() {
             <div className="relative w-1/3 px-3 hidden lg:block">
               <div className="sticky top-0">
                 <div className="border-[1px] border-solid border-[#dedede] rounded-3xl p-8 shadow-xl drop-shadow-xl	">
-                  <div className="flex justify-between items-center pt-2">
-                    <div className="bg-primary text-white px-9 py-5 rounded-[30px] w-1/2 mr-2 text-center font-bold">
+                  {isLoading ? <LoadingItem /> : null}
+                  <div className="flex justify-between items-center pt-2 group">
+                    <button
+                      onClick={() => setIsBookRoom(true)}
+                      className={`${
+                        isBookRoom ? "bg-primary text-white" : null
+                      } bg-[#f7f8fa] hover:opacity-80 px-9 py-4 rounded-[30px] w-1/2 mr-2 text-center font-bold`}
+                    >
                       Book
-                    </div>
-                    <div className="bg-slate-200 px-9 py-5 rounded-[30px] w-1/2 ml-2 text-center font-bold">
+                    </button>
+                    <button
+                      onClick={() => setIsBookRoom(false)}
+                      className={`${
+                        !isBookRoom ? "bg-primary text-white" : null
+                      } bg-[#f7f8fa] hover:opacity-80 px-9 py-4 rounded-[30px] w-1/2 ml-2 text-center font-bold`}
+                    >
                       Inquiry
-                    </div>
+                    </button>
                   </div>
 
-                  <div className="flex justify-between">
-                    <p className="text-gray py-4">
-                      From:
-                      <span className="font-bold text-black">
-                        ${hotelItem?.price}
-                      </span>
-                      / night
-                    </p>
-                    <div className="flex py-4">
-                      <img className="w-4" src={star} alt="" />
-                      <span className="font-bold mx-2">{hotelItem?.star}</span>
-                      <p className="text-gray">(3 reviews)</p>
-                    </div>
-                  </div>
-
-                  <div className="border-[1px] border-solid border-[#dedede] rounded-2xl mt-2 ">
-                    <div className="flex ">
-                      <div className="pl-5 py-5 w-1/2">
-                        <h2 className="font-medium">Check In</h2>
-                        <p className="text-gray">05/14/2023</p>
+                  {isBookRoom ? (
+                    <>
+                      <div className="flex justify-between">
+                        <p className="text-gray py-4">
+                          From:
+                          <span className="font-bold text-black">
+                            ${hotelItem?.price},00
+                          </span>
+                          / night
+                        </p>
+                        <div className="flex py-4">
+                          <img className="w-4" src={star} alt="" />
+                          <span className="font-bold mx-2">
+                            {hotelItem?.star}
+                          </span>
+                          <p className="text-gray">(3 reviews)</p>
+                        </div>
                       </div>
-                      <div className="border-l-[1px] border-solid border-[#dedede] pl-5 py-5 w-1/2">
-                        <h2 className="font-medium">Check Out</h2>
-                        <p className="text-gray">05/15/2023</p>
-                      </div>
-                    </div>
-                    <div className="border-t-[1px] border-solid border-[#dedede] rounded-b-2xl w-full p-5">
-                      <h2 className="font-medium">Guests</h2>
-                      <p className="text-gray">Add guests and rooms</p>
-                    </div>
-                  </div>
 
-                  <div className="bg-primary text-white px-9 py-5 rounded-[30px] w-full mr-2 text-center font-bold mt-8">
-                    Check availability
-                  </div>
+                      <BookRoom
+                        numberAdults={numberAdults}
+                        numberChildren={numberChildren}
+                        numberRooms={numberRooms}
+                        setNumberAdults={setNumberAdults}
+                        setNumberChildren={setNumberChildren}
+                        setNumberRooms={setNumberRooms}
+                        dates={dates}
+                        setDates={setDates}
+                        checkIn={checkIn}
+                        checkOut={checkOut}
+                      />
+
+                      <button
+                        onClick={() => handleCheckRoom()}
+                        className="bg-primary hover:opacity-75 text-white p-[15px] rounded-[30px] w-full mr-2 text-center font-bold mt-8"
+                      >
+                        Check availability
+                      </button>
+                    </>
+                  ) : (
+                    <Form
+                      className="pt-[25px]"
+                      form={formMessages}
+                      onFinish={onFinishMessages}
+                    >
+                      <styled.FormItemMessages
+                        name="name"
+                        label="Name (*)"
+                        rules={[
+                          {
+                            required: true,
+                            message: "Name is required",
+                          },
+                        ]}
+                      >
+                        <Input
+                          style={{
+                            width: "100%",
+                            padding: "10px 15px",
+                          }}
+                          placeholder="Name"
+                        />
+                      </styled.FormItemMessages>
+                      <styled.FormItemMessages
+                        name="email"
+                        label="E-mail (*)"
+                        rules={[
+                          {
+                            type: "email",
+                            message: "The input is not valid E-mail!",
+                          },
+                          {
+                            required: true,
+                            message: "Please input your E-mail!",
+                          },
+                        ]}
+                      >
+                        <Input
+                          style={{
+                            width: "100%",
+                            padding: "10px 15px",
+                          }}
+                          placeholder="email@domain.com"
+                        />
+                      </styled.FormItemMessages>
+
+                      <styled.FormItemMessages
+                        name="phone"
+                        label="Phone"
+                        rules={[
+                          {
+                            required: true,
+                            message: "Please input your phone number!",
+                          },
+                        ]}
+                      >
+                        <Input
+                          style={{
+                            width: "100%",
+                            padding: "10px 15px",
+                          }}
+                          placeholder="Your Phone"
+                        />
+                      </styled.FormItemMessages>
+
+                      <styled.FormItemMessages name="content" label="Note">
+                        <Input.TextArea placeholder="...." rows={4} />
+                      </styled.FormItemMessages>
+
+                      <styled.FormItemMessages>
+                        <Button
+                          style={{
+                            width: "100%",
+                            height: "unset",
+                            padding: "15px",
+                            color: "#fff",
+                            backgroundColor: "#3B71FE",
+                            borderRadius: "50px",
+                            fontWeight: "700",
+                          }}
+                          htmlType="submit"
+                        >
+                          Send Messages
+                        </Button>
+                      </styled.FormItemMessages>
+                    </Form>
+                  )}
                 </div>
 
                 <div className="mt-[30px]">
                   <img
                     className="rounded-2xl"
-                    src={hotelItem?.images.slice(4, 5)}
+                    src={hotelItem?.images[4]}
                     alt="hotel image"
                   />
                 </div>
@@ -739,15 +876,18 @@ export default function DetailHotel() {
             breakpoints={{
               430: {
                 slidesPerView: 1,
+                slidesPerGroup: 1,
                 spaceBetween: 24,
               },
               640: {
                 slidesPerView: 1,
+                slidesPerGroup: 1,
                 spaceBetween: 24,
               },
               768: {
                 slidesPerView: 2,
                 spaceBetween: 24,
+                slidesPerGroup: 2,
               },
               992: {
                 slidesPerView: 4,
@@ -759,32 +899,13 @@ export default function DetailHotel() {
               },
             }}
           >
-            {products.slice(0, 8).map((item) => (
+            {hotels.slice(0, 8).map((item) => (
               <SwiperSlide key={item.id}>
                 <Card item={item} />
               </SwiperSlide>
             ))}
           </styled.SwiperCustom>
         </div>
-
-        {/* <Price>
-          <div className="flex justify-between w-full p-3">
-            <div>
-              <p className="text-gray">
-                From: <span className="font-bold text-black">$136.00</span> /
-                night
-              </p>
-              <div className="flex">
-                <img className="w-4" src={Star} alt="" />
-                <span className="font-bold mx-2">5</span>
-                <p className="text-gray">(3 reviews)</p>
-              </div>
-            </div>
-            <div className="bg-primary text-white w-[8%] font-bold text-center rounded-3xl py-2">
-              Check
-            </div>
-          </div>
-        </Price> */}
       </div>
     </>
   );

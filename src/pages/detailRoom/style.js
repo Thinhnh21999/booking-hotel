@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import { Swiper } from "swiper/react";
 import { DateRangePicker } from "react-date-range";
-import { DatePicker } from "react-responsive-calendar-picker";
 
 export const PriceFixed = styled.div`
   display: none;
@@ -88,82 +87,6 @@ export const SwiperCustom = styled(Swiper)`
       .bg-primary {
         margin-bottom: 30px;
       }
-    }
-  }
-`;
-
-export const DatePickerCustom = styled(DatePicker)`
-  width: 100%;
-  .date-picker-wrapper {
-    position: relative !important;
-    width: 100% !important;
-    border-radius: 1rem !important;
-    padding: 20px 30px 30px 30px !important;
-    @media (max-width: 992px) {
-      width: 100% !important;
-    }
-
-    @media (max-width: 564px) {
-      flex-wrap: wrap;
-    }
-
-    div:nth-child(2) {
-      div {
-        font-size: 16px;
-      }
-    }
-
-    .day-date {
-      font-size: 14px;
-    }
-  }
-
-  .date-picker-wrapper div:nth-child(3) {
-    width: 100% !important;
-    div:nth-child(2) {
-      grid-template-columns: repeat(7, auto);
-      display: grid;
-    }
-    div:nth-child(3) {
-      grid-template-columns: repeat(7, auto);
-      display: grid;
-    }
-  }
-  .date-picker-wrapper div:nth-child(4) {
-    width: 100% !important;
-    div:nth-child(2) {
-      grid-template-columns: repeat(7, auto);
-      display: grid;
-    }
-    div:nth-child(3) {
-      grid-template-columns: repeat(7, auto);
-      display: grid;
-    }
-  }
-`;
-
-export const DatePickerCustomTwo = styled(DatePicker)`
-  position: relative;
-  .date-picker-wrapper {
-    margin-top: 16px;
-    right: 0;
-    z-index: 999;
-    @media (max-width: 991px) {
-      width: 100% !important;
-    }
-
-    @media (max-width: 564px) {
-      flex-wrap: wrap;
-    }
-
-    div:nth-child(2) {
-      div {
-        font-size: 16px;
-      }
-    }
-
-    .day-date {
-      font-size: 14px;
     }
   }
 `;

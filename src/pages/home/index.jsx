@@ -10,24 +10,18 @@ import "swiper/css/pagination";
 import { Navigation, Autoplay, Pagination } from "swiper";
 import * as styled from "./style.js";
 
-import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { getHotelSaga } from "../../redux/slice/hotelSlice";
+import { useEffect } from "react";
 import { getLocationSaga } from "../../redux/slice/locationSlice";
+import { useDispatch } from "react-redux";
 
 export default function Home(props) {
-  const dispatch = useDispatch();
   const hotels = props.hotels;
   const locationHotel = props.locationHotel;
+  const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getLocationSaga());
 
-    dispatch(
-      getHotelSaga({
-        _limit: 24,
-      })
-    );
     window.scrollTo(0, 0);
   }, []);
 
@@ -168,7 +162,7 @@ export default function Home(props) {
                 },
               }}
             >
-              {hotels?.slice(0, 6).map((item) => (
+              {hotels?.slice(0, 8).map((item) => (
                 <SwiperSlide key={item.id}>
                   <Card item={item} />
                 </SwiperSlide>

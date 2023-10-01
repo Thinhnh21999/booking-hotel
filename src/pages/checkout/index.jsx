@@ -22,11 +22,14 @@ export default function Checkout() {
     nameHotel,
     totalPrice,
   } = bookRoom || {};
-  console.log(bookRoom);
   const [keyboard, setKeyboard] = useState(true);
   const [keyboardTwo, setKeyboardTwo] = useState(false);
   const [form] = Form.useForm();
   const history = useHistory();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const MyFormItemContext = React.createContext([]);
   const { TextArea } = Input;

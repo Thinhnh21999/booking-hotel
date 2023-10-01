@@ -2,7 +2,11 @@ import { useEffect, useRef, useState } from "react";
 import SignInOut from "../../component/signInOut";
 import { clearLocalLogin, getLocalLogin } from "../../until/local/local.js";
 
-import { Link, useLocation } from "react-router-dom/cjs/react-router-dom.min";
+import {
+  Link,
+  useHistory,
+  useLocation,
+} from "react-router-dom/cjs/react-router-dom.min";
 import PhoneSvg from "../../assets/svgs/phone.svg";
 import EmailSvg from "../../assets/svgs/email.svg";
 import CartSvg from "../../assets/svgs/cart.svg";
@@ -23,7 +27,6 @@ import { useClickOutside } from "../../until/clickOutside";
 
 export default function Header() {
   const { hotels } = useSelector((state) => state.Hotels);
-  console.log(hotels);
   const [isOpen, setIsOpen] = useState(false);
   const [isDropdownMenuItem, setIsDropdownMenuItem] = useState({
     isListing: false,
@@ -91,7 +94,10 @@ export default function Header() {
   };
 
   const handleClickOutsideMenu = () => {
-    setIsOpen(false);
+    setIsDropdownMenuItem((preState) => ({
+      ...preState,
+      isUser: false,
+    }));
   };
 
   useClickOutside(refCart, handleClickOutsideCart);
@@ -160,12 +166,20 @@ export default function Header() {
                 </Link>
               </li>
               <li>
-                <Link className="link-dropdown hover" to="#">
+                <Link
+                  onClick={() => setTimeout(() => window.location.reload(), 0)}
+                  className="link-dropdown hover"
+                  to="/about"
+                >
                   ABOUT
                 </Link>
               </li>
               <li>
-                <Link className="link-dropdown hover" to="/listing">
+                <Link
+                  onClick={() => setTimeout(() => window.location.reload(), 0)}
+                  className="link-dropdown hover"
+                  to="/listing"
+                >
                   LISTING
                 </Link>
               </li>
@@ -202,13 +216,13 @@ export default function Header() {
                 </styled.DropdownMenuItem>
               </li>
               <li>
-                <span
+                <Link
                   onClick={() => handleDropdownMenuItem3()}
                   className="link-dropdown hover"
-                  to="#"
+                  to="/checkout"
                 >
-                  PAGES
-                </span>
+                  CHECKOUT
+                </Link>
               </li>
               <li>
                 <Link className="link-dropdown hover" to="#">
@@ -246,13 +260,21 @@ export default function Header() {
             </li>
 
             <li>
-              <Link className="block hover py-[35px] ps-2.5 pe-6" to="#">
+              <Link
+                onClick={() => setTimeout(() => window.location.reload(), 0)}
+                className="block hover py-[35px] ps-2.5 pe-6"
+                to="/about"
+              >
                 About
               </Link>
             </li>
 
             <li className="relative">
-              <Link className="flex hover py-[35px] ps-2.5 pe-6" to="/listing">
+              <Link
+                onClick={() => setTimeout(() => window.location.reload(), 0)}
+                className="flex hover py-[35px] ps-2.5 pe-6"
+                to="/listing"
+              >
                 Listing
               </Link>
             </li>
@@ -285,9 +307,13 @@ export default function Header() {
             </styled.Dropdown>
 
             <li className="relative">
-              <span className="flex hover py-[35px] ps-2.5 pe-6" to="#">
-                Pages
-              </span>
+              <Link
+                onClick={() => setTimeout(() => window.location.reload(), 0)}
+                className="flex hover py-[35px] ps-2.5 pe-6"
+                to="/checkout"
+              >
+                Checkout
+              </Link>
             </li>
             <li className="">
               <Link className="flex  hover py-[35px] ps-2.5 pe-6" to="#">
@@ -393,9 +419,15 @@ export default function Header() {
                     )}
                   </div>
 
-                  <button className="text-white uppercase bg-primary hover:opacity-80 text-center w-full px-5 py-3 rounded-[50px]">
+                  <Link
+                    onClick={() =>
+                      setTimeout(() => window.location.reload(), 0)
+                    }
+                    to="/checkout"
+                    className="text-white uppercase bg-primary hover:opacity-80 text-center w-full px-5 py-3 rounded-[50px]"
+                  >
                     Pay Now
-                  </button>
+                  </Link>
                 </div>
               ) : null}
             </li>

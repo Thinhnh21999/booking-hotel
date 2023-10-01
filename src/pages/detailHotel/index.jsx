@@ -1,7 +1,7 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { useEffect, useState, useMemo, useRef } from "react";
 import { useDispatch } from "react-redux";
-import { getHotelSaga, setParams } from "../../redux/slice/hotelSlice";
+import { getHotelSaga } from "../../redux/slice/hotelSlice";
 import { Rate, Col, Row, message } from "antd";
 import Card from "../../component/card/index.jsx";
 import CardRoom from "../../component/cardRoom";
@@ -101,13 +101,8 @@ export default function DetailHotel(props) {
   const ref = useRef();
 
   useEffect(() => {
-    dispatch(
-      getHotelSaga({
-        _limit: 24,
-      })
-    );
-
     dispatch(getReviewSaga(paramsReviews));
+
     window.scrollTo(0, 0);
   }, []);
 

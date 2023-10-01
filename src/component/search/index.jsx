@@ -18,7 +18,6 @@ import {
 
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
-import "react-responsive-calendar-picker/dist/index.css";
 import MapSvg from "../../assets/svgs/map.svg";
 import ArrowSvg from "../../assets/svgs/arrowRight.svg";
 import CalendarSvg from "../../assets/svgs/calendar.svg";
@@ -128,19 +127,18 @@ export default function Search(props) {
     });
   }, [objDates, currentInput, isNumberRooms, isNumberAdults, isNumberChildren]);
 
-  const handleCalendarClickOutside = () => {
-    setIsOpen((prevState) => ({
-      ...prevState,
-      isOpenCalendar: false,
-    }));
-    console.log(refCalendar);
-  };
-
   // dùng ...prevState để đảm bảo isOpen ko bị ghi đè
   const handleSearchClickOutside = () => {
     setIsOpen((prevState) => ({
       ...prevState,
       isOpenSearch: false,
+    }));
+  };
+
+  const handleCalendarClickOutside = () => {
+    setIsOpen((prevState) => ({
+      ...prevState,
+      isOpenCalendar: false,
     }));
   };
 
@@ -152,8 +150,8 @@ export default function Search(props) {
   };
 
   useClickOutside(refSearch, handleSearchClickOutside);
-  useClickOutside(refGuests, handleGuestsClickOutside);
   useClickOutside(refCalendar, handleCalendarClickOutside);
+  useClickOutside(refGuests, handleGuestsClickOutside);
 
   const handleSearchInput = (e) => {
     const value = e.target.value.toLowerCase();

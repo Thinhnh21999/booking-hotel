@@ -2,7 +2,6 @@ import { useState, useRef, useEffect } from "react";
 import { Rate, Form, Input } from "antd";
 import moment from "moment/moment";
 
-import "react-responsive-calendar-picker/dist/index.css";
 import * as styled from "./styled.js";
 import { useClickOutside } from "../../until/clickOutside";
 

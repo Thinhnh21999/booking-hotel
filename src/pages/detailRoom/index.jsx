@@ -7,7 +7,6 @@ import {
   useHistory,
   useParams,
 } from "react-router-dom/cjs/react-router-dom.min";
-import "react-responsive-calendar-picker/dist/index.css";
 import ButtonShare from "../../component/buttonShare";
 import CardRoom from "../../component/cardRoom";
 import { getHotelSaga } from "../../redux/slice/hotelSlice";

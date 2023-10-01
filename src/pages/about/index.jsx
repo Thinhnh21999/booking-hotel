@@ -3,8 +3,12 @@ import { Autoplay, Navigation, Pagination } from "swiper";
 
 import * as styled from "./style";
 import { SwiperSlide } from "swiper/react";
+import { useEffect } from "react";
 
-export default function about(props) {
+export default function About(props) {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <>
       <div className="px-5">

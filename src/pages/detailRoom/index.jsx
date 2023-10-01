@@ -99,11 +99,6 @@ export default function DetailRoom(props) {
   const token = getLocalLogin()?.access_token;
 
   useEffect(() => {
-    dispatch(
-      getHotelSaga({
-        _limit: 24,
-      })
-    );
     window.scrollTo(0, 0);
   }, []);
 

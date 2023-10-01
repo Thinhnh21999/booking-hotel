@@ -16,6 +16,7 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { setLoadingSg } from "./redux/slice/loadingSlice";
 import { isEqual } from "lodash";
+import { getHotelSaga } from "./redux/slice/hotelSlice";
 
 function App() {
   const loading = useSelector((state) => state.Loading.isLoading);
@@ -45,6 +46,12 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    dispatch(
+      getHotelSaga({
+        _limit: 24,
+      })
+    );
+
     dispatch(setLoadingSg(true));
     const timeoutId = setTimeout(() => {
       dispatch(setLoadingSg(false));

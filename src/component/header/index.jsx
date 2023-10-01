@@ -23,7 +23,6 @@ import { useClickOutside } from "../../until/clickOutside";
 
 export default function Header() {
   const { hotels } = useSelector((state) => state.Hotels);
-  console.log(hotels);
   const [isOpen, setIsOpen] = useState(false);
   const [isDropdownMenuItem, setIsDropdownMenuItem] = useState({
     isListing: false,
@@ -42,6 +41,8 @@ export default function Header() {
   useEffect(() => {
     dispatch(getBookRoomSg());
   }, []);
+
+  console.log("sssss");
 
   const handleOnclickMenu = () => {
     setIsOpen(!isOpen);

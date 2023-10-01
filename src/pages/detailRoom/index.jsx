@@ -20,8 +20,8 @@ import {
   getLocalCheckIn,
   getLocalLogin,
   setLocalBookRoom,
-  setLocalCheckIn,
 } from "../../until/local/local.js";
+import { addDays } from "date-fns";
 
 import size from "../../assets/svgs/size.svg";
 import adults from "../../assets/svgs/adults.svg";
@@ -38,6 +38,8 @@ import washer from "../../assets/svgs/Washer&Dryer.svg";
 import locationSvg from "../../assets/svgs/location.svg";
 
 import { Navigation, Autoplay, Pagination } from "swiper";
+import "react-date-range/dist/styles.css";
+import "react-date-range/dist/theme/default.css";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
@@ -46,23 +48,49 @@ import * as styled from "./style.js";
 
 export default function DetailRoom(props) {
   const { hotels } = props;
-  const [dates, setDates] = useState({
-    checkin: new Date(getLocalCheckIn().checkIn),
+  const checkInLocal = getLocalCheckIn()?.checkIn;
+  const checkOutLocal = getLocalCheckIn()?.checkOut;
 
-    checkout: new Date(getLocalCheckIn().checkOut),
-  });
-  const checkIn = dates.checkin;
-  const checkOut = dates.checkout;
-  const [openOne, setOpenOne] = useState(true);
+  // custom ngày giờ để có thể tính được thời gian offNight
+  const offNight = useMemo(() => {
+    return moment(checkOutLocal).diff(moment(checkInLocal), "days");
+  }, [checkOutLocal, checkInLocal]);
+
+  // custom ngày giờ để tính thòi gian ngày hôm nay đến ngày checkIn
+  const daysUntilCheckIn = useMemo(() => {
+    const checkInMoment = moment(checkInLocal, "MM/DD/YYYY").startOf("day");
+    const currentMoment = moment().startOf("day");
+    return moment(checkInMoment).diff(currentMoment, "days");
+  }, [checkInLocal]);
+  const [dates, setDates] = useState([
+    {
+      startDate: checkInLocal ? new Date(checkInLocal) : new Date(),
+      endDate: addDays(
+        new Date(),
+        offNight || daysUntilCheckIn > 0 ? offNight + daysUntilCheckIn : 1
+      ),
+      key: "selection",
+    },
+  ]);
+  const objDates = Object.assign({}, ...dates);
+  const checkIn = moment(objDates.startDate, "ddd MMM DD YYYY").format(
+    "MM/DD/YYYY"
+  );
+  const checkOut = moment(objDates.endDate, "ddd MMM DD YYYY").format(
+    "MM/DD/YYYY"
+  );
   const [isLoader, setIsLoader] = useState(false);
   const [errors, setErrors] = useState([]);
-  const [numberRooms, setNumberRooms] = useState(getLocalCheckIn().numberRooms);
+  const [numberRooms, setNumberRooms] = useState(
+    getLocalCheckIn()?.numberRooms
+  );
   const [numberAdults, setNumberAdults] = useState(
-    getLocalCheckIn().numberAdults
+    getLocalCheckIn()?.numberAdults
   );
   const [numberChildren, setNumberChildren] = useState(
-    getLocalCheckIn().numberChildren
+    getLocalCheckIn()?.numberChildren
   );
+  const [isShowNavigation, setShowIsNavigation] = useState(false);
   const dispatch = useDispatch();
   const history = useHistory();
   const { nameHotel, nameRoom } = useParams();
@@ -79,24 +107,14 @@ export default function DetailRoom(props) {
     window.scrollTo(0, 0);
   }, []);
 
-  useEffect(() => {
-    setLocalCheckIn({
-      checkIn,
-      checkOut,
-      numberAdults,
-      numberChildren,
-      numberRooms,
-    });
-  }, [checkIn, checkOut, numberAdults, numberChildren, numberRooms]);
-
   const hotelItem = hotels?.find((hotel) => hotel.nameHotel === nameHotel);
   const roomItem = hotelItem?.rooms?.find((room) => room.nameRoom === nameRoom);
+  const numberOffNight = moment(checkOut).diff(moment(checkIn), "days");
 
   const { location, image } = hotelItem || {};
   const { price, description, images } = roomItem || {};
   const { S, Adults, Children, Beds } = roomItem?.detail || {};
 
-  const numberOffNight = moment(checkOut).diff(moment(checkIn), "days");
   const totalPrice = useMemo(() => {
     return (numberRooms * price * numberOffNight).toLocaleString("en-US", {
       style: "currency",
@@ -379,12 +397,15 @@ export default function DetailRoom(props) {
             <div>
               <h2 className="text-2xl font-bold mb-10">Rates & availability</h2>
               <div className="w-full rounded-xl shadow-custom bg-white border-line">
-                <styled.DatePickerCustom
-                  dates={dates}
-                  setDates={setDates}
-                  open={openOne}
-                  setOpen={() => setOpenOne(true)}
-                ></styled.DatePickerCustom>
+                <styled.DateRangePickerCustom
+                  onChange={(item) => setDates([item.selection])}
+                  showSelectionPreview={true}
+                  moveRangeOnFirstSelection={false}
+                  months={2}
+                  minDate={moment().toDate()}
+                  ranges={dates}
+                  direction="horizontal"
+                />
               </div>
             </div>
 
@@ -405,7 +426,36 @@ export default function DetailRoom(props) {
             </div>
           </div>
 
-          <div className="w-1/3 relative hidden lg:block px-3">
+          <div className="fixed flex lg:hidden justify-between items-center bottom-0 left-0 right-0 z-50 w-full bg-white px-[15px] py-2.5 border-t border-solid border-[#dedede] ">
+            <div className="flex justify-between">
+              <p className="text-gray py-4 mr-3">
+                From:
+                <span className="font-bold text-black">
+                  ${hotelItem?.price},00
+                </span>
+                / night
+              </p>
+              <div className="flex py-4">
+                <img className="w-4" src={star} alt="" />
+                <span className="font-bold mx-2">{hotelItem?.star}</span>
+                <p className="text-gray">(3 reviews)</p>
+              </div>
+            </div>
+            <button
+              onClick={() => setShowIsNavigation(!isShowNavigation)}
+              className="bg-primary px-4 py-3 text-white rounded-3xl"
+            >
+              {isShowNavigation ? "Close Check" : "Check Room"}
+            </button>
+          </div>
+
+          <div
+            className={`${
+              isShowNavigation
+                ? "top-0 !h-auto opacity-100 overflow-scroll"
+                : ""
+            } lg:relative fixed opacity-0 h-0 lg:h-auto transition-all duration-300 lg:opacity-100 z-30 bottom-0 left-0 pt-5 lg:pt-0 bg-white w-full lg:w-1/3 lg:block px-3`}
+          >
             <div className="sticky top-0">
               <Form
                 onFinish={handleBookRoom}

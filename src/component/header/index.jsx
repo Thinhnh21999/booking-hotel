@@ -19,9 +19,11 @@ import {
   deleteBookRoomSg,
   getBookRoomSg,
 } from "../../redux/slice/bookRoomSlice";
-import { useClickOutside } from "../../until/clickOutside/clickOutside";
+import { useClickOutside } from "../../until/clickOutside";
 
 export default function Header() {
+  const { hotels } = useSelector((state) => state.Hotels);
+  console.log(hotels);
   const [isOpen, setIsOpen] = useState(false);
   const [isDropdownMenuItem, setIsDropdownMenuItem] = useState({
     isListing: false,
@@ -50,28 +52,28 @@ export default function Header() {
   };
 
   const handleDropdownMenuItem1 = () => {
-    setIsDropdownMenuItem({
-      ...isDropdownMenuItem,
+    setIsDropdownMenuItem((preState) => ({
+      ...preState,
       isListing: !isDropdownMenuItem.isListing,
-    });
+    }));
   };
   const handleDropdownMenuItem2 = () => {
-    setIsDropdownMenuItem({
-      ...isDropdownMenuItem,
+    setIsDropdownMenuItem((preState) => ({
+      ...preState,
       isHotel: !isDropdownMenuItem.isHotel,
-    });
+    }));
   };
   const handleDropdownMenuItem3 = () => {
-    setIsDropdownMenuItem({
-      ...isDropdownMenuItem,
+    setIsDropdownMenuItem((preState) => ({
+      ...preState,
       isPages: !isDropdownMenuItem.isPages,
-    });
+    }));
   };
   const handleDropdownMenuUser = () => {
-    setIsDropdownMenuItem({
-      ...isDropdownMenuItem,
+    setIsDropdownMenuItem((preState) => ({
+      ...preState,
       isUser: !isDropdownMenuItem.isUser,
-    });
+    }));
   };
 
   const handleClickOutsideCart = () => {
@@ -163,45 +165,41 @@ export default function Header() {
                 </Link>
               </li>
               <li>
-                <span
-                  onClick={() => handleDropdownMenuItem1()}
-                  className="link-dropdown hover"
-                  to="#"
-                >
+                <Link className="link-dropdown hover" to="/listing">
                   LISTING
-                  <img className="w-4 ml-auto" src={DropdownSvg} alt="" />
-                </span>
-                <styled.DropdownMenuItem
-                  isDropdownMenuItem={isDropdownMenuItem.isListing}
-                  className="px-2.5 hidden"
-                >
-                  <li className="py-3 font-medium">
-                    <Link
-                      onClick={() =>
-                        setTimeout(() => window.location.reload(), 0)
-                      }
-                      className="link-dropdown-item hover"
-                      to="/listing"
-                    >
-                      Search Popup Map
-                    </Link>
-                  </li>
-                  <li className="py-3 font-medium">
-                    <Link className="link-dropdown-item hover" to="#">
-                      Search HalfMap
-                    </Link>
-                  </li>
-                </styled.DropdownMenuItem>
+                </Link>
               </li>
               <li>
-                <Link
-                  to="#"
+                <span
                   onClick={() => handleDropdownMenuItem2()}
                   className="link-dropdown hover"
                 >
                   HOTEL
                   <img className="w-4 ml-auto" src={DropdownSvg} alt="" />
-                </Link>
+                </span>
+                <styled.DropdownMenuItem
+                  isDropdownMenuItem={isDropdownMenuItem.isHotel}
+                  className="px-2.5 hidden"
+                >
+                  {hotels.map((hotel, index) => (
+                    <li key={index} className="px-[30px]">
+                      <Link
+                        onClick={() =>
+                          setTimeout(() => window.location.reload(), 0)
+                        }
+                        className="py-[15px] flex items-center font-medium hover"
+                        to={`/detail-hotel/${hotel.nameHotel}`}
+                      >
+                        <img
+                          className="w-12 h-12 mr-2"
+                          src={hotel.images[0]}
+                          alt=".."
+                        />
+                        {hotel.nameHotel}
+                      </Link>
+                    </li>
+                  ))}
+                </styled.DropdownMenuItem>
               </li>
               <li>
                 <span
@@ -246,41 +244,45 @@ export default function Header() {
                 Home
               </Link>
             </li>
+
             <li>
               <Link className="block hover py-[35px] ps-2.5 pe-6" to="#">
                 About
               </Link>
             </li>
-            <styled.Dropdown className="relative">
-              <span className="flex hover py-[35px] ps-2.5 pe-6" to="#">
-                Listing
-                <img className="w-4" src={DropdownSvg} alt="..." />
-              </span>
-              <ul className="dropdown z-[-1]">
-                <li className="px-[30px]">
-                  <Link
-                    onClick={() =>
-                      setTimeout(() => window.location.reload(), 0)
-                    }
-                    className="py-[15px] font-medium block hover"
-                    to="/listing"
-                  >
-                    Search Popup Map
-                  </Link>
-                </li>
-                <li className="px-[30px]">
-                  <Link className="py-[15px] font-medium block hover" to="#">
-                    Search HalfMap
-                  </Link>
-                </li>
-              </ul>
-            </styled.Dropdown>
 
             <li className="relative">
+              <Link className="flex hover py-[35px] ps-2.5 pe-6" to="/listing">
+                Listing
+              </Link>
+            </li>
+
+            <styled.Dropdown className="relative">
               <span className="flex hover py-[35px] ps-2.5 pe-6" to="#">
                 Hotel
+                <img className="w-4" src={DropdownSvg} alt="..." />
               </span>
-            </li>
+              <ul className="dropdown max-h-80 overflow-scroll z-[-1]">
+                {hotels.map((hotel, index) => (
+                  <li key={index} className="px-[30px]">
+                    <Link
+                      onClick={() =>
+                        setTimeout(() => window.location.reload(), 0)
+                      }
+                      className="py-[15px] flex items-center font-medium hover"
+                      to={`/detail-hotel/${hotel.nameHotel}`}
+                    >
+                      <img
+                        className="w-12 h-12 mr-2"
+                        src={hotel.images[0]}
+                        alt=".."
+                      />
+                      {hotel.nameHotel}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </styled.Dropdown>
 
             <li className="relative">
               <span className="flex hover py-[35px] ps-2.5 pe-6" to="#">
@@ -319,10 +321,10 @@ export default function Header() {
             <li ref={refCart} className="relative">
               <button
                 onClick={() =>
-                  setIsDropdownMenuItem({
-                    ...isDropdownMenuItem,
+                  setIsDropdownMenuItem((preState) => ({
+                    ...preState,
                     isCart: !isDropdownMenuItem.isCart,
-                  })
+                  }))
                 }
                 className="center relative lg:icon w-[44px] h-[44px] py-1 px-2.5 rounded-[50%] border-line shadow-custom"
               >

@@ -25,8 +25,7 @@ export default function Home(props) {
 
     dispatch(
       getHotelSaga({
-        _page: 1,
-        _limit: 6,
+        _limit: 24,
       })
     );
     window.scrollTo(0, 0);
@@ -169,7 +168,7 @@ export default function Home(props) {
                 },
               }}
             >
-              {hotels?.map((item) => (
+              {hotels?.slice(0, 6).map((item) => (
                 <SwiperSlide key={item.id}>
                   <Card item={item} />
                 </SwiperSlide>

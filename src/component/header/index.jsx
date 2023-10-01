@@ -24,9 +24,12 @@ import {
   getBookRoomSg,
 } from "../../redux/slice/bookRoomSlice";
 import { useClickOutside } from "../../until/clickOutside";
+import { setLoadingSg } from "../../redux/slice/loadingSlice";
 
 export default function Header() {
   const { hotels } = useSelector((state) => state.Hotels);
+  const { isAuth } = useSelector((state) => state.Users);
+  const { bookRoom } = useSelector((state) => state.BookRoom);
   const [isOpen, setIsOpen] = useState(false);
   const [isDropdownMenuItem, setIsDropdownMenuItem] = useState({
     isListing: false,
@@ -34,13 +37,12 @@ export default function Header() {
     isCart: false,
     isUser: false,
   });
+  const [open, setOpen] = useState(false);
   const refCart = useRef();
   const refMenu = useRef();
   const refUser = useRef();
   const dispatch = useDispatch();
-  const isAuth = useSelector((state) => state.Users.isAuth);
-  const { bookRoom } = useSelector((state) => state.BookRoom);
-  const userLocalLogin = getLocalLogin() || isAuth === true;
+  const userLocalLogin = getLocalLogin() || isAuth;
 
   useEffect(() => {
     dispatch(getBookRoomSg());
@@ -87,10 +89,7 @@ export default function Header() {
   };
 
   const handleClickOutsideUser = () => {
-    setIsDropdownMenuItem((prevState) => ({
-      ...prevState,
-      isUser: false,
-    }));
+    setOpen(false);
   };
 
   const handleClickOutsideMenu = () => {
@@ -105,7 +104,10 @@ export default function Header() {
   useClickOutside(refUser, handleClickOutsideUser);
 
   const clearLocalLoginFC = () => {
-    window.location.reload();
+    dispatch(setLoadingSg(true));
+    setTimeout(() => {
+      dispatch(setLoadingSg(false));
+    }, 2000);
     dispatch(setIsOpenModal(false));
     dispatch(setAuth(false));
     clearLocalLogin();
@@ -157,29 +159,17 @@ export default function Header() {
             </span>
             <ul className=" px-5">
               <li>
-                <Link
-                  onClick={() => setTimeout(() => window.location.reload(), 0)}
-                  className="link-dropdown hover"
-                  to="/"
-                >
+                <Link className="link-dropdown hover" to="/">
                   HOME
                 </Link>
               </li>
               <li>
-                <Link
-                  onClick={() => setTimeout(() => window.location.reload(), 0)}
-                  className="link-dropdown hover"
-                  to="/about"
-                >
+                <Link className="link-dropdown hover" to="/about">
                   ABOUT
                 </Link>
               </li>
               <li>
-                <Link
-                  onClick={() => setTimeout(() => window.location.reload(), 0)}
-                  className="link-dropdown hover"
-                  to="/listing"
-                >
+                <Link className="link-dropdown hover" to="/listing">
                   LISTING
                 </Link>
               </li>
@@ -198,9 +188,6 @@ export default function Header() {
                   {hotels.map((hotel, index) => (
                     <li key={index} className="px-[30px]">
                       <Link
-                        onClick={() =>
-                          setTimeout(() => window.location.reload(), 0)
-                        }
                         className="py-[15px] flex items-center font-medium hover"
                         to={`/detail-hotel/${hotel.nameHotel}`}
                       >
@@ -250,31 +237,19 @@ export default function Header() {
           </Link>
           <ul className=" lg:flex hidden justify-between font-bold">
             <li className="">
-              <Link
-                onClick={() => setTimeout(() => window.location.reload(), 0)}
-                className="block hover py-[35px] ps-2.5 pe-6"
-                to="/"
-              >
+              <Link className="block hover py-[35px] ps-2.5 pe-6" to="/">
                 Home
               </Link>
             </li>
 
             <li>
-              <Link
-                onClick={() => setTimeout(() => window.location.reload(), 0)}
-                className="block hover py-[35px] ps-2.5 pe-6"
-                to="/about"
-              >
+              <Link className="block hover py-[35px] ps-2.5 pe-6" to="/about">
                 About
               </Link>
             </li>
 
             <li className="relative">
-              <Link
-                onClick={() => setTimeout(() => window.location.reload(), 0)}
-                className="flex hover py-[35px] ps-2.5 pe-6"
-                to="/listing"
-              >
+              <Link className="flex hover py-[35px] ps-2.5 pe-6" to="/listing">
                 Listing
               </Link>
             </li>
@@ -288,9 +263,6 @@ export default function Header() {
                 {hotels.map((hotel, index) => (
                   <li key={index} className="px-[30px]">
                     <Link
-                      onClick={() =>
-                        setTimeout(() => window.location.reload(), 0)
-                      }
                       className="py-[15px] flex items-center font-medium hover"
                       to={`/detail-hotel/${hotel.nameHotel}`}
                     >
@@ -307,11 +279,7 @@ export default function Header() {
             </styled.Dropdown>
 
             <li className="relative">
-              <Link
-                onClick={() => setTimeout(() => window.location.reload(), 0)}
-                className="flex hover py-[35px] ps-2.5 pe-6"
-                to="/checkout"
-              >
+              <Link className="flex hover py-[35px] ps-2.5 pe-6" to="/checkout">
                 Checkout
               </Link>
             </li>
@@ -419,15 +387,15 @@ export default function Header() {
                     )}
                   </div>
 
-                  <Link
-                    onClick={() =>
-                      setTimeout(() => window.location.reload(), 0)
-                    }
-                    to="/checkout"
-                    className="text-white uppercase bg-primary hover:opacity-80 text-center w-full px-5 py-3 rounded-[50px]"
+                  <a
+                    // onClick={() =>
+                    //   setTimeout(() => history.push("/checkout"), 0)
+                    // }
+                    href="/checkout"
+                    className="text-white block uppercase bg-primary hover:opacity-80 text-center w-full px-5 py-3 rounded-[50px]"
                   >
                     Pay Now
-                  </Link>
+                  </a>
                 </div>
               ) : null}
             </li>
@@ -437,12 +405,12 @@ export default function Header() {
                 <>
                   <div
                     className="center rounded-[50%] w-[44px] h-[44px] shadow-custom border-line cursor-pointer"
-                    onClick={() => handleDropdownMenuUser()}
+                    onClick={() => setOpen(!open)}
                   >
                     <img className="w-5" src={UserSvg} alt="..." />
                   </div>
                   <styled.DropdownMenuItem
-                    isDropdownMenuItem={isDropdownMenuItem.isUser}
+                    isDropdownMenuItem={open}
                     className="absolute z-[999] py-2.5 min-w-[230px] top-[100%] bg-white border rounded-[12px] shadow-custom hidden right-0"
                   >
                     <li className="px-[30px]">

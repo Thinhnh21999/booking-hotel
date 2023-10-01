@@ -4,10 +4,20 @@ import { Autoplay, Navigation, Pagination } from "swiper";
 import * as styled from "./style";
 import { SwiperSlide } from "swiper/react";
 import { useEffect } from "react";
+import { setLoadingSg } from "../../redux/slice/loadingSlice";
+import { useDispatch } from "react-redux";
 
 export default function About(props) {
+  const dispatch = useDispatch();
   useEffect(() => {
     window.scrollTo(0, 0);
+    dispatch(setLoadingSg(true));
+    const timeoutId = setTimeout(() => {
+      dispatch(setLoadingSg(false));
+    }, 2000);
+    return () => {
+      clearTimeout(timeoutId);
+    };
   }, []);
   return (
     <>

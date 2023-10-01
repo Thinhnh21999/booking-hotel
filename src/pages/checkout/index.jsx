@@ -6,6 +6,8 @@ import DropdownSvg from "../../assets/svgs/arrow_down.svg";
 import * as styled from "./style.js";
 import { getLocalBookRoom } from "../../until/local/local.js";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { setLoadingSg } from "../../redux/slice/loadingSlice";
+import { useDispatch } from "react-redux";
 
 export default function Checkout() {
   const bookRoom = getLocalBookRoom();
@@ -26,9 +28,17 @@ export default function Checkout() {
   const [keyboardTwo, setKeyboardTwo] = useState(false);
   const [form] = Form.useForm();
   const history = useHistory();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    dispatch(setLoadingSg(true));
+    const timeoutId = setTimeout(() => {
+      dispatch(setLoadingSg(false));
+    }, 2000);
+    return () => {
+      clearTimeout(timeoutId);
+    };
   }, []);
 
   const MyFormItemContext = React.createContext([]);

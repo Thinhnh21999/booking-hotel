@@ -9,14 +9,15 @@ import Listing from "./pages/listing";
 import DetailHotel from "./pages/detailHotel";
 import DetailRoom from "./pages/detailRoom";
 import Checkout from "./pages/checkout";
+import NotFound from "./component/notFound/index.jsx";
 
-import DefaultRouter from "./router/defaultRouter";
-import AuthRouter from "./router/authRouter.jsx";
+import DefaultRouter from "./router/defaultRouter/defaultRouter";
+import AuthRouter from "./router/authRouter/authRouter.jsx";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { setLoadingSg } from "./redux/slice/loadingSlice";
 import { isEqual } from "lodash";
 import { getHotelSaga } from "./redux/slice/hotelSlice";
+import { Route } from "react-router-dom/cjs/react-router-dom.min";
 
 function App() {
   const loading = useSelector((state) => state.Loading.isLoading);
@@ -51,14 +52,6 @@ function App() {
         _limit: 24,
       })
     );
-
-    dispatch(setLoadingSg(true));
-    const timeoutId = setTimeout(() => {
-      dispatch(setLoadingSg(false));
-    }, 2000);
-    return () => {
-      clearTimeout(timeoutId);
-    };
   }, []);
 
   return (
@@ -111,6 +104,7 @@ function App() {
           Component={Contact}
         />
         <AuthRouter exact path="/checkout" Component={Checkout} />
+        <Route component={NotFound} />
       </Switch>
     </div>
   );

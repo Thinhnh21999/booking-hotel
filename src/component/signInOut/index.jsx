@@ -15,6 +15,7 @@ import {
   setIsSignIn,
   setIsOpenModal,
 } from "../../redux/slice/userSlice";
+import { setLoadingSg } from "../../redux/slice/loadingSlice";
 
 const App = () => {
   const { isSignIn, isOpenModal } = useSelector((state) => state.Users);
@@ -32,6 +33,10 @@ const App = () => {
       dispatch(commonRegister(values));
     } else {
       dispatch(commonLogin(values));
+      dispatch(setLoadingSg(true));
+      setTimeout(() => {
+        dispatch(setLoadingSg(false));
+      }, 2000);
     }
   };
 

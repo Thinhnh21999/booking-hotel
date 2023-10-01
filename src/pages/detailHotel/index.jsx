@@ -39,6 +39,7 @@ import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
 import * as styled from "./style";
 import { getLocalCheckIn, setLocalCheckIn } from "../../until/local/local.js";
+import { setLoadingSg } from "../../redux/slice/loadingSlice";
 
 export default function DetailHotel(props) {
   const hotels = props.hotels;
@@ -102,6 +103,13 @@ export default function DetailHotel(props) {
 
   useEffect(() => {
     dispatch(getReviewSaga(paramsReviews));
+    dispatch(setLoadingSg(true));
+    const timeoutId = setTimeout(() => {
+      dispatch(setLoadingSg(false));
+    }, 2000);
+    return () => {
+      clearTimeout(timeoutId);
+    };
 
     window.scrollTo(0, 0);
   }, []);

@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { Slider, Rate, Form, Dropdown, Radio } from "antd";
 import { getHotelSaga, setParams } from "../../redux/slice/hotelSlice";
-import { setLoading } from "../../redux/slice/loadingSlice";
+import { setLoading, setLoadingSg } from "../../redux/slice/loadingSlice";
 import Search from "../../component/search";
 import Card from "../../component/card";
 import { debounce } from "lodash";
@@ -48,6 +48,7 @@ export default function Listing(props) {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     dispatch(
       getHotelSaga({
         _page: 1,
@@ -55,7 +56,13 @@ export default function Listing(props) {
         q: getLocalCheckIn()?.location,
       })
     );
-    window.scrollTo(0, 0);
+    dispatch(setLoadingSg(true));
+    const timeoutId = setTimeout(() => {
+      dispatch(setLoadingSg(false));
+    }, 2000);
+    return () => {
+      clearTimeout(timeoutId);
+    };
   }, []);
 
   const handleChangePage = (page) => {

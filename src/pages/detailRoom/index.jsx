@@ -44,6 +44,7 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import moment from "moment";
 import * as styled from "./style.js";
+import { setLoadingSg } from "../../redux/slice/loadingSlice";
 
 export default function DetailRoom(props) {
   const { hotels } = props;
@@ -99,6 +100,13 @@ export default function DetailRoom(props) {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    dispatch(setLoadingSg(true));
+    const timeoutId = setTimeout(() => {
+      dispatch(setLoadingSg(false));
+    }, 2000);
+    return () => {
+      clearTimeout(timeoutId);
+    };
   }, []);
 
   const hotelItem = hotels?.find((hotel) => hotel.nameHotel === nameHotel);

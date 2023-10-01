@@ -13,6 +13,7 @@ import * as styled from "./style.js";
 import { useEffect } from "react";
 import { getLocationSaga } from "../../redux/slice/locationSlice";
 import { useDispatch } from "react-redux";
+import { setLoadingSg } from "../../redux/slice/loadingSlice";
 
 export default function Home(props) {
   const hotels = props.hotels;
@@ -20,9 +21,15 @@ export default function Home(props) {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getLocationSaga());
-
     window.scrollTo(0, 0);
+    dispatch(getLocationSaga());
+    dispatch(setLoadingSg(true));
+    const timeoutId = setTimeout(() => {
+      dispatch(setLoadingSg(false));
+    }, 2000);
+    return () => {
+      clearTimeout(timeoutId);
+    };
   }, []);
 
   return (

@@ -1,10 +1,13 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import React, { Component } from "react";
 import { Form, Input, Button } from "antd";
+import { DateRangePicker } from "react-date-range";
+import { addDays } from "date-fns";
 import moment from "moment";
-import { useClickOutside } from "../../until/clickOutside/clickOutside";
+import { useClickOutside } from "../../until/clickOutside";
 import {
   clearLocalCheckIn,
+  clearLocalLogin,
   getLocalCheckIn,
   setLocalCheckIn,
 } from "../../until/local/local";
@@ -13,6 +16,8 @@ import {
   useLocation,
 } from "react-router-dom/cjs/react-router-dom.min";
 
+import "react-date-range/dist/styles.css";
+import "react-date-range/dist/theme/default.css";
 import "react-responsive-calendar-picker/dist/index.css";
 import MapSvg from "../../assets/svgs/map.svg";
 import ArrowSvg from "../../assets/svgs/arrowRight.svg";
@@ -26,15 +31,38 @@ import { getHotelSaga } from "../../redux/slice/hotelSlice";
 
 export default function Search(props) {
   const localCheckIn = getLocalCheckIn();
-  const [dates, setDates] = useState({
-    checkin: new Date(localCheckIn?.checkIn),
+  const checkIn = getLocalCheckIn()?.checkIn;
+  const checkOut = getLocalCheckIn()?.checkOut;
 
-    checkout: new Date(localCheckIn?.checkOut),
-  });
-  const [isOpenCalendar, setIsOpenCalendar] = useState(false);
+  // custom ngày giờ để có thể tính được thời gian offNight
+  const numberOffNight = useMemo(() => {
+    return moment(checkOut).diff(moment(checkIn), "days");
+  }, [checkIn, checkOut]);
+
+  // custom ngày giờ để tính thòi gian ngày hôm nay đến ngày checkIn
+  const daysUntilCheckIn = useMemo(() => {
+    const checkInMoment = moment(checkIn, "MM/DD/YYYY").startOf("day");
+    const currentMoment = moment().startOf("day");
+    return moment(checkInMoment).diff(currentMoment, "days");
+  }, [checkIn]);
+
+  const [dates, setDates] = useState([
+    {
+      startDate: checkIn ? new Date(checkIn) : new Date(),
+      endDate: addDays(
+        new Date(),
+        numberOffNight || daysUntilCheckIn > 0
+          ? numberOffNight + daysUntilCheckIn
+          : 1
+      ),
+      key: "selection",
+    },
+  ]);
+  const objDates = Object.assign({}, ...dates);
   const [isOpen, setIsOpen] = useState({
     isOpenSearch: false,
     isOpenGuests: false,
+    isOpenCalendar: false,
   });
   const locationOption = [
     {
@@ -78,6 +106,7 @@ export default function Search(props) {
   const [form] = Form.useForm();
   const refSearch = useRef();
   const refGuests = useRef();
+  const refCalendar = useRef();
   const history = useHistory();
   const location = useLocation();
   const dispatch = useDispatch();
@@ -86,14 +115,26 @@ export default function Search(props) {
     // Kiểm tra nếu biến state đã thay đổi (ví dụ: sau khi nhận được dữ liệu từ nguồn khác),
     // thì mới cập nhật giá trị của các trường trong biểu mẫu.
     form.setFieldsValue({
-      checkIn: moment(dates.checkin, "ddd MMM DD YYYY").format("MM/DD/YYYY"),
-      checkOut: moment(dates.checkout, "ddd MMM DD YYYY").format("MM/DD/YYYY"),
+      checkIn: moment(objDates.startDate, "ddd MMM DD YYYY").format(
+        "MM/DD/YYYY"
+      ),
+      checkOut: moment(objDates.endDate, "ddd MMM DD YYYY").format(
+        "MM/DD/YYYY"
+      ),
       location: currentInput,
       numberRooms: isNumberRooms,
       numberAdults: isNumberAdults,
       numberChildren: isNumberChildren,
     });
-  }, [dates, currentInput, isNumberRooms, isNumberAdults, isNumberChildren]);
+  }, [objDates, currentInput, isNumberRooms, isNumberAdults, isNumberChildren]);
+
+  const handleCalendarClickOutside = () => {
+    setIsOpen((prevState) => ({
+      ...prevState,
+      isOpenCalendar: false,
+    }));
+    console.log(refCalendar);
+  };
 
   // dùng ...prevState để đảm bảo isOpen ko bị ghi đè
   const handleSearchClickOutside = () => {
@@ -112,6 +153,7 @@ export default function Search(props) {
 
   useClickOutside(refSearch, handleSearchClickOutside);
   useClickOutside(refGuests, handleGuestsClickOutside);
+  useClickOutside(refCalendar, handleCalendarClickOutside);
 
   const handleSearchInput = (e) => {
     const value = e.target.value.toLowerCase();
@@ -156,6 +198,10 @@ export default function Search(props) {
         }, 2000);
       } else {
         dispatch(setLoading(true));
+        setIsOpen((prevState) => ({
+          ...prevState,
+          isOpenCalendar: false,
+        }));
 
         await dispatch(
           getHotelSaga({
@@ -263,18 +309,14 @@ export default function Search(props) {
           )}
         </div>
 
-        <styled.DatePickerCustom
-          dates={dates}
-          setDates={setDates}
-          open={isOpenCalendar}
-          setOpen={setIsOpenCalendar}
-          className="center relative h-full min-w-[32%]"
-        >
+        <div ref={refCalendar} className="center relative h-full min-w-[32%]">
           <div
-            onClick={() => setIsOpenCalendar(!isOpenCalendar)}
+            onClick={() =>
+              setIsOpen({ ...isOpen, isOpenCalendar: !isOpen.isOpenCalendar })
+            }
             className={
               "search-item lg:border-b-0 items-center cursor-pointer" +
-              (isOpenCalendar ? " lg:shadow-custom lg:rounded-full" : "")
+              (isOpen.isOpenCalendar ? " lg:shadow-custom lg:rounded-full" : "")
             }
           >
             <div className="flex lg:px-[30px] mr-auto">
@@ -282,18 +324,18 @@ export default function Search(props) {
               <div className="flex flex-col">
                 <span className="font-semibold text-base">Checkin</span>
                 <span className="text-p">
-                  {dates.checkin
+                  {objDates.startDate
                     ? moment(
-                        dates.checkin.toDateString(),
+                        objDates.startDate.toDateString(),
                         "ddd MMM DD YYYY"
-                      ).format("MM/DD/YYYY")
+                      ).format("DD/MM/YYYY")
                     : "Add date"}
                 </span>
               </div>
             </div>
             <Form.Item name="checkIn" className="hidden">
               <Input
-                value={moment(dates.checkin, "ddd MMM DD YYYY").format(
+                value={moment(objDates.startDate, "ddd MMM DD YYYY").format(
                   "MM/DD/YYYY"
                 )}
               />
@@ -305,25 +347,38 @@ export default function Search(props) {
               <div className="flex flex-col">
                 <span className="font-semibold text-base">Checkout</span>
                 <span className="text-p">
-                  {dates.checkout
+                  {objDates.endDate
                     ? moment(
-                        dates.checkout.toDateString(),
+                        objDates.endDate.toDateString(),
                         "ddd MMM DD YYYY"
-                      ).format("MM/DD/YYYY")
+                      ).format("DD/MM/YYYY")
                     : "Add date"}
                 </span>
               </div>
             </div>
             <Form.Item name="checkOut" className="hidden">
               <Input
-                value={moment(dates.checkout, "ddd MMM DD YYYY").format(
+                value={moment(objDates.endDate, "ddd MMM DD YYYY").format(
                   "MM/DD/YYYY"
                 )}
               />
             </Form.Item>
           </div>
+
           <div className="h-5 border-r border-solid border-gray-300 hidden lg:block"></div>
-        </styled.DatePickerCustom>
+
+          {isOpen.isOpenCalendar && (
+            <styled.DateRangePickerCustom
+              onChange={(item) => setDates([item.selection])}
+              showSelectionPreview={true}
+              moveRangeOnFirstSelection={false}
+              months={2}
+              minDate={moment().toDate()}
+              ranges={dates}
+              direction="horizontal"
+            />
+          )}
+        </div>
 
         <div ref={refGuests} className="relative w-full h-full lg:max-w-[25%]">
           <div
@@ -433,6 +488,7 @@ export default function Search(props) {
             </div>
           )}
         </div>
+
         <Button
           className="bg-primary lg:rounded-[70px] rounded-b-[24px] w-full lg:w-0 lg:px-[70px] ml-auto lg:mr-3 center h-[60px] text-white p"
           type="primary"

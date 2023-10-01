@@ -4,7 +4,7 @@ import moment from "moment/moment";
 
 import "react-responsive-calendar-picker/dist/index.css";
 import * as styled from "./styled.js";
-import { useClickOutside } from "../../until/clickOutside/clickOutside.js";
+import { useClickOutside } from "../../until/clickOutside";
 
 export default function Booking(props) {
   const {
@@ -25,25 +25,23 @@ export default function Booking(props) {
   const [openTwo, setOpenTwo] = useState(false);
   const [openGuests, setOpenGuests] = useState(false);
   const refGuests = useRef();
+  const refCalendar = useRef();
 
   const handleGuestsClickOutside = () => {
     setOpenGuests(false);
   };
 
+  const handleCalendarClickOutside = () => {
+    setOpenTwo(false);
+  };
+
   useClickOutside(refGuests, handleGuestsClickOutside);
+  useClickOutside(refCalendar, handleCalendarClickOutside);
 
   useEffect(() => {
     formBookRoom?.setFieldsValue({
-      checkIn: checkIn
-        ? moment(checkIn?.toDateString(), "ddd MMM DD YYYY").format(
-            "DD/MM/YYYY"
-          )
-        : "",
-      checkOut: checkOut
-        ? moment(checkOut?.toDateString(), "ddd MMM DD YYYY").format(
-            "DD/MM/YYYY"
-          )
-        : "",
+      checkIn: checkIn,
+      checkOut: checkOut,
       numberRooms: numberRooms,
       numberAdults: numberAdults,
       numberChildren: numberChildren,
@@ -62,12 +60,7 @@ export default function Booking(props) {
 
   return (
     <div className="border-[1px] border-solid border-[#dedede] rounded-2xl mt-2 ">
-      <styled.DatePickerCustomTwo
-        dates={dates}
-        setDates={setDates}
-        open={openTwo}
-        setOpen={setOpenTwo}
-      >
+      <div ref={refCalendar} className="relative">
         <div
           onClick={() => setOpenTwo(!openTwo)}
           className="flex cursor-pointer"
@@ -76,11 +69,7 @@ export default function Booking(props) {
             <h2 className="font-medium">Check In</h2>
             <Form.Item style={{ margin: "0" }} name="checkIn">
               <p className="text-gray">
-                {checkIn
-                  ? moment(checkIn?.toDateString(), "ddd MMM DD YYYY").format(
-                      "DD/MM/YYYY"
-                    )
-                  : "Add date"}
+                {checkIn ? moment(checkIn).format("DD/MM/YYYY") : "Add date"}
               </p>
             </Form.Item>
           </div>
@@ -88,16 +77,23 @@ export default function Booking(props) {
             <h2 className="font-medium">Check Out</h2>
             <Form.Item style={{ margin: "0" }} name="checkOut">
               <p className="text-gray">
-                {checkOut
-                  ? moment(checkOut?.toDateString(), "ddd MMM DD YYYY").format(
-                      "DD/MM/YYYY"
-                    )
-                  : "Add date"}
+                {checkOut ? moment(checkOut).format("DD/MM/YYYY") : "Add date"}
               </p>
             </Form.Item>
           </div>
         </div>
-      </styled.DatePickerCustomTwo>
+        {openTwo && (
+          <styled.DateRangePickerCustom
+            onChange={(item) => setDates([item.selection])}
+            showSelectionPreview={true}
+            moveRangeOnFirstSelection={false}
+            months={2}
+            minDate={moment().toDate()}
+            ranges={dates}
+            direction="horizontal"
+          />
+        )}
+      </div>
 
       <div ref={refGuests} className="relative">
         <div

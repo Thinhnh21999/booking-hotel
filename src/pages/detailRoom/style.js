@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { Swiper } from "swiper/react";
+import { DateRangePicker } from "react-date-range";
 import { DatePicker } from "react-responsive-calendar-picker";
 
 export const PriceFixed = styled.div`
@@ -166,6 +167,40 @@ export const DatePickerCustomTwo = styled(DatePicker)`
     }
   }
 `;
+
+export const DateRangePickerCustom = styled(DateRangePicker)`
+  width: 100%;
+  .rdrCalendarWrapper {
+    position: relative;
+    width: 100%;
+    border-radius: 1rem !important;
+    padding: 0 30px !important;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08), 0 4px 12px rgba(0, 0, 0, 0.05);
+    border: 1px solid #dedede;
+    @media (max-width: 991px) {
+      width: 100% !important;
+    }
+    .rdrMonths {
+      @media (max-width: 991px) {
+        flex-wrap: wrap;
+        width: 100%;
+      }
+      .rdrMonth {
+        @media (max-width: 991px) {
+          width: 100%;
+        }
+      }
+    }
+  }
+  .rdrDefinedRangesWrapper {
+    display: none;
+  }
+
+  .rdrDateDisplayWrapper {
+    display: none;
+  }
+`;
+
 export const LoaderButton = styled.div`
   position: relative;
   width: 25px;

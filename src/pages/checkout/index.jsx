@@ -76,8 +76,18 @@ export default function Checkout() {
                 <div className="absolute top-[50%] right-0 w-1 h-1 bg-[#EAEEF3] z-10"></div>
               </li>
 
+              <li className="relative cursor-pointer pr-5 ml-5">
+                <Link to={`/detail-hotel/${nameHotel}`}>{nameHotel}</Link>
+                <div className="absolute top-[50%] right-0 w-1 h-1 bg-[#EAEEF3] z-10"></div>
+              </li>
+
+              <li className="relative cursor-pointer pr-5 ml-5">
+                <span onClick={history.goBack}>{nameRoom}</span>
+                <div className="absolute top-[50%] right-0 w-1 h-1 bg-[#EAEEF3] z-10"></div>
+              </li>
+
               <li className="ml-5">
-                <span>Checkout Modal</span>
+                <span className="text-gray">Checkout Modal</span>
               </li>
             </ul>
           </div>

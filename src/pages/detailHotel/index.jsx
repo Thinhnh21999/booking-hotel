@@ -7,6 +7,7 @@ import Card from "../../component/card/index.jsx";
 import CardRoom from "../../component/cardRoom";
 import ButtonShare from "../../component/buttonShare";
 import { Form, Input, Button } from "antd";
+import { addDays } from "date-fns";
 import { Link, useParams } from "react-router-dom/cjs/react-router-dom.min";
 import moment from "moment";
 import {
@@ -34,6 +35,8 @@ import washer from "../../assets/svgs/Washer&Dryer.svg";
 import userSvg from "../../assets/svgs/user.svg";
 import LikeSvg from "../../assets/svgs/like.svg";
 
+import "react-date-range/dist/styles.css";
+import "react-date-range/dist/theme/default.css";
 import * as styled from "./style";
 import { getLocalCheckIn, setLocalCheckIn } from "../../until/local/local.js";
 
@@ -42,22 +45,44 @@ export default function DetailHotel(props) {
   const paramsReviews = props.paramsReviews;
   const reviews = props.reviews;
   const localCheckIn = getLocalCheckIn();
+  const checkInLocal = getLocalCheckIn()?.checkIn;
+  const checkOutLocal = getLocalCheckIn()?.checkOut;
+
+  // custom ngày giờ để có thể tính được thời gian offNight
+  const offNight = useMemo(() => {
+    return moment(checkOutLocal).diff(moment(checkInLocal), "days");
+  }, [checkOutLocal, checkInLocal]);
+
+  // custom ngày giờ để tính thòi gian ngày hôm nay đến ngày checkIn
+  const daysUntilCheckIn = useMemo(() => {
+    const checkInMoment = moment(checkInLocal, "MM/DD/YYYY").startOf("day");
+    const currentMoment = moment().startOf("day");
+    return moment(checkInMoment).diff(currentMoment, "days");
+  }, [checkInLocal]);
+
+  const [dates, setDates] = useState([
+    {
+      startDate: checkInLocal ? new Date(checkInLocal) : new Date(),
+      endDate: addDays(
+        new Date(),
+        offNight || daysUntilCheckIn > 0 ? offNight + daysUntilCheckIn : 1
+      ),
+      key: "selection",
+    },
+  ]);
+  const objDates = Object.assign({}, ...dates);
+  const checkIn = moment(objDates.startDate, "ddd MMM DD YYYY").format(
+    "MM/DD/YYYY"
+  );
+  const checkOut = moment(objDates.endDate, "ddd MMM DD YYYY").format(
+    "MM/DD/YYYY"
+  );
   const [isLoading, setIsLoading] = useState(false);
   const [isOpenReview, setIsOpenReview] = useState(false);
   const [showPriceRoom, setShowPriceRoom] = useState(false);
   const [isBookRoom, setIsBookRoom] = useState(true);
   const [rateValues, setRateValues] = useState({});
   const [current, setCurrent] = useState(1);
-  const [dates, setDates] = useState({
-    // checkin: moment().toDate(), // Set ngày hôm nay
-
-    // checkout: moment().add(1, "days").toDate(), // Set ngày mai
-    checkin: new Date(localCheckIn?.checkIn),
-
-    checkout: new Date(localCheckIn?.checkOut),
-  });
-  const checkIn = dates.checkin;
-  const checkOut = dates.checkout;
   const [numberRooms, setNumberRooms] = useState(() =>
     localCheckIn?.numberRooms > 0 ? localCheckIn?.numberRooms : 1
   );
@@ -67,6 +92,7 @@ export default function DetailHotel(props) {
   const [numberChildren, setNumberChildren] = useState(() =>
     localCheckIn?.numberChildren > 0 ? localCheckIn?.numberChildren : 0
   );
+  const [isShowNavigation, setShowIsNavigation] = useState(false);
   const [form] = Form.useForm();
   const [formMessages] = Form.useForm();
   const dispatch = useDispatch();
@@ -86,6 +112,7 @@ export default function DetailHotel(props) {
   }, []);
 
   const hotelItem = hotels?.find((hotel) => hotel.nameHotel === nameHotel);
+  const numberOffNight = moment(checkOut).diff(moment(checkIn), "days");
 
   const handleReviewComment = (values) => {
     const reviewData = {
@@ -97,6 +124,8 @@ export default function DetailHotel(props) {
         value,
       })),
     };
+
+    form.resetFields();
 
     dispatch(postReviewSaga(reviewData));
     dispatch(getReviewSaga(paramsReviews));
@@ -130,9 +159,13 @@ export default function DetailHotel(props) {
     { name: "value", label: "Value" },
   ];
 
-  const numberOffNight = moment(checkOut).diff(moment(checkIn), "days");
-
-  useEffect(() => {
+  const handleCheckRoom = () => {
+    const timeoutId = setTimeout(() => {
+      setIsLoading(false);
+    }, 3000);
+    setIsLoading(true);
+    setShowIsNavigation(false);
+    setShowPriceRoom(true);
     setLocalCheckIn({
       checkIn,
       checkOut,
@@ -140,14 +173,6 @@ export default function DetailHotel(props) {
       numberChildren,
       numberRooms,
     });
-  }, [checkIn, checkOut, numberAdults, numberChildren, numberRooms]);
-
-  const handleCheckRoom = () => {
-    const timeoutId = setTimeout(() => {
-      setIsLoading(false);
-    }, 3000);
-    setIsLoading(true);
-    setShowPriceRoom(true);
     ref.current.scrollIntoView({ behavior: "smooth" });
 
     return () => {
@@ -666,7 +691,36 @@ export default function DetailHotel(props) {
               </div>
             </div>
 
-            <div className="relative w-1/3 px-3 hidden lg:block">
+            <div className="fixed flex lg:hidden justify-between items-center bottom-0 left-0 right-0 z-50 w-full bg-white px-[15px] py-2.5 border-t border-solid border-[#dedede] ">
+              <div className="flex justify-between">
+                <p className="text-gray py-4 mr-3">
+                  From:
+                  <span className="font-bold text-black">
+                    ${hotelItem?.price},00
+                  </span>
+                  / night
+                </p>
+                <div className="flex py-4">
+                  <img className="w-4" src={star} alt="" />
+                  <span className="font-bold mx-2">{hotelItem?.star}</span>
+                  <p className="text-gray">(3 reviews)</p>
+                </div>
+              </div>
+              <button
+                onClick={() => setShowIsNavigation(!isShowNavigation)}
+                className="bg-primary px-4 py-3 text-white rounded-3xl"
+              >
+                {isShowNavigation ? "Close Check" : "Check Room"}
+              </button>
+            </div>
+
+            <div
+              className={`${
+                isShowNavigation
+                  ? "top-0 !h-auto opacity-100 overflow-scroll"
+                  : ""
+              } lg:relative fixed opacity-0 h-0 lg:h-auto transition-all duration-300 lg:opacity-100 z-30 bottom-0 left-0 pt-5 lg:pt-0 bg-white lg:w-1/3 w-full px-3 lg:!block`}
+            >
               <div className="sticky top-0">
                 <div className="border-[1px] border-solid border-[#dedede] rounded-3xl p-8 shadow-xl drop-shadow-xl	">
                   {isLoading ? <LoadingItem /> : null}

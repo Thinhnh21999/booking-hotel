@@ -3,8 +3,8 @@ import { useSelector } from "react-redux";
 
 import "./App.css";
 import Home from "./pages/home";
-import Contact from "./pages/about";
-import About from "./pages/contact";
+import About from "./pages/about";
+import Contact from "./pages/contact";
 import Listing from "./pages/listing";
 import DetailHotel from "./pages/detailHotel";
 import DetailRoom from "./pages/detailRoom";

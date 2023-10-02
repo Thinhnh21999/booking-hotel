@@ -5,12 +5,11 @@ import youTube from "../../assets/svgs/youtube.svg";
 import instagram from "../../assets/svgs/instagram.svg";
 
 import { Dropdown, Space } from "antd";
-import { Form } from "./style";
 import { Link } from "react-router-dom/cjs/react-router-dom";
 
 export default function ButtonShare() {
   return (
-    <Form>
+    <>
       <Space.Compact block>
         <Dropdown
           placement="bottomRight"
@@ -57,6 +56,6 @@ export default function ButtonShare() {
           </div>
         </Dropdown>
       </Space.Compact>
-    </Form>
+    </>
   );
 }

@@ -13,7 +13,9 @@ export const FormItem = styled(Form.Item)`
 `;
 
 export const SwiperCustom = styled(Swiper)`
-  overflow: unset;
+  @media (min-width: 667px) {
+    overflow: unset;
+  }
   .swiper-pagination {
     position: unset;
     margin-top: 32px;

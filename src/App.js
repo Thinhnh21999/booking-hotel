@@ -70,15 +70,9 @@ function App() {
     }
   );
 
-  const dispatch = useDispatch();
   const location = useLocation();
 
   useEffect(() => {
-    dispatch(
-      getHotelSaga({
-        _limit: 24,
-      })
-    );
     const pathname = location.pathname;
     const parts = pathname?.split("/"); // pt string tách chuỗi thành mảng dựa trên dấu /
     const slugHotel = parts[2];

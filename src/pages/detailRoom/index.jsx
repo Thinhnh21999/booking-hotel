@@ -9,12 +9,13 @@ import {
 } from "react-router-dom/cjs/react-router-dom.min";
 import ButtonShare from "../../component/buttonShare";
 import CardRoom from "../../component/cardRoom";
-import { getHotelSaga } from "../../redux/slice/hotelSlice";
 import BookRoom from "../../component/bookRoom";
 import { Rate, Form, Button } from "antd";
 import { commonBookRoomSg } from "../../redux/slice/bookRoomSlice";
 import { setIsOpenModal } from "../../redux/slice/userSlice";
+import { setLoadingSg } from "../../redux/slice/loadingSlice";
 import openNotification from "../../component/notification";
+import NavigationBottom from "../../component/navigationBottom";
 import {
   getLocalCheckIn,
   getLocalLogin,
@@ -25,7 +26,6 @@ import { addDays } from "date-fns";
 import size from "../../assets/svgs/size.svg";
 import adults from "../../assets/svgs/adults.svg";
 import child from "../../assets/svgs/child.svg";
-import star from "../../assets/svgs/star.svg";
 import bed from "../../assets/svgs/bed.svg";
 import airport from "../../assets/svgs/airport.svg";
 import fitness from "../../assets/svgs/fitness.svg";
@@ -44,7 +44,6 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import moment from "moment";
 import * as styled from "./style.js";
-import { setLoadingSg } from "../../redux/slice/loadingSlice";
 
 export default function DetailRoom(props) {
   const { hotels } = props;
@@ -429,28 +428,11 @@ export default function DetailRoom(props) {
             </div>
           </div>
 
-          <div className="fixed flex lg:hidden justify-between items-center bottom-0 left-0 right-0 z-50 w-full bg-white px-[15px] py-2.5 border-t border-solid border-[#dedede] ">
-            <div className="flex justify-between">
-              <p className="text-gray py-4 mr-3">
-                From:
-                <span className="font-bold text-black">
-                  ${hotelItem?.price},00
-                </span>
-                / night
-              </p>
-              <div className="flex py-4">
-                <img className="w-4" src={star} alt="" />
-                <span className="font-bold mx-2">{hotelItem?.star}</span>
-                <p className="text-gray">(3 reviews)</p>
-              </div>
-            </div>
-            <button
-              onClick={() => setShowIsNavigation(!isShowNavigation)}
-              className="bg-primary px-4 py-3 text-white rounded-3xl"
-            >
-              {isShowNavigation ? "Close Check" : "Check Room"}
-            </button>
-          </div>
+          <NavigationBottom
+            hotelItem={hotelItem}
+            isShowNavigation={isShowNavigation}
+            setShowIsNavigation={setShowIsNavigation}
+          />
 
           <div
             className={`${
@@ -551,7 +533,7 @@ export default function DetailRoom(props) {
             </div>
           </div>
         </div>
-        <hr className="my-[70px]" />
+        <hr className="md:my-[70px] my-[30px]" />
       </div>
 
       <div className="lg:container lg:mx-auto px-5 overflow-hidden">
@@ -561,11 +543,18 @@ export default function DetailRoom(props) {
         <div className="flex flex-row flex-wrap">
           <styled.SwiperCustom
             slidesPerView={3}
+            autoplay={{
+              delay: 2500,
+              disableOnInteraction: false,
+            }}
+            pagination={{
+              clickable: true,
+            }}
             navigation={true}
-            modules={[Autoplay, Navigation, Pagination]}
+            modules={[Autoplay, Pagination, Navigation]}
             className="mySwiper"
             breakpoints={{
-              430: {
+              300: {
                 slidesPerView: 1,
                 spaceBetween: 24,
               },
@@ -587,8 +576,8 @@ export default function DetailRoom(props) {
               },
             }}
           >
-            {hotelItem?.rooms.map((room) => (
-              <SwiperSlide key={room.id}>
+            {hotelItem?.rooms.map((room, index) => (
+              <SwiperSlide key={index}>
                 <CardRoom room={room} />
               </SwiperSlide>
             ))}

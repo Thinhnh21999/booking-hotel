@@ -13,8 +13,9 @@ import DropDownSvg from "../../assets/svgs/dropdown.svg";
 import list_category from "../../assets/svgs/list_category.svg";
 import list_menu from "../../assets/svgs/list_menu.svg";
 import filter from "../../assets/svgs/filter.svg";
+import CloseSvg from "../../assets/svgs/close.svg";
 import * as styled from "./style.js";
-import { clearLocalCheckIn, getLocalCheckIn } from "../../until/local/local";
+import { getLocalCheckIn } from "../../until/local/local";
 
 export default function Listing(props) {
   const hotels = props.hotels;
@@ -30,14 +31,15 @@ export default function Listing(props) {
   const [isValueRadio, setIsValueRadio] = useState(1);
   const [isValueName, setIsValueName] = useState(null);
   const [isValueOrder, setIsValueOrder] = useState(null);
+  const [showFilter, setShowFilter] = useState(false);
   const topRef = useRef();
 
   const [isOpen, setIsOpen] = useState({
-    isFilter: false,
-    isReviewScore: false,
-    isHotelStar: false,
-    isFacilities: false,
-    isHotelTheme: false,
+    isFilter: true,
+    isReviewScore: true,
+    isHotelStar: true,
+    isFacilities: true,
+    isHotelTheme: true,
   });
   const [formPrice] = Form.useForm();
   const [formReview] = Form.useForm();
@@ -98,6 +100,7 @@ export default function Listing(props) {
   const onFinishPrice = (Prices) => {
     const price = Prices?.priceRange?.slice(1);
     setIsPrice(price);
+    setShowFilter(false);
 
     const updatedParams = {
       ...params,
@@ -123,6 +126,7 @@ export default function Listing(props) {
 
   const onChangeReview = (value) => {
     setIsReview(value);
+    setShowFilter(false);
 
     const updatedParams = {
       ...params,
@@ -148,6 +152,7 @@ export default function Listing(props) {
 
   const onChangeStar = (value) => {
     setIsStar(value);
+    setShowFilter(false);
 
     const updatedParams = {
       ...params,
@@ -172,6 +177,7 @@ export default function Listing(props) {
   };
 
   const onChangeFacilities = (value) => {
+    setShowFilter(false);
     dispatch(setLoading(true));
     topRef.current.scrollIntoView({ behavior: "smooth" });
 
@@ -181,6 +187,7 @@ export default function Listing(props) {
   };
 
   const onChangeHotelTheme = (value) => {
+    setShowFilter(false);
     dispatch(setLoading(true));
     topRef.current.scrollIntoView({ behavior: "smooth" });
     setTimeout(() => {
@@ -355,8 +362,22 @@ export default function Listing(props) {
 
         <div ref={topRef} className="lg:container lg:mx-auto px-5 mb-[60px]">
           <div className="flex justify-center lg:pt-[70px] pt-[46px]">
-            <div className="hidden lg:block w-1/4">
-              <div className="relative rounded-[20px] mb-[30px]">
+            <div
+              className={`${
+                showFilter
+                  ? "z-[9998] p-[30px] opacity-100 overflow-scroll"
+                  : ""
+              } fixed lg:relative bg-white bottom-0 top-0 z-[-1] lg:z-0 lg:block opacity-0 lg:opacity-100 lg:h-auto w-full transition-all duration-500 lg:w-1/4`}
+            >
+              <button className="p-2 mb-2 lg:hidden">
+                <img
+                  onClick={() => setShowFilter(false)}
+                  className="w-5"
+                  src={CloseSvg}
+                  alt="close"
+                />
+              </button>
+              <div className="relative hidden lg:block rounded-[20px] mb-[30px]">
                 <iframe
                   src="https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d251637.95196238213!2d105.6189045!3d9.779349!3m2!1i1024!2i768!4f13.1!5e0!3m2!1svi!2s!4v1683879382654!5m2!1svi!2s"
                   frameBorder="0"
@@ -587,23 +608,27 @@ export default function Listing(props) {
             </div>
 
             <div className="w-full lg:w-3/4 lg:ml-6">
-              <div className="flex justify-between items-center text-gray mb-10">
-                <p className="hidden lg:block">
-                  {hotels.length} hotels found
+              <div className="flex items-center text-gray mb-10">
+                <p className="hidden lg:block">{hotels.length} hotels found</p>
+                <div className="center">
+                  <div
+                    onClick={() => setShowFilter(!showFilter)}
+                    className="lg:hidden shadow-custom border-line px-5 py-2.5 rounded-3xl cursor-pointer"
+                  >
+                    <div className="flex justify-between">
+                      <img src={filter} alt=".." className="w-5" />
+                      <span className="ml-3 text-[#232323]">Filter</span>
+                    </div>
+                  </div>
                   <span
                     onClick={() => handleReset()}
                     className="text-primary ml-3 cursor-pointer"
                   >
                     Clear filter
                   </span>
-                </p>
-                <div className="lg:hidden shadow-custom border-line px-5 py-2.5 rounded-3xl">
-                  <div className="flex justify-between">
-                    <img src={filter} alt=".." className="w-5" />
-                    <span className="ml-3 text-[#232323]">Filter</span>
-                  </div>
                 </div>
-                <div className="flex justify-end">
+
+                <div className="flex ml-auto">
                   <styled.SpaceCompact block>
                     <Dropdown
                       placement="bottomRight"
@@ -634,7 +659,7 @@ export default function Listing(props) {
                       </div>
                     </Dropdown>
                   </styled.SpaceCompact>
-                  <div className="flex ml-5">
+                  <div className="lg:flex hidden ml-5">
                     <img
                       className="h-8 p-2 cursor-pointer"
                       src={list_menu}

@@ -17,7 +17,7 @@ export const reviewSlice = createSlice({
 
     getReviewSaga: () => {},
     setReviewSaga: (state, action) => {
-      state.reviews = action.payload.reverse();
+      state.reviews = action.payload;
     },
     setParamsReviews: (state, action) => {
       state.paramsReviews = action.payload;

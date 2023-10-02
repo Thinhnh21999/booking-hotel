@@ -115,6 +115,9 @@ export const DateRangePickerCustom = styled(DateRangePicker)`
       }
     }
   }
+  .rdrCalendarWrapper {
+    padding: 0 !important;
+  }
   .rdrDefinedRangesWrapper {
     display: none;
   }

@@ -15,8 +15,11 @@ import {
   getReviewSaga,
   setParamsReviews,
 } from "../../redux/slice/reviewSlice";
+import { getLocalCheckIn, setLocalCheckIn } from "../../until/local/local.js";
+import { setLoadingSg } from "../../redux/slice/loadingSlice";
 import BookRoom from "../../component/bookRoom";
 import LoadingItem from "../../component/loadingItem";
+import NavigationBottom from "../../component/navigationBottom";
 
 import { Navigation, Autoplay, Pagination } from "swiper";
 import "swiper/css";
@@ -38,8 +41,6 @@ import LikeSvg from "../../assets/svgs/like.svg";
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
 import * as styled from "./style";
-import { getLocalCheckIn, setLocalCheckIn } from "../../until/local/local.js";
-import { setLoadingSg } from "../../redux/slice/loadingSlice";
 
 export default function DetailHotel(props) {
   const hotels = props.hotels;
@@ -135,6 +136,7 @@ export default function DetailHotel(props) {
 
   const handleChangePage = (page) => {
     setCurrent(page);
+    console.log(page);
     dispatch(
       setParamsReviews({
         ...paramsReviews,
@@ -193,7 +195,7 @@ export default function DetailHotel(props) {
   return (
     <>
       <div className="relative">
-        <div className="py-5 border-bottom">
+        <div className="py-5 border-bottom hidden md:block">
           <div className="lg:container lg:mx-auto px-5">
             <ul className="flex items-center justify-start">
               <li className="relative pr-5">
@@ -692,30 +694,11 @@ export default function DetailHotel(props) {
                 )}
               </div>
             </div>
-
-            <div className="fixed flex lg:hidden justify-between items-center bottom-0 left-0 right-0 z-50 w-full bg-white px-[15px] py-2.5 border-t border-solid border-[#dedede] ">
-              <div className="flex justify-between">
-                <p className="text-gray py-4 mr-3">
-                  From:
-                  <span className="font-bold text-black">
-                    ${hotelItem?.price},00
-                  </span>
-                  / night
-                </p>
-                <div className="flex py-4">
-                  <img className="w-4" src={star} alt="" />
-                  <span className="font-bold mx-2">{hotelItem?.star}</span>
-                  <p className="text-gray">(3 reviews)</p>
-                </div>
-              </div>
-              <button
-                onClick={() => setShowIsNavigation(!isShowNavigation)}
-                className="bg-primary px-4 py-3 text-white rounded-3xl"
-              >
-                {isShowNavigation ? "Close Check" : "Check Room"}
-              </button>
-            </div>
-
+            <NavigationBottom
+              hotelItem={hotelItem}
+              isShowNavigation={isShowNavigation}
+              setShowIsNavigation={setShowIsNavigation}
+            ></NavigationBottom>
             <div
               className={`${
                 isShowNavigation
@@ -874,7 +857,7 @@ export default function DetailHotel(props) {
                   )}
                 </div>
 
-                <div className="mt-[30px]">
+                <div className="mt-[30px] hidden lg:block">
                   <img
                     className="rounded-2xl"
                     src={hotelItem?.images[4]}
@@ -882,7 +865,7 @@ export default function DetailHotel(props) {
                   />
                 </div>
 
-                <div className="mt-[30px] relative rounded-2xl">
+                <div className="mt-[30px] relative rounded-2xl hidden lg:block">
                   <iframe
                     src="https://www.google.com/maps/embed?pb=!1m10!1m8!1m3!1d251637.95196238213!2d105.6189045!3d9.779349!3m2!1i1024!2i768!4f13.1!5e0!3m2!1svi!2s!4v1683879382654!5m2!1svi!2s"
                     frameBorder="0"
@@ -895,7 +878,7 @@ export default function DetailHotel(props) {
                   </p>
                 </div>
 
-                <div className="mt-[30px] border-[1px] border-solid border-[#dedede] rounded-2xl py-10">
+                <div className="mt-[30px] hidden lg:block border-[1px] border-solid border-[#dedede] rounded-2xl py-10">
                   <div className="flex justify-center items-center">
                     <img
                       className="rounded-full cursor-pointer "
@@ -909,7 +892,7 @@ export default function DetailHotel(props) {
                   <p className="text-gray text-center ">Member Since 2022</p>
                 </div>
 
-                <div className="mt-[30px] border-[1px] border-solid border-[#dedede] rounded-2xl p-10">
+                <div className="mt-[30px] hidden lg:block border-[1px] border-solid border-[#dedede] rounded-2xl p-10">
                   <h2 className="text-3xl font-bold mb-7">
                     Information Contact
                   </h2>
@@ -936,6 +919,10 @@ export default function DetailHotel(props) {
           <styled.SwiperCustom
             slidesPerView={4}
             slidesPerGroup={4}
+            autoplay={{
+              delay: 2500,
+              disableOnInteraction: false,
+            }}
             pagination={{
               clickable: true,
             }}
@@ -943,20 +930,17 @@ export default function DetailHotel(props) {
             modules={[Autoplay, Pagination, Navigation]}
             className="mySwiper"
             breakpoints={{
-              430: {
+              300: {
                 slidesPerView: 1,
-                slidesPerGroup: 1,
                 spaceBetween: 24,
               },
               640: {
                 slidesPerView: 1,
-                slidesPerGroup: 1,
                 spaceBetween: 24,
               },
               768: {
                 slidesPerView: 2,
                 spaceBetween: 24,
-                slidesPerGroup: 2,
               },
               992: {
                 slidesPerView: 4,
@@ -968,8 +952,8 @@ export default function DetailHotel(props) {
               },
             }}
           >
-            {hotels.slice(0, 8).map((item) => (
-              <SwiperSlide key={item.id}>
+            {hotels.slice(0, 8).map((item, index) => (
+              <SwiperSlide key={index}>
                 <Card item={item} />
               </SwiperSlide>
             ))}

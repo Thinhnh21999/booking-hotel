@@ -79,7 +79,7 @@ export default function Checkout() {
   return (
     <>
       <div className="pb-[60px]">
-        <div className="py-5 border-bottom">
+        <div className="py-5 border-bottom md:block hidden">
           <div className="lg:container lg:mx-auto px-5">
             <ul className="flex items-center justify-start">
               <li className="relative pr-5">

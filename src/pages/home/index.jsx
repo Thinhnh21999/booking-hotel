@@ -51,7 +51,7 @@ export default function Home(props) {
       <div>
         <div className="lg:container lg:mt-[70px] lg:mx-auto px-2.5">
           <div className="flex flex-wrap ">
-            <div className="w-1/2 p-2.5 ">
+            <div className="md:w-1/2 w-full p-2.5 ">
               <div className="overflow-hidden rounded-[20px]">
                 <img
                   className="hover:scale-110 transition-all duration-300 ease-in-out"
@@ -60,7 +60,7 @@ export default function Home(props) {
                 />
               </div>
             </div>
-            <div className="w-1/2 p-2.5 rounded-[20px] overflow-hidden">
+            <div className="md:w-1/2 w-full p-2.5 rounded-[20px] overflow-hidden">
               <div className="overflow-hidden rounded-[20px]">
                 <img
                   className="hover:scale-110 transition-all duration-300 ease-in-out"
@@ -71,7 +71,7 @@ export default function Home(props) {
             </div>
           </div>
         </div>
-        <div className="lg:container lg:mx-auto mt-[80px] px-5 pb-[45px]">
+        <div className="lg:container lg:mx-auto md:mt-[80px] mt-10 px-5 pb-[45px]">
           <h2 className="title">Top destinations</h2>
           <div className="center">
             <styled.SwiperCustomTwo
@@ -87,8 +87,8 @@ export default function Home(props) {
               modules={[Navigation, Autoplay]}
               className="mySwiper"
               breakpoints={{
-                430: {
-                  slidesPerView: 2,
+                200: {
+                  slidesPerView: 1,
                   spaceBetween: 20,
                 },
                 640: {
@@ -147,11 +147,11 @@ export default function Home(props) {
               modules={[Autoplay, Pagination, Navigation]}
               className="mySwiper"
               breakpoints={{
-                430: {
+                300: {
                   slidesPerView: 1,
                   spaceBetween: 24,
                 },
-                640: {
+                667: {
                   slidesPerView: 1,
                   spaceBetween: 24,
                 },
@@ -169,8 +169,8 @@ export default function Home(props) {
                 },
               }}
             >
-              {hotels?.slice(0, 8).map((item) => (
-                <SwiperSlide key={item.id}>
+              {hotels?.slice(0, 8).map((item, index) => (
+                <SwiperSlide key={index}>
                   <Card item={item} />
                 </SwiperSlide>
               ))}

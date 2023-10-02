@@ -25,6 +25,7 @@ import {
 } from "../../redux/slice/bookRoomSlice";
 import { useClickOutside } from "../../until/clickOutside";
 import { setLoadingSg } from "../../redux/slice/loadingSlice";
+import { getHotelSaga } from "../../redux/slice/hotelSlice";
 
 export default function Header() {
   const { hotels } = useSelector((state) => state.Hotels);
@@ -37,7 +38,6 @@ export default function Header() {
     isCart: false,
     isUser: false,
   });
-  const [open, setOpen] = useState(false);
   const refCart = useRef();
   const refMenu = useRef();
   const refUser = useRef();
@@ -46,6 +46,11 @@ export default function Header() {
 
   useEffect(() => {
     dispatch(getBookRoomSg());
+    dispatch(
+      getHotelSaga({
+        _limit: 24,
+      })
+    );
   }, []);
 
   const handleOnclickMenu = () => {
@@ -115,7 +120,7 @@ export default function Header() {
   };
   return (
     <div id="header" className="relative">
-      <div className="bg-[#232323] text-[rgba(255,255,255,.8)] px-10 py-2 flex justify-between">
+      <div className="bg-[#232323] hidden lg:flex text-[rgba(255,255,255,.8)] px-10 py-2 justify-between">
         <ul className="center">
           <li>
             <Link
@@ -321,7 +326,7 @@ export default function Header() {
                     isCart: !isDropdownMenuItem.isCart,
                   }))
                 }
-                className="center relative lg:icon w-[44px] h-[44px] py-1 px-2.5 rounded-[50%] border-line shadow-custom"
+                className="center relative lg:icon w-[44px] h-[44px] py-1 px-2.5 rounded-[50%] md:border-line md:shadow-custom"
               >
                 <img className="w-5" src={CartSvg} alt=".." />
                 {bookRoom?.length > 0 && userLocalLogin ? (
@@ -331,7 +336,7 @@ export default function Header() {
                 ) : null}
               </button>
               {isDropdownMenuItem.isCart ? (
-                <div className="absolute min-w-[380px] z-[1000] bg-white top-[70px] right-0 px-[30px] py-[25px] border-line shadow-custom rounded-[12px]">
+                <div className="md:absolute fixed min-w-[380px] z-[1000] bg-white top-[70px] right-0 px-[30px] py-[25px] border-line shadow-custom rounded-[12px]">
                   <div className="font-semibold text-2xl pb-5 border-b border-[#dedede] border-solid">
                     Your Cart
                   </div>
@@ -388,24 +393,21 @@ export default function Header() {
                     )}
                   </div>
 
-                  <a
-                    // onClick={() =>
-                    //   setTimeout(() => history.push("/checkout"), 0)
-                    // }
-                    href="/checkout"
+                  <Link
+                    to="/checkout"
                     className="text-white block uppercase bg-primary hover:opacity-80 text-center w-full px-5 py-3 rounded-[50px]"
                   >
                     Pay Now
-                  </a>
+                  </Link>
                 </div>
               ) : null}
             </li>
 
-            <li ref={refUser} className="ml-5">
+            <li ref={refUser} className="md:ml-5">
               {userLocalLogin ? (
                 <>
                   <div
-                    className="center rounded-[50%] w-[44px] h-[44px] shadow-custom border-line cursor-pointer"
+                    className="center rounded-[50%] w-[44px] h-[44px] md:shadow-custom md:border-line cursor-pointer"
                     onClick={() => handleDropdownMenuUser()}
                   >
                     <img className="w-5" src={UserSvg} alt="..." />

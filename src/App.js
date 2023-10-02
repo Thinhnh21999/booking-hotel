@@ -17,7 +17,33 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { isEqual } from "lodash";
 import { getHotelSaga } from "./redux/slice/hotelSlice";
-import { Route } from "react-router-dom/cjs/react-router-dom.min";
+import {
+  Route,
+  useHistory,
+  useLocation,
+} from "react-router-dom/cjs/react-router-dom.min";
+
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyDlzYMk9BfmGyr6mN2Ig-959jPwPJFu9Z0",
+  authDomain: "bookinghotel-5dbb8.firebaseapp.com",
+  projectId: "bookinghotel-5dbb8",
+  storageBucket: "bookinghotel-5dbb8.appspot.com",
+  messagingSenderId: "430093842637",
+  appId: "1:430093842637:web:02aae3991eab19f7d01184",
+  measurementId: "G-VNX723XHNV",
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
 
 function App() {
   const loading = useSelector((state) => state.Loading.isLoading);
@@ -45,6 +71,7 @@ function App() {
   );
 
   const dispatch = useDispatch();
+  const location = useLocation();
 
   useEffect(() => {
     dispatch(
@@ -52,7 +79,33 @@ function App() {
         _limit: 24,
       })
     );
-  }, []);
+    const pathname = location.pathname;
+    const parts = pathname?.split("/"); // pt string tách chuỗi thành mảng dựa trên dấu /
+    const slugHotel = parts[2];
+    const slugRoom = parts[3];
+    const decodedSlugHotel = decodeURIComponent(slugHotel);
+    const decodedSlugRoom = decodeURIComponent(slugRoom);
+    let title = "Default Title - Modtel";
+
+    // Xác định title dựa trên pathname
+    if (pathname === "/") {
+      title = "Home Page - Modtel";
+    } else if (pathname.startsWith("/about")) {
+      title = "About Page - Modtel";
+    } else if (pathname.startsWith("/checkout")) {
+      title = "Checkout - Modtel";
+    } else if (pathname.startsWith("/detail-hotel")) {
+      title = `${decodedSlugHotel} - Modtel`;
+    } else if (pathname.startsWith("/detail-room")) {
+      title = `${decodedSlugRoom} - Modtel`;
+    } else if (pathname.startsWith("/listing")) {
+      title = "Listing - Modtel";
+    } else if (pathname.startsWith("/contact")) {
+      title = "Contact - Modtel";
+    }
+
+    document.title = title;
+  }, [location.pathname]);
 
   return (
     <div className="box-border m-0 p-0">
@@ -103,7 +156,12 @@ function App() {
           loading={loading}
           Component={Contact}
         />
-        <AuthRouter exact path="/checkout" Component={Checkout} />
+        <AuthRouter
+          exact
+          path="/checkout"
+          loading={loading}
+          Component={Checkout}
+        />
         <Route component={NotFound} />
       </Switch>
     </div>

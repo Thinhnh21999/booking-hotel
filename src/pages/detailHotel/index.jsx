@@ -102,6 +102,7 @@ export default function DetailHotel(props) {
   const ref = useRef();
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     dispatch(getReviewSaga(paramsReviews));
     dispatch(setLoadingSg(true));
     const timeoutId = setTimeout(() => {
@@ -110,8 +111,6 @@ export default function DetailHotel(props) {
     return () => {
       clearTimeout(timeoutId);
     };
-
-    window.scrollTo(0, 0);
   }, []);
 
   const hotelItem = hotels?.find((hotel) => hotel.nameHotel === nameHotel);

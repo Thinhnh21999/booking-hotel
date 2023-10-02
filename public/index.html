@@ -12,37 +12,6 @@
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
     <link rel="shortcut icon" href="https://modtel.travelerwp.com/wp-content/uploads/2022/04/cropped-Group-3145-32x32.png" type="image/x-icon">
     <title>Home Page-Modtel</title>
-    <script>
-      window.addEventListener('load', () => {
-        const location = window.location.pathname;
-        const parts = location?.split("/") // pt string tách chuỗi thành mảng dựa trên dấu /
-        const slugHotel = parts[2]
-        const slugRoom = parts[3]
-        const decodedSlugHotel = decodeURIComponent(slugHotel)
-        const decodedSlugRoom = decodeURIComponent(slugRoom)
-        let title = 'Default Title - Modtel';
-        
-        // Xác định title dựa trên location
-        if (location === '/') {
-        title = 'Home Page - Modtel';
-        } else if (location.startsWith('/about')) {
-        title = 'About Page - Modtel';
-        } else if (location.startsWith('/checkout')) {
-          title = 'Checkout - Modtel';
-        } else if (location.startsWith('/detail-hotel')) {
-          title = `${decodedSlugHotel} - Modtel`;
-        } else if (location.startsWith('/detail-room')) {
-          title = `${decodedSlugRoom} - Modtel`;
-        } else if (location.startsWith('/listing')) {
-          title = 'Listing - Modtel';
-        } else if (location.startsWith('/contact')) {
-          title = 'Contact - Modtel';
-        }
-        
-        document.title = title;
-      });
-
-    </script>
 
   </head>
   <body>

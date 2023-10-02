@@ -9,13 +9,14 @@ import Header from "../../component/header/index";
 import Footer from "../../component/footer";
 import Anchor from "../../component/anchor";
 import ScrollUp from "../../component/scrollUp";
+import Loading from "../../component/loading";
 import OpenNotification from "../../component/notification";
 import { getLocalLogin } from "../../until/local/local.js";
 import { setIsOpenModal } from "../../redux/slice/userSlice";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 
-export default function AuthRouter({ Component, ...props }) {
+export default function AuthRouter({ Component, loading, ...props }) {
   const isAuth = useSelector((state) => state.Users.isAuth) || getLocalLogin();
   const dispatch = useDispatch();
   useEffect(() => {
@@ -34,6 +35,7 @@ export default function AuthRouter({ Component, ...props }) {
       render={() => {
         return (
           <>
+            {loading ? <Loading /> : ""}
             <Header />
             <Component />
             <Footer />

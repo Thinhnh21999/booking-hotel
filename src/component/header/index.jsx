@@ -89,14 +89,15 @@ export default function Header() {
   };
 
   const handleClickOutsideUser = () => {
-    setOpen(false);
+    setIsDropdownMenuItem((prevState) => ({
+      ...prevState,
+      isUser: false,
+    }));
+    console.log(isDropdownMenuItem.isUser);
   };
 
   const handleClickOutsideMenu = () => {
-    setIsDropdownMenuItem((preState) => ({
-      ...preState,
-      isUser: false,
-    }));
+    setIsOpen(false);
   };
 
   useClickOutside(refCart, handleClickOutsideCart);
@@ -405,12 +406,12 @@ export default function Header() {
                 <>
                   <div
                     className="center rounded-[50%] w-[44px] h-[44px] shadow-custom border-line cursor-pointer"
-                    onClick={() => setOpen(!open)}
+                    onClick={() => handleDropdownMenuUser()}
                   >
                     <img className="w-5" src={UserSvg} alt="..." />
                   </div>
                   <styled.DropdownMenuItem
-                    isDropdownMenuItem={open}
+                    isDropdownMenuItem={isDropdownMenuItem.isUser}
                     className="absolute z-[999] py-2.5 min-w-[230px] top-[100%] bg-white border rounded-[12px] shadow-custom hidden right-0"
                   >
                     <li className="px-[30px]">

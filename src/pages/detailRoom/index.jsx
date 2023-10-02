@@ -155,12 +155,13 @@ export default function DetailRoom(props) {
       setErrors([]);
 
       try {
-        await dispatch(commonBookRoomSg(values));
-        setLocalBookRoom(values);
         if (token) {
+          await dispatch(commonBookRoomSg(values));
           const timeOut = setTimeout(() => {
             history.push("/checkout");
           }, 1000);
+          setLocalBookRoom(values);
+
           return () => {
             clearTimeout(timeOut);
           };

@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Slider, Rate, Form, Dropdown, Radio } from "antd";
 import { getHotelSaga, setParams } from "../../redux/slice/hotelSlice";
 import { setLoading, setLoadingSg } from "../../redux/slice/loadingSlice";
@@ -18,9 +18,9 @@ import * as styled from "./style.js";
 import { getLocalCheckIn } from "../../until/local/local";
 
 export default function Listing(props) {
-  const hotels = props.hotels;
-  const params = props.params;
-  const locationHotel = props.locationHotel;
+  const { hotels, params } = useSelector((state) => state.Hotels);
+  const locationHotel = useSelector((state) => state.Locations.location);
+
   const [current, setCurrent] = useState(1);
   const [isPrice, setIsPrice] = useState(254);
   const [isReview, setIsReview] = useState(null);
@@ -50,22 +50,24 @@ export default function Listing(props) {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    window.scrollTo(0, 0);
-    dispatch(
-      getHotelSaga({
-        _page: 1,
-        _limit: 12,
-        q: getLocalCheckIn()?.location,
-      })
-    );
-    dispatch(setLoadingSg(true));
-    const timeoutId = setTimeout(() => {
-      dispatch(setLoadingSg(false));
-    }, 2000);
-    return () => {
-      clearTimeout(timeoutId);
-    };
-  }, []);
+    async function fetchData() {
+      dispatch(setLoadingSg(true));
+      await dispatch(
+        getHotelSaga({
+          _page: 1,
+          _limit: 12,
+          q: getLocalCheckIn()?.location,
+        })
+      );
+      const timeOut = setTimeout(() => {
+        dispatch(setLoadingSg(false));
+      }, 1500);
+      return () => {
+        clearTimeout(timeOut);
+      };
+    }
+    fetchData();
+  }, [dispatch]);
 
   const handleChangePage = (page) => {
     setIsPage(page);

@@ -1,17 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { Form, Input, Checkbox, message } from "antd";
 import { Link } from "react-router-dom/cjs/react-router-dom";
+import openNotification from "../../component/notification";
+
 import MapSvg from "../../assets/svgs/map.svg";
 import DropdownSvg from "../../assets/svgs/arrow_down.svg";
 import * as styled from "./style.js";
 import { getLocalBookRoom } from "../../until/local/local.js";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
-import { setLoadingSg } from "../../redux/slice/loadingSlice";
+import { getUserSg } from "../../redux/slice/userSlice";
 import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import { deleteBookRoomSg } from "../../redux/slice/bookRoomSlice";
 
 export default function Checkout() {
-  const bookRoom = getLocalBookRoom();
   const {
+    id,
     numberRooms,
     numberAdults,
     numberOffNight,
@@ -20,10 +24,10 @@ export default function Checkout() {
     checkOut,
     nameRoom,
     location,
-    image,
+    images,
     nameHotel,
     totalPrice,
-  } = bookRoom || {};
+  } = getLocalBookRoom() || {};
   const [keyboard, setKeyboard] = useState(true);
   const [keyboardTwo, setKeyboardTwo] = useState(false);
   const [form] = Form.useForm();
@@ -31,14 +35,7 @@ export default function Checkout() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    window.scrollTo(0, 0);
-    dispatch(setLoadingSg(true));
-    const timeoutId = setTimeout(() => {
-      dispatch(setLoadingSg(false));
-    }, 2000);
-    return () => {
-      clearTimeout(timeoutId);
-    };
+    form.setFieldsValue({});
   }, []);
 
   const MyFormItemContext = React.createContext([]);
@@ -68,8 +65,18 @@ export default function Checkout() {
 
   const handleChange = (value) => {};
 
-  const onFinish = (value) => {
-    form.validateFields();
+  const onFinish = async (value) => {
+    try {
+      await form.validateFields();
+      dispatch(deleteBookRoomSg(id));
+      form.resetFields();
+      openNotification(
+        "success",
+        "Thanh toán thành công, cảm ơn bạn! Tiền trong banking của bạn sẽ hết sạch trong 1 phút nữa"
+      );
+    } catch (error) {
+      message.error("error, Thanh toán không thành công");
+    }
   };
 
   const onFinishFailed = (error) => {
@@ -95,7 +102,7 @@ export default function Checkout() {
               </li>
 
               <li className="relative cursor-pointer pr-5 ml-5">
-                <span onClick={history.goBack}>{nameRoom}</span>
+                <Link to={`/detail-room/${nameRoom}`}>{nameRoom}</Link>
                 <div className="absolute top-[50%] right-0 w-1 h-1 bg-[#EAEEF3] z-10"></div>
               </li>
 
@@ -118,7 +125,7 @@ export default function Checkout() {
                   >
                     <img
                       className="w-full h-[80px] rounded-2xl hover:scale-110 transition-all duration-300 ease-in-out transform"
-                      src={image}
+                      src={images}
                       alt="image hotel"
                     />
                   </Link>
@@ -136,9 +143,7 @@ export default function Checkout() {
 
                 <div className="flex justify-between pb-5 mb-5 border-bottom">
                   <span className="text-gray">Room Type:</span>
-                  <span onClick={history.goBack} className="cursor-pointer">
-                    {nameRoom}
-                  </span>
+                  <Link to={`/detail-room/${nameRoom}`}>{nameRoom}</Link>
                 </div>
 
                 <div className="mb-5 border-bottom">

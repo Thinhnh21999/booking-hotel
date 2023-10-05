@@ -12,25 +12,33 @@ import * as styled from "./style.js";
 
 import { useEffect } from "react";
 import { getLocationSaga } from "../../redux/slice/locationSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setLoadingSg } from "../../redux/slice/loadingSlice";
+import { getHotelSaga } from "../../redux/slice/hotelSlice";
 
 export default function Home(props) {
-  const hotels = props.hotels;
-  const locationHotel = props.locationHotel;
+  const { hotels } = useSelector((state) => state.Hotels);
+  const locationHotel = useSelector((state) => state.Locations.location);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    window.scrollTo(0, 0);
-    dispatch(getLocationSaga());
-    dispatch(setLoadingSg(true));
-    const timeoutId = setTimeout(() => {
-      dispatch(setLoadingSg(false));
-    }, 2000);
-    return () => {
-      clearTimeout(timeoutId);
-    };
-  }, []);
+    async function fetchData() {
+      dispatch(setLoadingSg(true));
+      await dispatch(getLocationSaga());
+      await dispatch(
+        getHotelSaga({
+          _limit: 24,
+        })
+      );
+      const timeOut = setTimeout(() => {
+        dispatch(setLoadingSg(false));
+      }, 1500);
+      return () => {
+        clearTimeout(timeOut);
+      };
+    }
+    fetchData();
+  }, [dispatch]);
 
   return (
     <>

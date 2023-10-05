@@ -10,7 +10,6 @@ import { useDispatch } from "react-redux";
 export default function About(props) {
   const dispatch = useDispatch();
   useEffect(() => {
-    window.scrollTo(0, 0);
     dispatch(setLoadingSg(true));
     const timeoutId = setTimeout(() => {
       dispatch(setLoadingSg(false));

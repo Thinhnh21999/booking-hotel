@@ -46,6 +46,9 @@ export const ModalCustom = styled(Modal)`
   .ant-modal-close {
     inset-inline-start: 25px !important;
     top: 30px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50px;
   }
 `;
 

@@ -2,11 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import SignInOut from "../../component/signInOut";
 import { clearLocalLogin, getLocalLogin } from "../../until/local/local.js";
 
-import {
-  Link,
-  useHistory,
-  useLocation,
-} from "react-router-dom/cjs/react-router-dom.min";
+import { Link, useLocation } from "react-router-dom/cjs/react-router-dom.min";
 import PhoneSvg from "../../assets/svgs/phone.svg";
 import EmailSvg from "../../assets/svgs/email.svg";
 import CartSvg from "../../assets/svgs/cart.svg";
@@ -42,24 +38,19 @@ export default function Header() {
   const refMenu = useRef();
   const refUser = useRef();
   const dispatch = useDispatch();
+  const location = useLocation();
   const userLocalLogin = getLocalLogin() || isAuth;
 
   useEffect(() => {
-    dispatch(getBookRoomSg());
-    dispatch(
-      getHotelSaga({
-        _limit: 24,
-      })
-    );
-  }, []);
+    async function fetchData() {
+      await dispatch(getBookRoomSg());
+    }
+    fetchData();
+  }, [dispatch]);
 
-  const handleOnclickMenu = () => {
-    setIsOpen(!isOpen);
-  };
-
-  const handleOnclickArrowLeft = () => {
-    setIsOpen(!isOpen);
-  };
+  useEffect(() => {
+    setIsOpen(false);
+  }, [location.pathname]);
 
   const handleDropdownMenuItem1 = () => {
     setIsDropdownMenuItem((preState) => ({
@@ -98,7 +89,6 @@ export default function Header() {
       ...prevState,
       isUser: false,
     }));
-    console.log(isDropdownMenuItem.isUser);
   };
 
   const handleClickOutsideMenu = () => {
@@ -110,14 +100,12 @@ export default function Header() {
   useClickOutside(refUser, handleClickOutsideUser);
 
   const clearLocalLoginFC = () => {
-    dispatch(setLoadingSg(true));
-    setTimeout(() => {
-      dispatch(setLoadingSg(false));
-    }, 2000);
     dispatch(setIsOpenModal(false));
     dispatch(setAuth(false));
     clearLocalLogin();
+    window.location.reload();
   };
+
   return (
     <div id="header" className="relative">
       <div className="bg-[#232323] hidden lg:flex text-[rgba(255,255,255,.8)] px-10 py-2 justify-between">
@@ -144,21 +132,20 @@ export default function Header() {
       </div>
 
       <div className="flex justify-between relative bg-white px-10 border-b border-solid border-[#EAEEF3] ">
-        <div className="center">
+        <div ref={refMenu} className="center">
           <div
-            className="cursor-pointer py-7 mr-[60px] lg:hidden"
-            onClick={() => handleOnclickMenu()}
+            className="cursor-pointer py-7 pr-[60px] lg:hidden"
+            onClick={() => setIsOpen(!isOpen)}
           >
             <img className="w-5 lg:block" src={MenuSvg} alt="..." />
           </div>
 
           <styled.DropdownMenu
             isOpen={isOpen}
-            ref={refMenu}
             className="flex fixed h-screen z-[999] behavior-smooth overflow-auto top-0 min-w-[320px] bg-white flex-col"
           >
             <span
-              onClick={() => handleOnclickArrowLeft()}
+              onClick={() => setIsOpen(false)}
               className="!bg-[#f5f5f5] cursor-pointer px-5 py-4"
             >
               <img className="w-3" src={ArrowLeftSvg} alt="" />
@@ -218,17 +205,12 @@ export default function Header() {
                 </Link>
               </li>
               <li>
-                <Link className="link-dropdown hover" to="#">
+                <Link className="link-dropdown hover" to="/contact">
                   CONTACT
                 </Link>
               </li>
             </ul>
           </styled.DropdownMenu>
-
-          <styled.Overlay
-            isOpen={isOpen}
-            className="fixed h-screen w-full bg-[rgba(0,0,0,.5)] z-[998] top-0 left-0 hidden"
-          ></styled.Overlay>
 
           <div className="hidden md:block" href="#">
             <Link to="/">
@@ -236,6 +218,12 @@ export default function Header() {
             </Link>
           </div>
         </div>
+        {isOpen && (
+          <styled.Overlay
+            isOpen={isOpen}
+            className="fixed h-screen w-full bg-[rgba(0,0,0,.5)] z-[998] top-0 left-0 hidden"
+          ></styled.Overlay>
+        )}
 
         <div className="center">
           <Link className="block md:hidden" to="/">
@@ -289,8 +277,8 @@ export default function Header() {
                 Checkout
               </Link>
             </li>
-            <li className="">
-              <Link className="flex  hover py-[35px] ps-2.5 pe-6" to="#">
+            <li>
+              <Link className="flex  hover py-[35px] ps-2.5 pe-6" to="/contact">
                 Contact
               </Link>
             </li>
@@ -394,10 +382,16 @@ export default function Header() {
                   </div>
 
                   <Link
-                    to="/checkout"
+                    to="/cart"
+                    onClick={() =>
+                      setIsDropdownMenuItem((preState) => ({
+                        ...preState,
+                        isCart: false,
+                      }))
+                    }
                     className="text-white block uppercase bg-primary hover:opacity-80 text-center w-full px-5 py-3 rounded-[50px]"
                   >
-                    Pay Now
+                    Your Cart
                   </Link>
                 </div>
               ) : null}

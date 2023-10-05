@@ -1,6 +1,6 @@
 const LOGIN_KEY = "hotel_login";
 const CHECKIN_KEY = "check_in";
-const NUMBER_GUESTS_KEY = "number_guests";
+const USER_KEY = "User";
 const BOOK_ROOM_KEY = "book_rooms";
 
 export function setLocalLogin(data) {
@@ -25,6 +25,18 @@ export function getLocalCheckIn() {
 
 export function clearLocalCheckIn() {
   localStorage.removeItem(CHECKIN_KEY);
+}
+
+export function setLocalUser(data) {
+  localStorage.setItem(USER_KEY, JSON.stringify(data));
+}
+
+export function getLocalUser() {
+  return JSON.parse(localStorage.getItem(USER_KEY));
+}
+
+export function clearLocalUser() {
+  localStorage.removeItem(USER_KEY);
 }
 
 export function setLocalBookRoom(data) {

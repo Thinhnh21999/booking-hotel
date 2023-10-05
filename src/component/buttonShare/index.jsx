@@ -47,12 +47,8 @@ export default function ButtonShare() {
           }
           trigger={["click"]}
         >
-          <div className="cursor-pointer ">
-            <img
-              className="bg-[#f7f8fa] hover:bg-white share w-12 h-12 p-3 border-line shadow-custom rounded-full"
-              src={share}
-              alt="..."
-            />
+          <div className="center cursor-pointer bg-[#f7f8fa] hover:bg-white share w-12 h-12 border-line shadow-custom rounded-full">
+            <img className=" w-[50%] " src={share} alt="..." />
           </div>
         </Dropdown>
       </Space.Compact>

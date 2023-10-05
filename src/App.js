@@ -10,6 +10,7 @@ import DetailHotel from "./pages/detailHotel";
 import DetailRoom from "./pages/detailRoom";
 import Checkout from "./pages/checkout";
 import NotFound from "./component/notFound/index.jsx";
+import Cart from "./pages/cart";
 
 import DefaultRouter from "./router/defaultRouter/defaultRouter";
 import AuthRouter from "./router/authRouter/authRouter.jsx";
@@ -47,29 +48,6 @@ const analytics = getAnalytics(app);
 
 function App() {
   const loading = useSelector((state) => state.Loading.isLoading);
-  const locationHotel = useSelector((state) => state.Locations.location);
-  // ss trước và sau return ra giá trị hiện tại để giảm bớt reload
-  const { hotels, params } = useSelector(
-    (state) => state.Hotels,
-    (prevHotels, newHotels) => {
-      return (
-        isEqual(prevHotels.params, newHotels.params) &&
-        prevHotels.reviews?.length === newHotels.reviews?.length
-      );
-    }
-  );
-
-  const { reviews, paramsReviews } = useSelector(
-    (state) => state.Reviews,
-    (prevReviews, newReviews) => {
-      // isEqual là pt ss của thư viện lodash
-      return (
-        isEqual(prevReviews.paramsReviews, newReviews.paramsReviews) &&
-        newReviews.reviews?.length === prevReviews.reviews?.length
-      );
-    }
-  );
-
   const location = useLocation();
 
   useEffect(() => {
@@ -96,23 +74,19 @@ function App() {
       title = "Listing - Modtel";
     } else if (pathname.startsWith("/contact")) {
       title = "Contact - Modtel";
+    } else if (pathname.startsWith("/cart")) {
+      title = "Cart - Modtel";
     }
 
     document.title = title;
   }, [location.pathname]);
 
+  window.scrollTo(0, 0);
+
   return (
     <div className="box-border m-0 p-0">
       <Switch>
-        <DefaultRouter
-          exact
-          path="/"
-          loading={loading}
-          hotels={hotels}
-          params={params}
-          locationHotel={locationHotel}
-          Component={Home}
-        />
+        <DefaultRouter exact path="/" loading={loading} Component={Home} />
         <DefaultRouter
           exact
           path="/about"
@@ -123,17 +97,11 @@ function App() {
           exact
           path="/listing"
           loading={loading}
-          hotels={hotels}
-          params={params}
-          locationHotel={locationHotel}
           Component={Listing}
         />
         <DefaultRouter
           exact
           path="/detail-hotel/:nameHotel"
-          hotels={hotels}
-          paramsReviews={paramsReviews}
-          reviews={reviews}
           loading={loading}
           Component={DetailHotel}
         />
@@ -141,7 +109,6 @@ function App() {
           exact
           path="/detail-room/:nameHotel/:nameRoom"
           loading={loading}
-          hotels={hotels}
           Component={DetailRoom}
         />
         <DefaultRouter
@@ -150,6 +117,7 @@ function App() {
           loading={loading}
           Component={Contact}
         />
+        <AuthRouter exact path="/cart" loading={loading} Component={Cart} />
         <AuthRouter
           exact
           path="/checkout"

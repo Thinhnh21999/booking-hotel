@@ -1,11 +1,11 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { useEffect, useState, useMemo, useRef } from "react";
-import { useDispatch } from "react-redux";
-import { getHotelSaga } from "../../redux/slice/hotelSlice";
-import { Rate, Col, Row, message } from "antd";
+import { useDispatch, useSelector } from "react-redux";
+import { Rate, Col, Row } from "antd";
 import Card from "../../component/card/index.jsx";
 import CardRoom from "../../component/cardRoom";
 import ButtonShare from "../../component/buttonShare";
+import Notification from "../../component/notification";
 import { Form, Input, Button } from "antd";
 import { addDays } from "date-fns";
 import { Link, useParams } from "react-router-dom/cjs/react-router-dom.min";
@@ -17,6 +17,7 @@ import {
 } from "../../redux/slice/reviewSlice";
 import { getLocalCheckIn, setLocalCheckIn } from "../../until/local/local.js";
 import { setLoadingSg } from "../../redux/slice/loadingSlice";
+import { getHotelSaga } from "../../redux/slice/hotelSlice";
 import BookRoom from "../../component/bookRoom";
 import LoadingItem from "../../component/loadingItem";
 import NavigationBottom from "../../component/navigationBottom";
@@ -43,9 +44,8 @@ import "react-date-range/dist/theme/default.css";
 import * as styled from "./style";
 
 export default function DetailHotel(props) {
-  const hotels = props.hotels;
-  const paramsReviews = props.paramsReviews;
-  const reviews = props.reviews;
+  const { hotels } = useSelector((state) => state.Hotels);
+  const { reviews, paramsReviews } = useSelector((state) => state.Reviews);
   const localCheckIn = getLocalCheckIn();
   const checkInLocal = getLocalCheckIn()?.checkIn;
   const checkOutLocal = getLocalCheckIn()?.checkOut;
@@ -103,16 +103,24 @@ export default function DetailHotel(props) {
   const ref = useRef();
 
   useEffect(() => {
-    window.scrollTo(0, 0);
-    dispatch(getReviewSaga(paramsReviews));
-    dispatch(setLoadingSg(true));
-    const timeoutId = setTimeout(() => {
-      dispatch(setLoadingSg(false));
-    }, 2000);
-    return () => {
-      clearTimeout(timeoutId);
-    };
-  }, []);
+    async function fetchData() {
+      dispatch(setLoadingSg(true));
+      await dispatch(getReviewSaga(paramsReviews));
+      await dispatch(
+        getHotelSaga({
+          _limit: 24,
+        })
+      );
+
+      const timeOut = setTimeout(() => {
+        dispatch(setLoadingSg(false));
+      }, 1500);
+      return () => {
+        clearTimeout(timeOut);
+      };
+    }
+    fetchData();
+  }, [dispatch]);
 
   const hotelItem = hotels?.find((hotel) => hotel.nameHotel === nameHotel);
   const numberOffNight = moment(checkOut).diff(moment(checkIn), "days");
@@ -136,7 +144,6 @@ export default function DetailHotel(props) {
 
   const handleChangePage = (page) => {
     setCurrent(page);
-    console.log(page);
     dispatch(
       setParamsReviews({
         ...paramsReviews,
@@ -164,10 +171,10 @@ export default function DetailHotel(props) {
   ];
 
   const handleCheckRoom = () => {
+    setIsLoading(true);
     const timeoutId = setTimeout(() => {
       setIsLoading(false);
-    }, 3000);
-    setIsLoading(true);
+    }, 2000);
     setShowIsNavigation(false);
     setShowPriceRoom(true);
     setLocalCheckIn({
@@ -185,7 +192,10 @@ export default function DetailHotel(props) {
   };
 
   const onFinishMessages = (value) => {
-    message.success("Thank you for your message. It has been sent.");
+    Notification(
+      "success",
+      "Cảm ơn bạn đã gửi đến những lời yêu thương, chúc bạn và gia đình sức khoẻ"
+    );
 
     setTimeout(() => {
       formMessages.resetFields();
@@ -287,15 +297,13 @@ export default function DetailHotel(props) {
                     />
                   </div>
                   <h1 className="text-4xl font-bold">{hotelItem?.nameHotel}</h1>
-                  <div className="flex my-2">
+                  <div className="flex flex-wrap my-2">
                     <div className="text-primary font-bold border-solid border-[1px] border-primary pg-[#F9FBFF] rounded-md px-2 py-[1px]">
                       {hotelItem?.star} <span>/</span> 5
                     </div>
                     <span className="font-bold px-4">{hotelItem?.review}</span>
-                    <p className="text-primary">(3 Reviews)</p>
-                    <span className="text-gray pl-5">
-                      {hotelItem?.location}
-                    </span>
+                    <p className="text-primary pr-5">(3 Reviews)</p>
+                    <span className="text-gray">{hotelItem?.location}</span>
                   </div>
                 </div>
                 <div className="flex items-center">
@@ -702,9 +710,9 @@ export default function DetailHotel(props) {
             <div
               className={`${
                 isShowNavigation
-                  ? "top-0 !h-auto opacity-100 overflow-scroll"
+                  ? "top-0 z-[30] opacity-100 overflow-scroll"
                   : ""
-              } lg:relative fixed opacity-0 h-0 lg:h-auto transition-all duration-300 lg:opacity-100 z-30 bottom-0 left-0 pt-5 lg:pt-0 bg-white lg:w-1/3 w-full px-3 lg:!block`}
+              } lg:relative fixed opacity-0 z-[-1] transition-all duration-500 lg:opacity-100 lg:z-30 bottom-0 left-0 pt-5 lg:pt-0 bg-white lg:w-1/3 w-full px-3 lg:!block`}
             >
               <div className="sticky top-0">
                 <div className="border-[1px] border-solid border-[#dedede] rounded-3xl p-8 shadow-xl drop-shadow-xl	">

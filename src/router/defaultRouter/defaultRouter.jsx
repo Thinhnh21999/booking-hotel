@@ -6,16 +6,7 @@ import Loading from "../../component/loading";
 import Anchor from "../../component/anchor";
 import ScrollUp from "../../component/scrollUp";
 
-export default function DefaultRouter({
-  Component,
-  loading,
-  params,
-  locationHotel,
-  paramsReviews,
-  reviews,
-  hotels,
-  ...props
-}) {
+export default function DefaultRouter({ Component, loading, ...props }) {
   return (
     <Route
       {...props}
@@ -24,13 +15,7 @@ export default function DefaultRouter({
           <>
             {loading ? <Loading /> : ""}
             <Header />
-            <Component
-              hotels={hotels}
-              params={params}
-              locationHotel={locationHotel}
-              reviews={reviews}
-              paramsReviews={paramsReviews}
-            />
+            <Component />
             <Footer />
             <Anchor />
             <ScrollUp />

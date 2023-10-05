@@ -8,6 +8,7 @@ import size from "../../assets/svgs/size.svg";
 import bed from "../../assets/svgs/bed.svg";
 import adults from "../../assets/svgs/adults.svg";
 import child from "../../assets/svgs/child.svg";
+import { useState } from "react";
 
 export default function CardRoom(props) {
   const paramsHotel = useParams();
@@ -16,14 +17,17 @@ export default function CardRoom(props) {
   const { pathname } = location;
   const { room, showPriceRoom, numberOffNight, numberRooms } = props;
   const { id, price, detail, nameRoom, images } = room;
+  const [checkRoom, setCheckRoom] = useState(false);
   return (
     <Row className="border-line rounded-xl mb-[30px]">
       <Col lg={7} xs={24}>
-        <img
-          className="w-full h-full object-cover lg:rounded-bl-xl lg:rounded-tl-xl lg:rounded-tr-none rounded-tl-xl rounded-tr-xl"
-          src={images[1]}
-          alt="image"
-        />
+        <div className="overflow-hidden w-full h-full lg:rounded-bl-xl lg:rounded-tl-xl lg:rounded-tr-none rounded-tl-xl rounded-tr-xl">
+          <img
+            className="w-full h-full object-cover hover:scale-110 transition-all duration-300 lg:rounded-bl-xl lg:rounded-tl-xl lg:rounded-tr-none rounded-tl-xl rounded-tr-xl"
+            src={images[1]}
+            alt="image"
+          />
+        </div>
       </Col>
 
       <Col lg={10} xs={24}>
@@ -76,9 +80,19 @@ export default function CardRoom(props) {
             </div>
           </div>
         ) : (
-          <button className="bg-primary hover:bg-opacity-80 text-white px-5 py-3 mx-5 lg:mx-0 mb-7 lg:mb-0 mt-[10px] lg:mt-[10px] rounded-[30px] text-center font-bold ">
-            <span>Room Detail</span>
-          </button>
+          <div className="mx-5 lg:mx-0 mb-7 lg:mb-0 mt-[10px] lg:mt-[10px] text-center">
+            <button
+              onClick={() => setCheckRoom(true)}
+              className="bg-primary hover:bg-opacity-80 block text-white rounded-[30px] mx-auto px-5 py-3 text-center font-bold "
+            >
+              <span>Room Detail</span>
+            </button>
+            {checkRoom && (
+              <div className="text-[#f13c3c] font-normal pt-2">
+                Please Check availability
+              </div>
+            )}
+          </div>
         )}
       </Col>
     </Row>

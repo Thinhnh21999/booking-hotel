@@ -2,20 +2,6 @@ import { Rate, Form, Button, Pagination } from "antd";
 import styled from "styled-components";
 import { Swiper, SwiperSlide } from "swiper/react";
 
-export const Price = styled.div`
-  display: none;
-  @media (max-width: 990px) {
-    display: block;
-    position: fixed;
-    bottom: 0;
-    right: 0;
-    left: 0;
-    background-color: #fff;
-    box-shadow: 5px 5px 5px 5px #ccc;
-    z-index: 9;
-  }
-`;
-
 export const SwiperCustom = styled(Swiper)`
   overflow: unset;
   .swiper-pagination {

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { SwiperSlide } from "swiper/react";
 import "antd/dist/antd";
 import {
@@ -14,6 +14,7 @@ import { Rate, Form, Button } from "antd";
 import { commonBookRoomSg } from "../../redux/slice/bookRoomSlice";
 import { setIsOpenModal } from "../../redux/slice/userSlice";
 import { setLoadingSg } from "../../redux/slice/loadingSlice";
+import { getHotelSaga } from "../../redux/slice/hotelSlice";
 import openNotification from "../../component/notification";
 import NavigationBottom from "../../component/navigationBottom";
 import {
@@ -35,6 +36,8 @@ import restaurant from "../../assets/svgs/restaurant.svg";
 import spa from "../../assets/svgs/spa.svg";
 import washer from "../../assets/svgs/Washer&Dryer.svg";
 import locationSvg from "../../assets/svgs/location.svg";
+import CloseSvg from "../../assets/svgs/close.svg";
+import CheckSvg from "../../assets/svgs/check.svg";
 
 import { Navigation, Autoplay, Pagination } from "swiper";
 import "react-date-range/dist/styles.css";
@@ -44,9 +47,11 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import moment from "moment";
 import * as styled from "./style.js";
+import { useClickOutside } from "../../until/clickOutside";
 
 export default function DetailRoom(props) {
-  const { hotels } = props;
+  const { hotels } = useSelector((state) => state.Hotels);
+  const { bookRoom } = useSelector((state) => state.BookRoom);
   const checkInLocal = getLocalCheckIn()?.checkIn;
   const checkOutLocal = getLocalCheckIn()?.checkOut;
 
@@ -90,6 +95,8 @@ export default function DetailRoom(props) {
     getLocalCheckIn()?.numberChildren
   );
   const [isShowNavigation, setShowIsNavigation] = useState(false);
+  const [isShowPay, setIsShowPay] = useState(false);
+  const refPay = useRef();
   const dispatch = useDispatch();
   const history = useHistory();
   const { nameHotel, nameRoom } = useParams();
@@ -97,24 +104,32 @@ export default function DetailRoom(props) {
 
   const token = getLocalLogin()?.access_token;
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-    dispatch(setLoadingSg(true));
-    const timeoutId = setTimeout(() => {
-      dispatch(setLoadingSg(false));
-    }, 2000);
-    return () => {
-      clearTimeout(timeoutId);
-    };
-  }, []);
-
   const hotelItem = hotels?.find((hotel) => hotel.nameHotel === nameHotel);
   const roomItem = hotelItem?.rooms?.find((room) => room.nameRoom === nameRoom);
   const numberOffNight = moment(checkOut).diff(moment(checkIn), "days");
 
-  const { location, image } = hotelItem || {};
-  const { price, description, images } = roomItem || {};
+  const { location, image, idHotel } = hotelItem || {};
+  const { price, description, images, idRoom } = roomItem || {};
   const { S, Adults, Children, Beds } = roomItem?.detail || {};
+
+  const indexRoomHotel = bookRoom?.find((item) => item.idHotel === idHotel);
+  useEffect(() => {
+    async function fetchData() {
+      dispatch(setLoadingSg(true));
+      await dispatch(
+        getHotelSaga({
+          _limit: 24,
+        })
+      );
+      const timeOut = setTimeout(() => {
+        dispatch(setLoadingSg(false));
+      }, 1500);
+      return () => {
+        clearTimeout(timeOut);
+      };
+    }
+    fetchData();
+  }, [dispatch]);
 
   const totalPrice = useMemo(() => {
     return (numberRooms * price * numberOffNight).toLocaleString("en-US", {
@@ -125,9 +140,14 @@ export default function DetailRoom(props) {
 
   const handleBookRoom = async (value) => {
     setIsLoader(true);
-    const timeOut = setTimeout(() => {
+
+    if (!token) {
+      dispatch(setIsOpenModal(true));
+      openNotification("warning", "Bạn cần đăng nhập để đặt phòng");
       setIsLoader(false);
-    }, 2000);
+      return;
+    }
+
     const obj = {
       image: image,
       images: images[0],
@@ -135,7 +155,7 @@ export default function DetailRoom(props) {
       nameRoom: nameRoom,
       nameHotel: nameHotel,
     };
-    const values = { ...value, ...obj };
+    const values = { ...value, ...obj, idHotel, idRoom };
     const newErrors = [];
 
     if (numberAdults > Adults * numberRooms) {
@@ -143,45 +163,94 @@ export default function DetailRoom(props) {
     }
 
     if (numberChildren > Children * numberRooms) {
-      newErrors.push("Number of children in the room are incorrect");
+      newErrors.push("Number of children in the room is incorrect");
     }
 
     if (!(checkIn && checkOut)) {
       newErrors.push("You cannot book a room without a date limit");
     }
 
-    if (newErrors.length === 0) {
+    if (newErrors.length === 0 && indexRoomHotel?.idRoom !== idRoom) {
       setErrors([]);
 
       try {
-        if (token) {
-          await dispatch(commonBookRoomSg(values));
-          const timeOut = setTimeout(() => {
-            history.push("/checkout");
-          }, 1000);
-          setLocalBookRoom(values);
-
-          return () => {
-            clearTimeout(timeOut);
-          };
-        } else {
-          dispatch(setIsOpenModal(true));
-          openNotification("warning", "bạn cần đăng nhập để đặt phòng");
-        }
+        await dispatch(commonBookRoomSg(values));
+        setLocalBookRoom(values);
+        setIsShowPay(true);
       } catch (error) {
         console.error(error);
       }
+    } else if (newErrors.length === 0) {
+      setErrors([]);
+      setIsShowPay(true);
     } else {
       setErrors(newErrors);
     }
 
+    const timeOut = setTimeout(() => {
+      setIsLoader(false);
+    }, 2000);
     return () => {
       clearTimeout(timeOut);
     };
   };
 
+  const handleClickOutsidePay = () => {
+    setIsShowPay(false);
+  };
+
+  useClickOutside(refPay, handleClickOutsidePay);
+
   return (
     <div className="relative">
+      {isShowPay && (
+        <div className="fixed z-[999] top-0 left-0 center w-full h-screen">
+          <div
+            ref={refPay}
+            className="w-[400px] relative top-[-120px] z-[9999] shadow-custom border-line bg-white rounded-2xl m-auto"
+          >
+            <div className="flex bg-primary w-full p-4 rounded-t-2xl">
+              <img className="w-5 mr-2" src={CheckSvg} alt="//" />
+              <h2 className="text-white">Item has been added to your Cart</h2>
+              <img
+                onClick={() => setIsShowPay(false)}
+                className="w-5 ml-auto cursor-pointer"
+                src={CloseSvg}
+                alt="x"
+              />
+            </div>
+
+            <div className="px-4 py-6">
+              <div className="flex pb-6 border-bottom">
+                <img
+                  className="w-[100px] h-[100px]"
+                  src={images[0]}
+                  alt="..."
+                />
+                <div className="ml-4 my-auto">
+                  <h3 className="text-xl font-bold">{nameRoom}</h3>
+                  <span className="text-gray">Price: {totalPrice}</span>
+                </div>
+              </div>
+              <div className="flex mt-6">
+                <Link
+                  to="/checkout"
+                  className="w-1/2 text-center hover:opacity-70 bg-primary text-white text-xl py-2 px-4 rounded-3xl mx-2"
+                >
+                  Pay Now
+                </Link>
+                <Link
+                  to="/cart"
+                  className="w-1/2 text-center hover:opacity-70 bg-primary text-white text-xl py-2 px-4 rounded-3xl mx-2"
+                >
+                  View Cart
+                </Link>
+              </div>
+            </div>
+          </div>
+          <div className="fixed h-screen w-full bg-[rgba(0,0,0,.5)] z-[998] top-0 left-0 opacity-50"></div>
+        </div>
+      )}
       <div className="py-5 border-bottom hidden sm:block">
         <div className="lg:container lg:mx-auto px-5">
           <ul className="flex items-center justify-start">
@@ -436,10 +505,8 @@ export default function DetailRoom(props) {
 
           <div
             className={`${
-              isShowNavigation
-                ? "top-0 !h-auto opacity-100 overflow-scroll"
-                : ""
-            } lg:relative fixed opacity-0 h-0 lg:h-auto transition-all duration-300 lg:opacity-100 z-30 bottom-0 left-0 pt-5 lg:pt-0 bg-white w-full lg:w-1/3 lg:block px-3`}
+              isShowNavigation ? "top-0 z-30 opacity-100 overflow-scroll" : ""
+            } lg:relative fixed opacity-0 lg:h-auto transition-all duration-300 lg:opacity-100 z-[-1] lg:z-30 bottom-0 left-0 pt-5 lg:pt-0 bg-white w-full lg:w-1/3 lg:block px-3`}
           >
             <div className="sticky top-0">
               <Form

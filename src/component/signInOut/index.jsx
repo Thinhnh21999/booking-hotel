@@ -16,6 +16,7 @@ import {
   setIsOpenModal,
 } from "../../redux/slice/userSlice";
 import { setLoadingSg } from "../../redux/slice/loadingSlice";
+import { setLocalUser } from "../../until/local/local";
 
 const App = () => {
   const { isSignIn, isOpenModal } = useSelector((state) => state.Users);
@@ -28,15 +29,15 @@ const App = () => {
     setValue(e.target.value);
   };
 
-  const onFinish = (values) => {
+  const onFinish = async (values) => {
     if (!isSignIn) {
       dispatch(commonRegister(values));
     } else {
-      dispatch(commonLogin(values));
-      dispatch(setLoadingSg(true));
+      await dispatch(commonLogin(values));
+      setLocalUser(values);
       setTimeout(() => {
-        dispatch(setLoadingSg(false));
-      }, 2000);
+        window.location.reload();
+      }, 100);
     }
   };
 
